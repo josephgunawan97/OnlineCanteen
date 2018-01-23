@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v17\\values-v17.xml",
+            "outputFile": "E:\\MrsPanda\\UPH\\Semester 8\\Proyek Studio Rekayasa Piranti Lunak\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v17\\values-v17.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\6e0170205c91163e30225f9959de56be\\res\\values-v17\\values-v17.xml",
+                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\0676f977b9a34d91437c47e4ebb76826\\res\\values-v17\\values-v17.xml",
                     "from": {
                         "startLines": "2,5,9,12,15,18,22,26,29,32,35,39,42,46",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",

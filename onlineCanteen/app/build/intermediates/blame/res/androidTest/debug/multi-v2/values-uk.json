@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-uk\\values-uk.xml",
+            "outputFile": "E:\\MrsPanda\\UPH\\Semester 8\\Proyek Studio Rekayasa Piranti Lunak\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-uk\\values-uk.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\6e0170205c91163e30225f9959de56be\\res\\values-uk\\values-uk.xml",
+                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\0676f977b9a34d91437c47e4ebb76826\\res\\values-uk\\values-uk.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-11.0.4.aar\\a7b3b2bbd9ae4e97cff94cb4e2ccf1fc\\res\\values-uk\\values.xml",
+                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-11.0.4.aar\\832164a0ad4cfd41520d9196a9fedce3\\res\\values-uk\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",

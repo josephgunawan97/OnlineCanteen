@@ -1,7 +1,11 @@
 package com.example.asus.onlinecanteen;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.User;
@@ -12,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseReference databaseUsers;
     DatabaseReference databaseProducts;
+    private static final int MENU_LOGOUT = Menu.FIRST;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +29,40 @@ public class MainActivity extends AppCompatActivity {
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
         addUsers();
         addProducts();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menu.add(0, MENU_LOGOUT, 0, "Log Out");
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case MENU_LOGOUT:
+                logout();
+                return true;
+        }
+        return false;
+    }
 
+    public void logout(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.setTitle("Logging Out");
+        alert.show();
     }
 
     private void addProducts() {
