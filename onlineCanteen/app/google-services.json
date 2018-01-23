@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "201124401888",
+    "firebase_url": "https://onlinecanteenuph.firebaseio.com",
+    "project_id": "onlinecanteenuph",
+    "storage_bucket": "onlinecanteenuph.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201124401888:android:44a12c866f0233f0",
+        "android_client_info": {
+          "package_name": "com.example.asus.onlinecanteen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201124401888-ecvvs2cj7ia2h7a5h08smqfgig1dns9d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.asus.onlinecanteen",
+            "certificate_hash": "927e7afab577abb8a76961cd4e9328500c9a2743"
+          }
+        },
+        {
+          "client_id": "201124401888-o9h87v5v5kockvjdqs7v5jp1trj999uc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzKdbq924_sNc7IHBlQOcsAw6DF0DYk7s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201124401888-o9h87v5v5kockvjdqs7v5jp1trj999uc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
