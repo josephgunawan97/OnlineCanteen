@@ -1,0 +1,19 @@
+#Sat Jan 20 14:39:30 ICT 2018
+renamed.5=classes6.dex
+renamed.4=classes5.dex
+renamed.3=classes4.dex
+renamed.2=classes3.dex
+renamed.1=classes2.dex
+renamed.0=classes.dex
+base.5=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\16
+base.4=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\15
+base.3=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\14
+base.2=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\13
+base.1=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\12
+base.0=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\11
+file.5=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\16\\classes.dex
+file.4=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\15\\classes.dex
+file.3=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\14\\classes.dex
+file.2=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\13\\classes.dex
+file.1=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\12\\classes.dex
+file.0=D\:\\Informatics 2015\\Semester8\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\11\\classes.dex
