@@ -1520,6 +1520,10 @@
         "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\0676f977b9a34d91437c47e4ebb76826\\res\\drawable-xhdpi-v4\\abc_btn_check_to_on_mtrl_000.png"
     },
     {
+        "merged": "E:\\MrsPanda\\UPH\\Semester 8\\Proyek Studio Rekayasa Piranti Lunak\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\res\\merged\\debug\\layout_list.xml.flat",
+        "source": "E:\\MrsPanda\\UPH\\Semester 8\\Proyek Studio Rekayasa Piranti Lunak\\OnlineCanteen\\onlineCanteen\\app\\src\\main\\res\\layout\\list.xml"
+    },
+    {
         "merged": "E:\\MrsPanda\\UPH\\Semester 8\\Proyek Studio Rekayasa Piranti Lunak\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_ic_star_black_48dp.png.flat",
         "source": "C:\\Users\\ASUS\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\0676f977b9a34d91437c47e4ebb76826\\res\\drawable-mdpi-v4\\abc_ic_star_black_48dp.png"
     },

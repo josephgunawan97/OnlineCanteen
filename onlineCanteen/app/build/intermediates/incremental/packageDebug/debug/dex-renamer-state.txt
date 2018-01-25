@@ -1,4 +1,4 @@
-#Wed Jan 24 00:43:52 ICT 2018
+#Thu Jan 25 23:02:15 ICT 2018
 base.0=E\:\\MrsPanda\\UPH\\Semester 8\\Proyek Studio Rekayasa Piranti Lunak\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 path.0=classes.dex
 renamed.0=classes.dex

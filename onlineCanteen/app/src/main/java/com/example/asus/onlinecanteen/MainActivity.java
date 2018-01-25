@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.User;
@@ -13,7 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-
+    ListView listView;
     DatabaseReference databaseUsers;
     DatabaseReference databaseProducts;
     private static final int MENU_LOGOUT = Menu.FIRST;
@@ -29,13 +30,19 @@ public class MainActivity extends AppCompatActivity {
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
         addUsers();
         addProducts();
+
+        String[] values = new String[] { "TEST 1", "TEST 2", "AAAAAA"};
+        MenuListAdapter adapter = new MenuListAdapter(this, values, null); //imgid = id gambar. Untuk sekarang null dulu
+        listView = findViewById(R.id.list);
+        listView.setAdapter(adapter);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menu.add(0, MENU_LOGOUT, 0, "Log Out");
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
