@@ -1,27 +1,7 @@
 #Internal package file, do not edit.
-#Fri Jan 26 12:37:24 ICT 2018
-2.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\31
-5.set=DEX
-0.path=classes.dex
-2.baseType=DIRECTORY
-3.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\34
-2.set=DEX
-1.path=classes.dex
-4.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\35
-count=6
-5.baseType=DIRECTORY
-2.path=classes.dex
-5.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\32
-4.set=DEX
-3.path=classes.dex
-3.baseType=DIRECTORY
-1.set=DEX
-4.path=classes.dex
-1.baseType=DIRECTORY
-5.path=classes.dex
-0.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\33
+#Fri Jan 26 18:27:55 ICT 2018
 0.baseType=DIRECTORY
-3.set=DEX
-1.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\36
-4.baseType=DIRECTORY
+0.base=D\:\\Android Project\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\38
+0.path=classes.dex
 0.set=DEX
+count=1
