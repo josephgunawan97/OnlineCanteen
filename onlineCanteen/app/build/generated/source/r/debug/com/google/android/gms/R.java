@@ -8,10 +8,9 @@ package com.google.android.gms;
 
 public final class R {
     public static final class id {
-        public static final int button = 0x7f070023;
-        public static final int none = 0x7f070055;
-        public static final int normal = 0x7f070056;
-        public static final int radio = 0x7f070060;
+        public static final int none = 0x7f070053;
+        public static final int normal = 0x7f070054;
+        public static final int radio = 0x7f07005e;
         public static final int text = 0x7f070083;
         public static final int text2 = 0x7f070084;
         public static final int wrap_content = 0x7f07009c;

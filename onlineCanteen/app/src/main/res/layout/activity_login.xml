@@ -63,7 +63,7 @@
         app:layout_constraintVertical_bias="0.594" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/signInButton"
         android:layout_width="300dp"
         android:layout_height="54dp"
         android:layout_marginBottom="8dp"
@@ -95,7 +95,7 @@
         app:layout_constraintVertical_bias="0.855" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/signUpButton"
         android:layout_width="58dp"
         android:layout_height="23dp"
         android:layout_marginBottom="8dp"

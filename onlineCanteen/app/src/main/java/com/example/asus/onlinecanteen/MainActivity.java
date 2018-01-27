@@ -4,20 +4,37 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.User;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
-    ListView listView;
-    DatabaseReference databaseUsers;
-    DatabaseReference databaseProducts;
+    // Constants
+    private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MENU_LOGOUT = Menu.FIRST;
+
+    // Product Adapter
+    private MenuListAdapter menuListAdapter;
+    // List view of products
+    private ListView productListView;
+
+    // Firebase References
+    private DatabaseReference databaseUsers;
+    private DatabaseReference databaseProducts;
+
+    // Firebase Listener
+    private ChildEventListener productEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +43,21 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-
+        // Initialize References
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
-        addUsers();
-        addProducts();
 
-        String[] values = new String[] { "TEST 1", "TEST 2", "AAAAAA"};
+/*        String[] values = new String[] { "TEST 1", "TEST 2", "AAAAAA"};
         MenuListAdapter adapter = new MenuListAdapter(this, values, null); //imgid = id gambar. Untuk sekarang null dulu
-        listView = findViewById(R.id.list);
-        listView.setAdapter(adapter);
+*/
+
+        // Product List
+        ArrayList<Product> productArrayList = new ArrayList<>();
+        menuListAdapter = new MenuListAdapter(this, productArrayList);
+
+        // Initialize ListView
+        productListView = findViewById(R.id.list);
+        productListView.setAdapter(menuListAdapter);
     }
 
     @Override
@@ -74,19 +96,58 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addProducts() {
-        String id = databaseProducts.push().getKey();
-        Product product = new Product(id,"Jessica","Nasi", 30, 12000 );
-        databaseProducts.setValue(product);
+        Product product = new Product("Jessica","Nasi", 30, 12000 );
+        databaseProducts.push().setValue(product);
     }
 
 
     private void addUsers() {
-
-        String id = databaseUsers.push().getKey();
-        User user = new User(id,"Jessica","00000013452", "00000013452", "jessicaseaan@gmail.com", "A", "jess.jpg" ,"081511030993" );
-        databaseUsers.setValue(user);
-
+        User user = new User("Jessica","00000013452", "00000013452", "jessicaseaan@gmail.com", "A", "jess.jpg" ,"081511030993" );
+        databaseUsers.push().setValue(user);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        attachDatabaseReadListener();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        detachDatabaseReadListener();
+    }
+
+    private void attachDatabaseReadListener() {
+        if(productEventListener == null) {
+            productEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Product product = dataSnapshot.getValue(Product.class);
+                    menuListAdapter.add(product);
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+
+            databaseProducts.addChildEventListener(productEventListener);
+        }
+    }
+
+    private void detachDatabaseReadListener() {
+        if(productEventListener != null) {
+            databaseProducts.removeEventListener(productEventListener);
+            productEventListener = null;
+        }
+    }
 }

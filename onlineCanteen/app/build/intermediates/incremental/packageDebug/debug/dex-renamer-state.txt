@@ -1,4 +1,4 @@
-#Fri Jan 26 21:06:30 ICT 2018
+#Sat Jan 27 11:13:19 ICT 2018
 path.1=classes.dex
 path.0=classes.dex
 renamed.5=classes6.dex
@@ -7,12 +7,12 @@ renamed.3=classes4.dex
 renamed.2=classes3.dex
 renamed.1=classes2.dex
 renamed.0=classes.dex
-base.5=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\55
-base.4=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\50
-base.3=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\53
-base.2=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\51
-base.1=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\54
-base.0=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\52
+base.5=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\59
+base.4=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\62
+base.3=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\57
+base.2=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\60
+base.1=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\61
+base.0=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\58
 path.5=classes.dex
 path.4=classes.dex
 path.3=classes.dex

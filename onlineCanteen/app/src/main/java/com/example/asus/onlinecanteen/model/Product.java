@@ -6,22 +6,36 @@ package com.example.asus.onlinecanteen.model;
 
 public class Product {
 
-    String productId;
     String tokoId;
     String productName;
     Integer productStock;
     Integer productPrice;
 
-    public Product(String productId, String tokoId, String productName, Integer productStock, Integer productPrice) {
-        this.productId = productId;
+    // Empty Constructor
+    public Product() {
+    }
+
+    public Product(String tokoId, String productName, Integer productStock, Integer productPrice) {
         this.tokoId = tokoId;
         this.productName = productName;
         this.productStock = productStock;
         this.productPrice = productPrice;
     }
 
-    public String getProductId() {
-        return productId;
+    public void setTokoId(String tokoId) {
+        this.tokoId = tokoId;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public void setProductStock(Integer productStock) {
+        this.productStock = productStock;
     }
 
     public String getTokoId() {

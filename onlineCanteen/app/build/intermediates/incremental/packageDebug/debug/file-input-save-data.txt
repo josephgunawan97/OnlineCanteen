@@ -1,17 +1,17 @@
 #Internal package file, do not edit.
-#Fri Jan 26 21:06:30 ICT 2018
-2.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\50
+#Sat Jan 27 11:13:20 ICT 2018
+2.base=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\61
 5.set=DEX
 0.path=classes.dex
 2.baseType=DIRECTORY
-3.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\51
+3.base=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\62
 2.set=DEX
 1.path=classes.dex
-4.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\54
+4.base=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\60
 count=6
 5.baseType=DIRECTORY
 2.path=classes.dex
-5.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\52
+5.base=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\58
 4.set=DEX
 3.path=classes.dex
 3.baseType=DIRECTORY
@@ -19,9 +19,9 @@ count=6
 4.path=classes.dex
 1.baseType=DIRECTORY
 5.path=classes.dex
-0.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\55
+0.base=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\59
 0.baseType=DIRECTORY
 3.set=DEX
-1.base=E\:\\GitHub\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\53
+1.base=S\:\\Kuliah\\Semester-8\\Studio\\OnlineCanteen\\onlineCanteen\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\57
 4.baseType=DIRECTORY
 0.set=DEX

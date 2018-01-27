@@ -8,35 +8,34 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MenuListAdapter extends ArrayAdapter<String> {
+import com.example.asus.onlinecanteen.model.Product;
 
-    private final Activity context;
-    private final String[] itemname;
-    private final Integer[] imgid;
+import java.util.List;
 
-    public MenuListAdapter(Activity context, String[] itemname, Integer[] imgid) {
-        super(context, R.layout.list, itemname);
-        // TODO Auto-generated constructor stub
+public class MenuListAdapter extends ArrayAdapter<Product> {
 
-        this.context=context;
-        this.itemname=itemname;
-        this.imgid=imgid;
+    public MenuListAdapter(Activity context, List<Product> products) {
+        super(context, R.layout.list, products);
     }
 
     public View getView(int position,View view,ViewGroup parent) {
-        LayoutInflater inflater=context.getLayoutInflater();
-        View rowView=inflater.inflate(R.layout.list, null,true);
 
-        TextView txtTitle = rowView.findViewById(R.id.itemName);
-        ImageView imageView = rowView.findViewById(R.id.icon);
-        TextView extratxt = rowView.findViewById(R.id.price);
-        TextView seller = rowView.findViewById(R.id.seller);
+        if(view == null) {
+            LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
+            view = inflater.inflate(R.layout.list, parent,false);
+        }
+        // Get product
+        Product product = getItem(position);
 
-        txtTitle.setText(itemname[position]);
-        //imageView.setImageResource(imgid[position]);
-        extratxt.setText("Rp ");
-        seller.setText("Seller");
-        return rowView;
+        // Initialize views
+        TextView txtTitle = view.findViewById(R.id.itemName);
+        ImageView imageView = view.findViewById(R.id.icon);
+        TextView extratxt = view.findViewById(R.id.price);
+        TextView seller = view.findViewById(R.id.seller);
 
-    };
+        txtTitle.setText(product.getProductName());
+        extratxt.setText("Rp " + product.getProductPrice());
+        seller.setText("Seller : " + product.getTokoId());
+        return view;
+    }
 }

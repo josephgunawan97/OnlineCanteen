@@ -6,7 +6,6 @@ package com.example.asus.onlinecanteen.model;
 
 public class User {
 
-    String userId;
     String userName;
     String userPassword;
     String userNim;
@@ -15,8 +14,11 @@ public class User {
     String userPhotoPath;
     String userPhone;
 
-    public User(String userId, String userName, String userPassword, String userNim, String userEmail, String userCategory, String userPhotoPath, String userPhone) {
-        this.userId = userId;
+    // Empty Constructor
+    public User() {
+    }
+
+    public User(String userName, String userPassword, String userNim, String userEmail, String userCategory, String userPhotoPath, String userPhone) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userNim = userNim;
@@ -26,9 +28,32 @@ public class User {
         this.userPhone = userPhone;
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-    public String getUserId() {
-        return userId;
+    public void setUserCategory(String userCategory) {
+        this.userCategory = userCategory;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public void setUserNim(String userNim) {
+        this.userNim = userNim;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public void setUserPhotoPath(String userPhotoPath) {
+        this.userPhotoPath = userPhotoPath;
     }
 
     public String getUserName() {
