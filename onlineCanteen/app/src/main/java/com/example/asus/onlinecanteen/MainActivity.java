@@ -47,10 +47,6 @@ public class MainActivity extends AppCompatActivity {
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
 
-/*        String[] values = new String[] { "TEST 1", "TEST 2", "AAAAAA"};
-        MenuListAdapter adapter = new MenuListAdapter(this, values, null); //imgid = id gambar. Untuk sekarang null dulu
-*/
-
         // Product List
         ArrayList<Product> productArrayList = new ArrayList<>();
         menuListAdapter = new MenuListAdapter(this, productArrayList);
