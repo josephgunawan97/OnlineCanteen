@@ -1,6 +1,7 @@
 package com.example.asus.onlinecanteen;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,12 +39,20 @@ public class MainActivity extends AppCompatActivity {
     // Firebase Listener
     private ChildEventListener productEventListener;
 
+    // Firebase Auth and User
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        // Get User
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
 
         // Initialize References
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
