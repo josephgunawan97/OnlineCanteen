@@ -1,5 +1,7 @@
 package com.example.asus.onlinecanteen.model;
 
+import android.net.Uri;
+
 /**
  * Created by Jessica on 1/20/2018.
  */
@@ -11,14 +13,14 @@ public class User {
     String userNim;
     String userEmail;
     String userCategory;
-    String userPhotoPath;
+    Uri userPhotoPath;
     String userPhone;
 
     // Empty Constructor
     public User() {
     }
 
-    public User(String userName, String userPassword, String userNim, String userEmail, String userCategory, String userPhotoPath, String userPhone) {
+    public User(String userName, String userPassword, String userNim, String userEmail, String userCategory, Uri userPhotoPath, String userPhone) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userNim = userNim;
@@ -52,7 +54,7 @@ public class User {
         this.userPhone = userPhone;
     }
 
-    public void setUserPhotoPath(String userPhotoPath) {
+    public void setUserPhotoPath(Uri userPhotoPath) {
         this.userPhotoPath = userPhotoPath;
     }
 
@@ -76,7 +78,7 @@ public class User {
         return userCategory;
     }
 
-    public String getUserPhotoPath() {
+    public Uri getUserPhotoPath() {
         return userPhotoPath;
     }
 
