@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.User;
@@ -26,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     // Constants
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MENU_LOGOUT = Menu.FIRST;
+
+    //Increase & Decrease Item's Quantity
+    Button increaseOrder, decreaseOrder;
+    TextView quantityOrder;
 
     // Product Adapter
     private MenuListAdapter menuListAdapter;
@@ -71,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
         // Initialize ListView
         productListView = findViewById(R.id.list);
         productListView.setAdapter(menuListAdapter);
+
+       //Initialize Increase Button, Decrease Button, Qty TextView, and Click Listener
+        quantityOrder = findViewById(R.id.quantityOrder);
+        increaseOrder = findViewById(R.id.increaseOrder);
+        decreaseOrder = findViewById(R.id.decreaseOrder);
     }
 
     @Override
@@ -89,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+    //User Logout
     public void logout(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure?")
@@ -116,9 +129,6 @@ public class MainActivity extends AppCompatActivity {
         Product product = new Product("Jessica","Nasi", 30, 12000 );
         databaseProducts.push().setValue(product);
     }
-
-
-
 
     @Override
     protected void onResume() {

@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/icon"
         android:layout_width="60dp"
-        android:layout_height="85dp"
+        android:layout_height="80dp"
         android:padding="5dp" />
 
     <LinearLayout android:layout_width="0dp"
@@ -22,7 +22,6 @@
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:textColor="@color/colorSecondary"
             android:padding="3dp"/>
         <TextView
@@ -39,5 +38,43 @@
             android:text="TextView"
             android:layout_marginLeft="10dp"
             android:padding="3dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/decreaseOrder"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="25dp"
+        android:textSize="15dp"
+        android:text="-"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorFontWhite" />
+    <TextView
+        android:id="@+id/quantityOrder"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="25dp"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:text="0"/>
+    <Button
+        android:id="@+id/increaseOrder"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
+        android:textSize="15dp"
+        android:textAlignment="center"
+        android:text="+"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorFontWhite"/>
     </LinearLayout>
 </LinearLayout>
