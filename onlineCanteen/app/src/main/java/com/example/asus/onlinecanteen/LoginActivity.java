@@ -67,9 +67,11 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                signIn.setClickable(false);
                 findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE); //For loading screen purposes
                 if(!validateLoginInfo()) {
                     findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                    signIn.setClickable(true);
                     // Requirements are not fulfilled
                     return;
                 }
