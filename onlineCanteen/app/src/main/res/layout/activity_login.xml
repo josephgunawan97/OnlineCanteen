@@ -95,6 +95,40 @@
                 android:text="@string/signUpText"
                 />
         </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
+        <!--Loading Screen Layout-->
+        </android.support.constraint.ConstraintLayout>
+        <!--Oppacity Option
+          100% — FF
+          95% — F2
+          90% — E6
+          85% — D9
+          80% — CC
+          75% — BF
+          70% — B3
+          65% — A6
+          60% — 99
+          55% — 8C
+          50% — 80
+          45% — 73
+          40% — 66
+          35% — 59
+          30% — 4D
+          25% — 40
+          20% — 33
+          15% — 26
+          10% — 1A
+          5% — 0D
+          0% — 00-->
+        <RelativeLayout
+            android:id="@+id/loadingPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="#8C000000">
 
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

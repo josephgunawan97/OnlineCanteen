@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
         getSupportActionBar().hide();
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -67,7 +67,9 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE); //For loading screen purposes
                 if(!validateLoginInfo()) {
+                    findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     // Requirements are not fulfilled
                     return;
                 }
@@ -77,10 +79,12 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()) {
+                                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
                                         finish();
                                     } else {
+                                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                                         Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
