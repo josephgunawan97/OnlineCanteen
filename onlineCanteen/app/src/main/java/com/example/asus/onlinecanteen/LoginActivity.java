@@ -81,11 +81,13 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()) {
+                                        signIn.setClickable(true);
                                         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         startActivity(intent);
                                         finish();
                                     } else {
+                                        signIn.setClickable(true);
                                         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                                         Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                                     }
