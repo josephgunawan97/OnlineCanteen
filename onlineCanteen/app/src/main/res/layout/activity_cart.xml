@@ -6,18 +6,18 @@
     tools:context="com.example.asus.onlinecanteen.MainActivity">
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/CartList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/OrderButton"
+        android:layout_above="@id/ConfirmButton"
         android:layout_alignParentTop ="true">
     </ListView>
 
     <Button
-        android:id="@+id/OrderButton"
+        android:id="@+id/ConfirmButton"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:text="Place Order"
+        android:text="Order"
         android:textAlignment="center"
         android:background="@color/colorPrimary"
         android:textColor="@color/colorFontWhite"

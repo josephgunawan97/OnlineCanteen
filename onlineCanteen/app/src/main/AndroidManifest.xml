@@ -25,7 +25,8 @@
         <activity android:name=".RegisterActivity" />
         <activity
             android:name=".MainActivityMerchant"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CartActivity"></activity>
     </application>
 
 </manifest>

@@ -5,4 +5,5 @@
     <string name="signUpText"><u>Sign Up</u></string>
     <string name="tab_text_1">Store</string>
     <string name="tab_text_2">Orders</string>
+    <string name="title_activity_cart">CartActivity</string>
 </resources>

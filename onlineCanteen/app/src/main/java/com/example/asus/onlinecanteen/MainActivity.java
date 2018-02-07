@@ -5,16 +5,13 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.asus.onlinecanteen.model.Product;
-import com.example.asus.onlinecanteen.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -29,10 +26,6 @@ public class MainActivity extends AppCompatActivity {
     // Constants
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MENU_LOGOUT = Menu.FIRST;
-
-    //Increase & Decrease Item's Quantity
-    Button increaseOrder, decreaseOrder;
-    TextView quantityOrder;
 
     // Product Adapter
     private MenuListAdapter menuListAdapter;
@@ -50,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
 
+    //Initialize Button
+    Button placeOrder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -61,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        if(user == null) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        if (user == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -79,10 +75,16 @@ public class MainActivity extends AppCompatActivity {
         productListView = findViewById(R.id.list);
         productListView.setAdapter(menuListAdapter);
 
-       //Initialize Increase Button, Decrease Button, Qty TextView, and Click Listener
-        quantityOrder = findViewById(R.id.quantityOrder);
-        increaseOrder = findViewById(R.id.increaseOrder);
-        decreaseOrder = findViewById(R.id.decreaseOrder);
+        //Cart Button and Click Handler
+        placeOrder = findViewById(R.id.OrderButton);
+        placeOrder.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick (View v){
+                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                    startActivity(intent);
+                }
+            }
+        );
     }
 
     @Override
