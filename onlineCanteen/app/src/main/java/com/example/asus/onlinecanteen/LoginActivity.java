@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         if(firebaseAuth.getCurrentUser() != null) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivityMerchant.class);
             startActivity(intent);
             finish();
         }
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                                     if(task.isSuccessful()) {
                                         signIn.setClickable(true);
                                         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        Intent intent = new Intent(LoginActivity.this, MainActivityMerchant.class);
                                         startActivity(intent);
                                         finish();
                                     } else {

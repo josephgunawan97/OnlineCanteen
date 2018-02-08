@@ -44,11 +44,13 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
 
         //Initialize Increase Button, Decrease Button, Qty TextView, and Click Listener
         quantityOrder = view.findViewById(R.id.quantityOrder);
+        quantityOrder.setText(String.valueOf(qty));
         increaseOrder = view.findViewById(R.id.increaseOrder);
         increaseOrder.setOnClickListener(new View.OnClickListener(){
             public void onClick (View v){
                 qty++;
                 quantityOrder.setText(String.valueOf(qty));
+
             }
         });
 

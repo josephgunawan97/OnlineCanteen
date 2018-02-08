@@ -31,22 +31,17 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivityMerchant extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     private ViewPager mViewPager;
 
     private static final int MENU_LOGOUT = Menu.FIRST;
 
-    //Increase & Decrease Item's Quantity
-    Button increaseOrder, decreaseOrder;
-    TextView quantityOrder;
 
     // Product Adapter
     private MenuListAdapter menuListAdapter;
@@ -76,6 +71,21 @@ public class MainActivityMerchant extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        // Get User
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+
+        if (user == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        // Initialize References
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+        databaseProducts = FirebaseDatabase.getInstance().getReference("products");
+
+
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -96,12 +106,10 @@ public class MainActivityMerchant extends AppCompatActivity {
 
     }
 
-
-
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+public static class PlaceholderFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -123,6 +131,7 @@ public class MainActivityMerchant extends AppCompatActivity {
             return fragment;
         }
 
+        // Create Tab for Fragment
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -147,7 +156,7 @@ public class MainActivityMerchant extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
