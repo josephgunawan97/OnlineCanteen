@@ -33,6 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 public class MainActivityMerchant extends AppCompatActivity {
 
 
@@ -51,9 +53,6 @@ public class MainActivityMerchant extends AppCompatActivity {
     // Firebase References
     private DatabaseReference databaseUsers;
     private DatabaseReference databaseProducts;
-
-    // Firebase Listener
-    private ChildEventListener productEventListener;
 
     // Firebase Auth and User
     private FirebaseAuth firebaseAuth;
@@ -85,7 +84,6 @@ public class MainActivityMerchant extends AppCompatActivity {
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
 
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -106,10 +104,51 @@ public class MainActivityMerchant extends AppCompatActivity {
 
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, MENU_LOGOUT, 0, "Log Out");
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case MENU_LOGOUT:
+                logout();
+                return true;
+        }
+        return false;
+    }
+
+    //User Logout
+    public void logout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        firebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(MainActivityMerchant.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.setTitle("Logging Out");
+        alert.show();
+
+
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
-public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -156,7 +195,7 @@ public static class PlaceholderFragment extends Fragment {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -176,44 +215,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, MENU_LOGOUT, 0, "Log Out");
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case MENU_LOGOUT:
-                logout();
-                return true;
-        }
-        return false;
-    }
-
-    //User Logout
-    public void logout(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        firebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(MainActivityMerchant.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert = builder.create();
-        alert.setTitle("Logging Out");
-        alert.show();
-    }
-
-
 }
+
+
+
