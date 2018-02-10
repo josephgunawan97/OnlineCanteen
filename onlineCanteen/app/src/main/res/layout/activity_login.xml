@@ -9,8 +9,8 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/logo"
@@ -24,15 +24,15 @@
 
         <EditText
             android:id="@+id/loginUsername"
-            android:layout_width="match_parent"
+            android:layout_width="348dp"
             android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="7dp"
             android:background="@drawable/username"
             android:ems="10"
-            android:hint="Username"
+            android:hint="Email"
             android:inputType="textPersonName"
             android:paddingLeft="60dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -41,11 +41,11 @@
 
         <EditText
             android:id="@+id/loginPass"
-            android:layout_width="match_parent"
+            android:layout_width="347dp"
             android:layout_height="40dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="7dp"
             android:background="@drawable/password"
             android:ems="10"
             android:hint="Password"
@@ -57,11 +57,11 @@
 
         <Button
             android:id="@+id/signInButton"
-            android:layout_width="match_parent"
+            android:layout_width="344dp"
             android:layout_height="40dp"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="7dp"
             android:background="@color/colorPrimary"
             android:text="Sign in"
             android:textColor="@color/colorFontWhite"
@@ -92,43 +92,42 @@
                 android:layout_alignEnd="@+id/loginPass"
                 android:layout_below="@+id/signInButton"
                 android:layout_marginLeft="8dp"
-                android:text="@string/signUpText"
-                />
+                android:text="@string/signUpText" />
         </LinearLayout>
         <!--Loading Screen Layout-->
-        </android.support.constraint.ConstraintLayout>
-        <!--Oppacity Option
-          100% — FF
-          95% — F2
-          90% — E6
-          85% — D9
-          80% — CC
-          75% — BF
-          70% — B3
-          65% — A6
-          60% — 99
-          55% — 8C
-          50% — 80
-          45% — 73
-          40% — 66
-          35% — 59
-          30% — 4D
-          25% — 40
-          20% — 33
-          15% — 26
-          10% — 1A
-          5% — 0D
-          0% — 00-->
-        <RelativeLayout
-            android:id="@+id/loadingPanel"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:background="#8C000000">
+    </android.support.constraint.ConstraintLayout>
+    <!--Oppacity Option
+      100% — FF
+      95% — F2
+      90% — E6
+      85% — D9
+      80% — CC
+      75% — BF
+      70% — B3
+      65% — A6
+      60% — 99
+      55% — 8C
+      50% — 80
+      45% — 73
+      40% — 66
+      35% — 59
+      30% — 4D
+      25% — 40
+      20% — 33
+      15% — 26
+      10% — 1A
+      5% — 0D
+      0% — 00-->
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#8C000000"
+        android:gravity="center">
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true" />
-        </RelativeLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
