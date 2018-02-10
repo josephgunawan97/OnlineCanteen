@@ -1,4 +1,4 @@
-package com.example.asus.onlinecanteen;
+package com.example.asus.onlinecanteen.activity;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Product;
 
 import java.util.List;
@@ -38,8 +39,8 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         TextView extratxt = view.findViewById(R.id.price);
         TextView seller = view.findViewById(R.id.seller);
 
-        txtTitle.setText(product.getProductName());
-        extratxt.setText("Rp " + product.getProductPrice());
+        txtTitle.setText(product.getName());
+        extratxt.setText("Rp " + product.getPrice());
         seller.setText("Seller : " + product.getTokoId());
 
         //Initialize Increase Button, Decrease Button, Qty TextView, and Click Listener

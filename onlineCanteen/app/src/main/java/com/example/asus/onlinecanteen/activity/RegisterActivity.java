@@ -1,10 +1,8 @@
-package com.example.asus.onlinecanteen;
+package com.example.asus.onlinecanteen.activity;
 
-import android.*;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -20,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,7 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        setTheme(R.style.AppTheme);
+        setTheme(com.example.asus.onlinecanteen.R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 

@@ -1,9 +1,23 @@
 <resources>
     <string name="app_name">Sit \'n Shop</string>
 
-    // Login Resource
+    <!-- Login Resource -->
     <string name="signUpText"><u>Sign Up</u></string>
     <string name="tab_text_1">Store</string>
     <string name="tab_text_2">Orders</string>
     <string name="title_activity_cart">CartActivity</string>
+
+    <!-- Authentication -->
+    <string name="authentication_success">Authentication success.</string>
+    <string name="authentication_failed">Authentication failed.</string>
+
+    <!-- Login and register error -->
+    <string name="requires_email">Email is required.</string>
+    <string name="requires_password">Password is required.</string>
+
+    <!-- Sign Out Confirmation Message -->
+    <string name="signOut_title">Sign Out</string>
+    <string name="signOut_confirmation">Are you sure want to sign out?</string>
+    <string name="signOut_confirm">Yes</string>
+    <string name="signOut_cancel">No</string>
 </resources>

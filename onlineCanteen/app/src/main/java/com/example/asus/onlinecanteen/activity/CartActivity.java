@@ -1,7 +1,9 @@
-package com.example.asus.onlinecanteen;
+package com.example.asus.onlinecanteen.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.asus.onlinecanteen.R;
 
 public class CartActivity extends AppCompatActivity {
 

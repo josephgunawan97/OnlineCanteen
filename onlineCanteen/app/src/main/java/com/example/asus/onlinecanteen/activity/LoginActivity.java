@@ -1,23 +1,21 @@
-package com.example.asus.onlinecanteen;
+package com.example.asus.onlinecanteen.activity;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.asus.onlinecanteen.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.StorageReference;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -89,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                                     } else {
                                         signIn.setClickable(true);
                                         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-                                        Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, R.string.authentication_failed, Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -103,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String username = loginUsernameEditText.getText().toString();
         if(TextUtils.isEmpty(username)) {
-            loginUsernameEditText.setError("Username required");
+            loginUsernameEditText.setError(getString(R.string.requires_email));
             valid = false;
         } else {
             loginUsernameEditText.setError(null);
@@ -111,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String password = loginPasswordEditText.getText().toString();
         if(TextUtils.isEmpty(password)) {
-            loginPasswordEditText.setError("Password required");
+            loginPasswordEditText.setError(getString(R.string.requires_password));
             valid = false;
         } else {
             loginPasswordEditText.setError(null);

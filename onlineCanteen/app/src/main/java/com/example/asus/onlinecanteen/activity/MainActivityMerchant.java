@@ -1,4 +1,4 @@
-package com.example.asus.onlinecanteen;
+package com.example.asus.onlinecanteen.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,20 +20,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.example.asus.onlinecanteen.model.Product;
+import com.example.asus.onlinecanteen.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
 
 public class MainActivityMerchant extends AppCompatActivity {
 
@@ -105,7 +98,7 @@ public class MainActivityMerchant extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, MENU_LOGOUT, 0, "Log Out");
+        menu.add(0, MENU_LOGOUT, 0, R.string.signOut_title);
         return true;
     }
 
@@ -122,9 +115,9 @@ public class MainActivityMerchant extends AppCompatActivity {
     //User Logout
     public void logout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure?")
+        builder.setMessage(R.string.signOut_confirmation)
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.signOut_confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         firebaseAuth.getInstance().signOut();
                         Intent intent = new Intent(MainActivityMerchant.this, LoginActivity.class);
@@ -132,14 +125,14 @@ public class MainActivityMerchant extends AppCompatActivity {
                         finish();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.signOut_cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
                 });
 
         AlertDialog alert = builder.create();
-        alert.setTitle("Logging Out");
+        alert.setTitle(R.string.signOut_title);
         alert.show();
 
 

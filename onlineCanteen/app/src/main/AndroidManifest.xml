@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,12 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.RegisterActivity" />
         <activity
-            android:name=".MainActivityMerchant"
+            android:name=".activity.MainActivityMerchant"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CartActivity"></activity>
+        <activity android:name=".activity.CartActivity"></activity>
     </application>
 
 </manifest>

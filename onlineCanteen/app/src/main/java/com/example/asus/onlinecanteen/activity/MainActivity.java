@@ -1,4 +1,4 @@
-package com.example.asus.onlinecanteen;
+package com.example.asus.onlinecanteen.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, MENU_LOGOUT, 0, "Log Out");
+        menu.add(0, MENU_LOGOUT, 0, R.string.signOut_title);
         return true;
     }
 
@@ -106,9 +107,9 @@ public class MainActivity extends AppCompatActivity {
     //User Logout
     public void logout(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure?")
+        builder.setMessage(R.string.signOut_confirmation)
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.signOut_confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         firebaseAuth.getInstance().signOut();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -116,14 +117,14 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.signOut_cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
                 });
 
         AlertDialog alert = builder.create();
-        alert.setTitle("Logging Out");
+        alert.setTitle(R.string.signOut_title);
         alert.show();
     }
 

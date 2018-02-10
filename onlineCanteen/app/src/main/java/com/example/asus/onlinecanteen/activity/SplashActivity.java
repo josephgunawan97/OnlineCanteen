@@ -1,4 +1,4 @@
-package com.example.asus.onlinecanteen;
+package com.example.asus.onlinecanteen.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
