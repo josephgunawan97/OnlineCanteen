@@ -23,10 +23,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.model.Store;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.sql.Time;
 
 public class MainActivityMerchant extends AppCompatActivity {
 
@@ -46,6 +49,7 @@ public class MainActivityMerchant extends AppCompatActivity {
     // Firebase References
     private DatabaseReference databaseUsers;
     private DatabaseReference databaseProducts;
+    private DatabaseReference databaseStore;
 
     // Firebase Auth and User
     private FirebaseAuth firebaseAuth;
@@ -76,6 +80,10 @@ public class MainActivityMerchant extends AppCompatActivity {
         // Initialize References
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
+        databaseStore = FirebaseDatabase.getInstance().getReference("store");
+
+        //To add new Store
+        //addStore();
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -110,6 +118,12 @@ public class MainActivityMerchant extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+    private void addStore() {
+        Store store = new Store("TechnoStall", "8:00","12:00","F Building Floor 2" );
+        String id = databaseStore.push().getKey();
+        databaseStore.child(id).setValue(store);
     }
 
     //User Logout
