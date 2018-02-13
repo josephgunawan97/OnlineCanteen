@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Product;
 
@@ -39,9 +40,17 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         TextView extratxt = view.findViewById(R.id.price);
         TextView seller = view.findViewById(R.id.seller);
 
+
         txtTitle.setText(product.getName());
         extratxt.setText("Rp " + product.getPrice());
         seller.setText("Seller : " + product.getTokoId());
+
+        // Get image
+        if(product.getImageUrl() != null) {
+            Glide.with(imageView.getContext())
+                    .load(product.getImageUrl())
+                    .into(imageView);
+        }
 
         //Initialize Increase Button, Decrease Button, Qty TextView, and Click Listener
         quantityOrder = view.findViewById(R.id.quantityOrder);

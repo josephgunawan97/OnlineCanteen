@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addProducts() {
-        Product product = new Product("Jessica","Nasi", 30, 12000 );
+        Product product = new Product("Jessica","Nasi", 30, 12000, "https://firebasestorage.googleapis.com/v0/b/onlinecanteenuph.appspot.com/o/product%2Fnasi.jpg?alt=media&token=cd6c28a4-9670-4d8c-b396-73df222496e7");
         databaseProducts.push().setValue(product);
     }
 
