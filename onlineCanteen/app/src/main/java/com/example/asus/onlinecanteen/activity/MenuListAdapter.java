@@ -25,6 +25,7 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         super(context, R.layout.menu_adapter_list, products);
     }
 
+
     public View getView(int position,View view,ViewGroup parent) {
 
         if(view == null) {
