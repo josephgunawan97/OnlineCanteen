@@ -10,6 +10,7 @@ import com.example.asus.onlinecanteen.R;
  */
 
 public class HistoryActivity extends AppCompatActivity {
+    private HistoryListAdapter historyListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
