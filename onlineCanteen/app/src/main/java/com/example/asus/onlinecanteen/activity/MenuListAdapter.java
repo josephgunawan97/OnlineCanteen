@@ -16,7 +16,6 @@ import com.example.asus.onlinecanteen.model.Product;
 import java.util.List;
 
 public class MenuListAdapter extends ArrayAdapter<Product> {
-    int qty;
 
     public MenuListAdapter(Activity context, List<Product> products) {
         super(context, R.layout.menu_adapter_list, products);
@@ -50,7 +49,7 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         holder.txtTitle.setText(product.getName());
         holder.extratxt.setText("Rp " + product.getPrice());
         holder.seller.setText("Seller : " + product.getTokoId());
-        holder.quantityOrder.setText(String.valueOf(qty));
+        holder.quantityOrder.setText(String.valueOf(holder.qty));
 
         // Get image
         if(product.getImageUrl() != null) {
@@ -62,17 +61,17 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         //Increase Order
         holder.increaseOrder.setOnClickListener(new View.OnClickListener(){
             public void onClick (View v){
-                qty++;
-                holder.quantityOrder.setText(String.valueOf(qty));
+                holder.qty++;
+                holder.quantityOrder.setText(String.valueOf(holder.qty));
             }
         });
 
         //Decrease Order
         holder.decreaseOrder.setOnClickListener(new View.OnClickListener(){
             public void onClick (View v){
-                if(qty > 0) {
-                    qty--;
-                    holder.quantityOrder.setText(String.valueOf(qty));
+                if(holder.qty > 0) {
+                    holder.qty--;
+                    holder.quantityOrder.setText(String.valueOf(holder.qty));
                 }
             }
         });
@@ -87,5 +86,6 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         ImageView imageView;
         TextView extratxt;
         TextView seller;
+        int qty;
     }
 }
