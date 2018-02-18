@@ -1,28 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.asus.onlinecanteen.activity.MainActivity">
+    tools:openDrawer="start">
 
-    <ListView
-        android:id="@+id/list"
+    <FrameLayout
+        android:id="@+id/main_frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/OrderButton"
-        android:layout_alignParentTop ="true">
-    </ListView>
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/OrderButton"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:text="Place Order"
-        android:textAlignment="center"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorFontWhite"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        android:layout_alignParentBottom="true"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-</RelativeLayout>
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/OrderButton"
+                android:layout_alignParentTop ="true">
+            </ListView>
+
+            <Button
+                android:id="@+id/OrderButton"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="Place Order"
+                android:textAlignment="center"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/colorFontWhite"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:layout_alignParentBottom="true"/>
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/main_navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/main_navigation_items"
+        />
+
+</android.support.v4.widget.DrawerLayout>

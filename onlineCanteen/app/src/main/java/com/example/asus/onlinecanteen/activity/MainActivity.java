@@ -2,6 +2,10 @@ package com.example.asus.onlinecanteen.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MENU_LOGOUT = Menu.FIRST;
 
+    // Navigation Variables
+
     // Product Adapter
     private MenuListAdapter menuListAdapter;
     // List view of products
@@ -54,8 +60,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
+
+        // Initialize Navigation View
+        DrawerLayout drawerLayout = findViewById(R.id.main_drawer_layout);
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this,
+                drawerLayout, R.string.navigation_open, R.string.navigation_close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.main_navigation_view);
+        navigationView.setNavigationItemSelectedListener(new MainNavigationListener());
 
         // Get User
         firebaseAuth = FirebaseAuth.getInstance();
@@ -186,6 +201,22 @@ public class MainActivity extends AppCompatActivity {
         if(productEventListener != null) {
             databaseProducts.removeEventListener(productEventListener);
             productEventListener = null;
+        }
+    }
+
+    private class MainNavigationListener implements NavigationView.OnNavigationItemSelectedListener {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_history_item:
+                    Intent historyIntent = new Intent(MainActivity.this, HistoryActivity.class);
+                    startActivity(historyIntent);
+                    break;
+                default:
+                    break;
+            }
+            return true;
         }
     }
 }

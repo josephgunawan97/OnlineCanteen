@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Sit \'n Shop</string>
 
+    <!-- Menu Items -->
+    <string name="history_title_item">History</string>
+
+    <!-- Navigation Drawer -->
+    <string name="navigation_open">Open</string>
+    <string name="navigation_close">Close</string>
+
     <!-- Login Resource -->
     <string name="signUpText"><u>Sign Up</u></string>
     <string name="tab_text_1">Store</string>
@@ -20,4 +27,10 @@
     <string name="signOut_confirmation">Are you sure want to sign out?</string>
     <string name="signOut_confirm">Yes</string>
     <string name="signOut_cancel">No</string>
+
+    <!-- Transaction History Default Values -->
+    <string name="history_store_name_default">Store name</string>
+    <string name="history_transaction_date_default">Transaction date</string>
+    <string name="history_payment_amount_default">Payment amount</string>
+
 </resources>
