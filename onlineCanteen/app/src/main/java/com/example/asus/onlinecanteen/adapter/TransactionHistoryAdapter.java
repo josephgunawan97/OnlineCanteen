@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Transaction;
@@ -86,6 +87,12 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
             storeNameTextView = view.findViewById(R.id.history_item_store_name);
             transactionDateTextView = view.findViewById(R.id.history_item_transaction_date);
             paymentAmountTextView = view.findViewById(R.id.history_item_payment_amount);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    Integer pos = getAdapterPosition();
+                    Toast.makeText(itemView.getContext(), pos.toString() , Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }
