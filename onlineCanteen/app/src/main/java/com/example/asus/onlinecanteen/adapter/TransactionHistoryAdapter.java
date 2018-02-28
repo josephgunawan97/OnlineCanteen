@@ -56,7 +56,6 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         holder.transactionDateTextView.setText(String.valueOf(transaction.getPurchaseDate()));
         holder.paymentAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
     }
-
     /**
      * Retrieved the amount of items in adapter
      * @return amount of items in adapter
