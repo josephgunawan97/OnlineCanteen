@@ -47,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser user;
     DatabaseReference userReferences;
+    private DatabaseReference databaseUsers;
 
     //EditText
     EditText usernameET, passwordET, emailET, nimET, phoneET;
@@ -63,12 +64,11 @@ public class RegisterActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageinput);
         button =  findViewById(R.id.browse);
         submitbtn = findViewById(R.id.registerbtn);
-        usernameET = findViewById(R.id.usrnamefill);
+        usernameET = findViewById(R.id.namefill);
         passwordET = findViewById(R.id.passwordfill);
         emailET = findViewById(R.id.emailfill);
         nimET = findViewById(R.id.nimfill);
         phoneET = findViewById(R.id.phonefill);
-
 
         //Browse Image in Gallery & set as Profile Picture
         button.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +85,8 @@ public class RegisterActivity extends AppCompatActivity {
                 submitData();
             }
         });
+
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
     }
 
     private void openGallery(){
@@ -121,6 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     addAdditionalUserInformation();
                                 }
                             } else {
+                                addAdditionalUserInformation();
                                 backToLoginScreen();
                             }
                         } else {
@@ -147,7 +150,7 @@ public class RegisterActivity extends AppCompatActivity {
                             user.updateProfile(profileChangeRequest);
 
                             String uid = user.getUid();
-                            User userInfo = new User(nimET.getText().toString(), "USER", phoneET.getText().toString());
+                            User userInfo = new User(usernameET.getText().toString(), nimET.getText().toString(), "USER", phoneET.getText().toString());
                             userReferences = FirebaseDatabase.getInstance().getReference("users").child(uid);
                             userReferences.setValue(userInfo);
 

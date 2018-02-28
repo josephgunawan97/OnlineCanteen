@@ -8,6 +8,7 @@ import android.net.Uri;
 
 public class User {
 
+    String name;
     String userNim;
     String userCategory;
     String userPhone;
@@ -16,7 +17,8 @@ public class User {
     public User() {
     }
 
-    public User(String userNim, String userCategory, String userPhone) {
+    public User(String name, String userNim, String userCategory, String userPhone) {
+        this.name = name;
         this.userNim = userNim;
         this.userCategory = userCategory;
         this.userPhone = userPhone;

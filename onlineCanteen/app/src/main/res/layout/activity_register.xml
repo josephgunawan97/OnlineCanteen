@@ -22,47 +22,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/ctg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Category:"
-            app:layout_constraintBottom_toBottomOf="@+id/ctgchoose"
-            app:layout_constraintStart_toStartOf="@+id/register"
-            app:layout_constraintTop_toTopOf="@+id/ctgchoose" />
-
-        <Spinner
-            android:id="@+id/ctgchoose"
-            android:layout_width="218dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="@+id/register"
-            app:layout_constraintTop_toBottomOf="@+id/register" />
 
         <TextView
             android:id="@+id/usrname"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="17dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:text="Username:"
-            app:layout_constraintBottom_toBottomOf="@+id/usrnamefill"
-            app:layout_constraintStart_toStartOf="@+id/ctg"
-            app:layout_constraintTop_toTopOf="@+id/usrnamefill" />
+            android:text="Name:"
+            app:layout_constraintBottom_toBottomOf="@+id/namefill"
+            app:layout_constraintStart_toStartOf="@+id/register"
+            app:layout_constraintTop_toTopOf="@+id/namefill" />
 
         <EditText
-            android:id="@+id/usrnamefill"
+            android:id="@+id/namefill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:ems="10"
-            android:inputType="textPersonName"
             android:hint="Enter your name"
-            app:layout_constraintEnd_toEndOf="@+id/ctgchoose"
-            app:layout_constraintStart_toStartOf="@+id/ctgchoose"
-            app:layout_constraintTop_toBottomOf="@+id/ctgchoose" />
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/register"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/register"
+            app:layout_constraintTop_toBottomOf="@+id/register" />
 
         <TextView
             android:id="@+id/password"
@@ -82,9 +65,9 @@
             android:ems="10"
             android:hint="Enter your password"
             android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="@+id/usrnamefill"
-            app:layout_constraintStart_toStartOf="@+id/usrnamefill"
-            app:layout_constraintTop_toBottomOf="@+id/usrnamefill" />
+            app:layout_constraintEnd_toEndOf="@+id/namefill"
+            app:layout_constraintStart_toStartOf="@+id/namefill"
+            app:layout_constraintTop_toBottomOf="@+id/namefill" />
 
         <TextView
             android:id="@+id/email"
