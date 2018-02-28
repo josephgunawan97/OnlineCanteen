@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="60dp"
-        android:layout_height="80dp"
-        android:padding="5dp" />
-
-    <LinearLayout android:layout_width="0dp"
+    <TextView
+        android:id="@+id/history_item_store_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/history_store_name_default"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/colorSecondary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/history_item_payment_amount"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
-        <TextView
-            android:id="@+id/itemName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/colorSecondary"
-            android:padding="3dp"/>
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginLeft="10dp"
-            android:padding="3dp"/>
-        <TextView
-            android:id="@+id/seller"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginLeft="10dp"
-            android:padding="3dp"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/history_item_transaction_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/history_transaction_date_default"
+        app:layout_constraintTop_toBottomOf="@id/history_item_store_name"
+        app:layout_constraintStart_toStartOf="@id/history_item_store_name"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/history_item_payment_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/history_payment_amount_default"
+        app:layout_constraintTop_toTopOf="@id/history_item_store_name"
+        app:layout_constraintBottom_toBottomOf="@id/history_item_transaction_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+</android.support.constraint.ConstraintLayout>
