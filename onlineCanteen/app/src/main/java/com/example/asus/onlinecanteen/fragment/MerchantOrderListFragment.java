@@ -3,6 +3,8 @@ package com.example.asus.onlinecanteen.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,10 @@ import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.activity.MenuListAdapter;
+import com.example.asus.onlinecanteen.adapter.TransactionHistoryAdapter;
 import com.example.asus.onlinecanteen.model.Product;
+import com.example.asus.onlinecanteen.model.PurchasedItem;
+import com.example.asus.onlinecanteen.model.Transaction;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,12 +37,15 @@ public class MerchantOrderListFragment extends Fragment{
     private DatabaseReference databaseProducts;
     private DatabaseReference databaseStore;
 
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
     public MerchantOrderListFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_activity_merchant, container, false);
+        View view = inflater.inflate(R.layout.fragment_main_activity_merchant_order, container, false);
         // Inflate the layout for this fragment
 
 
@@ -50,13 +58,28 @@ public class MerchantOrderListFragment extends Fragment{
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
-        // Initialize ListView
-        productListView = view.findViewById(R.id.list);
-        productListView.setAdapter(menuListAdapter);
+        ArrayList<Transaction> transactions = getDummyTransactions();
+        TransactionHistoryAdapter adapter = new TransactionHistoryAdapter(transactions);
+
+        recyclerView = view.findViewById(R.id.list);
+        layoutManager = new LinearLayoutManager(view.getContext());
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
         return view;
     }
 
+    private ArrayList<Transaction> getDummyTransactions() {
+        ArrayList<PurchasedItem> items = new ArrayList<>();
+        items.add(new PurchasedItem(new Product("A", "Aqua", 10, 3000, null), 5));
+        items.add(new PurchasedItem(new Product("A", "Oreo", 20, 2000, null), 10));
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        for(int i=0; i<10; i++) {
+            transactions.add(new Transaction("Toko " + ((char) (i + 'A')), "User X", items));
+        }
 
+        return transactions;
+    }
     @Override
     public void onResume() {
         super.onResume();
