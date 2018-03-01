@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.activity.MenuListAdapter;
+import com.example.asus.onlinecanteen.adapter.OrderAdapter;
 import com.example.asus.onlinecanteen.adapter.TransactionHistoryAdapter;
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.PurchasedItem;
@@ -60,7 +61,7 @@ public class MerchantOrderListFragment extends Fragment{
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
         ArrayList<Transaction> transactions = getDummyTransactions();
-        TransactionHistoryAdapter adapter = new TransactionHistoryAdapter(null);
+        OrderAdapter adapter = new OrderAdapter(transactions);
         adapter.setTransactionHistory(transactions);
 
         recyclerView = view.findViewById(R.id.list);
@@ -77,8 +78,8 @@ public class MerchantOrderListFragment extends Fragment{
         items.add(new PurchasedItem(new Product("A", "Aqua", 10, 3000, null), 5));
         items.add(new PurchasedItem(new Product("A", "Oreo", 20, 2000, null), 10));
         ArrayList<Transaction> transactions = new ArrayList<>();
-        for(int i=0; i<10; i++) {
-            transactions.add(new Transaction("Toko " + ((char) (i + 'A')), "User X", items));
+        for(Integer i=0; i<10; i++) {
+            transactions.add(new Transaction("Toko " + ((char) (i + 'A')), "User X", items,i.toString()));
         }
 
         return transactions;

@@ -2,6 +2,7 @@ package com.example.asus.onlinecanteen.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.asus.onlinecanteen.R;
@@ -41,7 +43,7 @@ public class MainActivityMerchant extends AppCompatActivity {
 
     // Firebase Auth and User
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser user;
+    private FirebaseUser merchant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,13 +69,14 @@ public class MainActivityMerchant extends AppCompatActivity {
 
         // Get User
         firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
+        merchant = firebaseAuth.getCurrentUser();
 
         // Initialize References
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
+        toolbar.setTitle(merchant.getDisplayName());
         //To add new Store
         //addStore();
 
@@ -96,15 +99,19 @@ public class MainActivityMerchant extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, MENU_LOGOUT, 0, R.string.signOut_title);
+        getMenuInflater().inflate(R.menu.menu_merchant, menu);
+        //menu.add(0, MENU_LOGOUT, 0, R.string.signOut_title);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case MENU_LOGOUT:
+            case R.id.action_signout:
                 logout();
+                return true;
+            case R.id.action_add:
+                ;
                 return true;
         }
         return false;
@@ -124,7 +131,7 @@ public class MainActivityMerchant extends AppCompatActivity {
                 .setPositiveButton(R.string.signOut_confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         firebaseAuth = FirebaseAuth.getInstance();
-                        user = firebaseAuth.getCurrentUser();
+                        merchant = firebaseAuth.getCurrentUser();
                         firebaseAuth.getInstance().signOut();
                         Intent intent = new Intent(MainActivityMerchant.this, LoginActivity.class);
                         startActivity(intent);

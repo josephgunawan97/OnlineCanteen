@@ -25,6 +25,8 @@ public class Transaction {
     private String sid;
     // User Identity Variable
     private String uid;
+    // User Location
+    private String location;
     // List of Items
     private HashMap<String, HashMap<String, Integer>> items;
     // Total price
@@ -39,10 +41,10 @@ public class Transaction {
 
     }
 
-    public Transaction(@NonNull String store_id, @NonNull String user_id, @NonNull List<PurchasedItem> items) {
+    public Transaction(@NonNull String store_id, @NonNull String user_id, @NonNull List<PurchasedItem> items, String location) {
         this.sid = store_id;
         this.uid = user_id;
-
+        this.location = location;
         this.totalPrice = 0;
         this.items = new HashMap<>();
         for(PurchasedItem item : items) {
@@ -106,4 +108,13 @@ public class Transaction {
     public int getTotalPrice() {
         return totalPrice;
     }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
 }

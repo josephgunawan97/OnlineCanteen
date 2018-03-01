@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
                 if(!validateLoginInfo()) {
                     findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     signIn.setClickable(true);
+                   // Toast.makeText(view.getContext(), "User not Found", Toast.LENGTH_SHORT).show();
                     // Requirements are not fulfilled
                     return;
                 }

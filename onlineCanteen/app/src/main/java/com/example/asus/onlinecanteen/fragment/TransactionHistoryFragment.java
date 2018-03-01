@@ -74,7 +74,7 @@ public class TransactionHistoryFragment extends Fragment implements TransactionH
         items.add(new PurchasedItem(new Product("A", "Oreo", 20, 2000, null), 10));
         ArrayList<Transaction> transactions = new ArrayList<>();
         for(int i=0; i<10; i++) {
-            transactions.add(new Transaction("Toko " + ((char) (i + 'A')), "User X", items));
+            transactions.add(new Transaction("Toko " + ((char) (i + 'A')), "User X", items, "abc"));
         }
 
         return transactions;
