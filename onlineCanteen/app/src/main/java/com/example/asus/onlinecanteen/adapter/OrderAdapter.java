@@ -1,5 +1,6 @@
 package com.example.asus.onlinecanteen.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,32 +12,24 @@ import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Transaction;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionHistoryAdapter.ViewHolder> {
+/**
+ * Created by Steven Albert on 2/17/2018.
+ */
 
-    /**
-     * Interface for click listener on caller
-     */
-    public interface TransactionHistoryClickHandler {
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
 
-        /**
-         * Handle the transaction item which is clicked in the recycler view
-         * @param transaction clicked transaction item
-         */
-        void onClickHandler(Transaction transaction);
-    }
-
-    // Transaction History Click Listener
-    private TransactionHistoryClickHandler clickHandler;
     // Transaction History Items
     private ArrayList<Transaction> transactionHistory;
 
     /**
-     * Construct {@link TransactionHistoryAdapter} instance
-     * @param handler listener when the item of transaction is clicked
+     * Construct {@link OrderAdapter} instance
+     *
+     * @param history list of transaction history
      */
-    public TransactionHistoryAdapter(TransactionHistoryClickHandler handler) {
-        this.clickHandler = handler;
+    public OrderAdapter(@NonNull List<Transaction> history) {
+        this.transactionHistory = new ArrayList<>(history);
     }
 
     /**
@@ -46,7 +39,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
      * @return new ViewHolder instance
      */
     @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_adapter_item, parent, false);
+        View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_adapter_item, parent, false);
 
         return new ViewHolder(layoutView);
     }
@@ -60,9 +53,10 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         // Get Transaction Item
         Transaction transaction = transactionHistory.get(position);
         // Set Information on View
-        holder.storeNameTextView.setText(transaction.getSid());
+        holder.userNameTextView.setText(transaction.getUid());
         holder.transactionDateTextView.setText(String.valueOf(transaction.getPurchaseDate()));
         holder.paymentAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
+        holder.locationTextView.setText("Location: "+transaction.getLocation());
     }
     /**
      * Retrieved the amount of items in adapter
@@ -72,25 +66,23 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         return transactionHistory.size();
     }
 
-    /**
-     * Change the data of transaction history
-     * @param transactionHistory list of transactions
-     */
     public void setTransactionHistory(ArrayList<Transaction> transactionHistory) {
         this.transactionHistory = transactionHistory;
     }
 
     /**
-     * ViewHolder class of {@link TransactionHistoryAdapter}
+     * ViewHolder class of {@link OrderAdapter}
      */
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         // TextView of store name
-        public TextView storeNameTextView;
+        public TextView userNameTextView;
         // TextView of transaction date
         public TextView transactionDateTextView;
         // TextView of payment amount
         public TextView paymentAmountTextView;
+        // TextView of LocationTextView
+        public TextView locationTextView;
 
         /**
          * Construct {@link ViewHolder} instance
@@ -99,17 +91,16 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         public ViewHolder(View view) {
             super(view);
             // Set the holder attributes
-            storeNameTextView = view.findViewById(R.id.history_item_store_name);
-            transactionDateTextView = view.findViewById(R.id.history_item_transaction_date);
-            paymentAmountTextView = view.findViewById(R.id.history_item_payment_amount);
-
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            if(clickHandler != null) clickHandler.onClickHandler(transactionHistory.get(position));
+            userNameTextView = view.findViewById(R.id.order_name);
+            transactionDateTextView = view.findViewById(R.id.order_item_transaction_date);
+            paymentAmountTextView = view.findViewById(R.id.order_item_payment_amount);
+            locationTextView = view.findViewById(R.id.order_location);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    Integer pos = getAdapterPosition();
+                    Toast.makeText(itemView.getContext(), pos.toString() , Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }

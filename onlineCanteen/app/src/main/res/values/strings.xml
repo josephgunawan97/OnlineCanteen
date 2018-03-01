@@ -47,5 +47,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_registration_role">RegistrationRoleActivity</string>
+    <string name="add_item">Add Item</string>
+    <string name="sign_out">Sign Out</string>
 
 </resources>
