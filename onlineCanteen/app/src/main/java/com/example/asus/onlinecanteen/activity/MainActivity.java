@@ -76,12 +76,6 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        if (user == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
         // Initialize References
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");

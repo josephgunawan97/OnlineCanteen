@@ -69,12 +69,6 @@ public class MainActivityMerchant extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
 
-        if (user == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-
         // Initialize References
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
@@ -129,6 +123,8 @@ public class MainActivityMerchant extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton(R.string.signOut_confirm, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        firebaseAuth = FirebaseAuth.getInstance();
+                        user = firebaseAuth.getCurrentUser();
                         firebaseAuth.getInstance().signOut();
                         Intent intent = new Intent(MainActivityMerchant.this, LoginActivity.class);
                         startActivity(intent);
