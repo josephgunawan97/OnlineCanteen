@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginPasswordEditText;
     private TextView signUp;
     private Button signIn;
+    private String uid;
 
     private FirebaseUser user;
     private String userRole;
@@ -46,12 +47,22 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
         getSupportActionBar().hide();
+
+
         firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        /*
+        if (user != null) {
+            login();
+        }
+        */
 
         // Initialize views
         loginUsernameEditText = findViewById(R.id.loginUsername);
@@ -87,40 +98,39 @@ public class LoginActivity extends AppCompatActivity {
                                     if(task.isSuccessful()) {
                                         signIn.setClickable(true);
                                         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-
-                                        //Check if User or Store
+                                        firebaseAuth = FirebaseAuth.getInstance();
                                         user = firebaseAuth.getCurrentUser();
-                                        String uid = user.getUid();
+                                        uid = user.getUid();
                                         userDatabase = FirebaseDatabase.getInstance().getReference();
 
-                                        userDatabase.child("users").child(uid).addValueEventListener(new ValueEventListener() {
+                                        userDatabase.child("users").addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot snapshot) {
-
+                                                if (snapshot.child(uid).exists()) {
                                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                                     startActivity(intent);
                                                     finish();
+                                                }
+
                                             }
                                             @Override
                                             public void onCancelled(DatabaseError databaseError) {
                                             }
                                         });
 
-                                        userDatabase.child("store").child(uid).addValueEventListener(new ValueEventListener() {
+                                        userDatabase.child("store").addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot snapshot) {
-
-                                                Intent intent = new Intent(LoginActivity.this, MainActivityMerchant.class);
-                                                startActivity(intent);
-                                                finish();
+                                                if (snapshot.child(uid).exists()) {
+                                                    Intent intent = new Intent(LoginActivity.this, MainActivityMerchant.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
                                             }
                                             @Override
                                             public void onCancelled(DatabaseError databaseError) {
                                             }
                                         });
-
-
-
 
                                     } else {
                                         signIn.setClickable(true);
@@ -132,6 +142,11 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void login() {
+        //Check if User or Store]
+
     }
 
     private boolean validateLoginInfo() {
