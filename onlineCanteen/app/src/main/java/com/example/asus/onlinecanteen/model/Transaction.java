@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 /**
@@ -27,7 +26,7 @@ public class Transaction {
     // User Identity Variable
     private String uid;
     // List of Items
-    private Map<String, Map<String, Integer>> items;
+    private HashMap<String, HashMap<String, Integer>> items;
     // Total price
     private int totalPrice;
     // Purchase Date
@@ -72,7 +71,7 @@ public class Transaction {
         this.deliveryStatus = deliveryStatus;
     }
 
-    public void setItems(Map<String, Map<String, Integer>> items) {
+    public void setItems(HashMap<String, HashMap<String, Integer>> items) {
         this.items = items;
     }
 
@@ -96,7 +95,7 @@ public class Transaction {
         return deliveryStatus;
     }
 
-    public Map<String, Map<String, Integer>> getItems() {
+    public HashMap<String, HashMap<String, Integer>> getItems() {
         return items;
     }
 

@@ -28,10 +28,20 @@
     <string name="signOut_confirm">Yes</string>
     <string name="signOut_cancel">No</string>
 
+    <!-- Transaction -->
+    <string name="transaction_item_unit_price_key">unit_price</string>
+    <string name="transaction_item_quantity">quantity</string>
+
     <!-- Transaction History Default Values -->
     <string name="history_store_name_default">Store name</string>
     <string name="history_transaction_date_default">Transaction date</string>
     <string name="history_payment_amount_default">Payment amount</string>
+    <string name="transaction_adapter_item_name_title">Item name</string>
+    <string name="transaction_adapter_quantity_title">Qty x item price</string>
+    <string name="transaction_adapter_total_price">Price</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="title_activity_main_register">main_register</string>
     <string name="dummy_button">Dummy Button</string>

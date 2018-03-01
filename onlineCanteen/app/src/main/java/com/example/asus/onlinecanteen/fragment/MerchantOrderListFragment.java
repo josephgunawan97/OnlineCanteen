@@ -60,7 +60,8 @@ public class MerchantOrderListFragment extends Fragment{
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
         ArrayList<Transaction> transactions = getDummyTransactions();
-        TransactionHistoryAdapter adapter = new TransactionHistoryAdapter(transactions);
+        TransactionHistoryAdapter adapter = new TransactionHistoryAdapter(null);
+        adapter.setTransactionHistory(transactions);
 
         recyclerView = view.findViewById(R.id.list);
         layoutManager = new LinearLayoutManager(view.getContext());
