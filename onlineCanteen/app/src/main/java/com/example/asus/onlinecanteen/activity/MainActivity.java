@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.adapter.MenuListAdapter;
+import com.example.asus.onlinecanteen.model.Cart;
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.Store;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,8 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     // Constants
@@ -94,8 +96,24 @@ public class MainActivity extends AppCompatActivity {
         placeOrder.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick (View v){
-                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
-                    startActivity(intent);
+                    HashMap <String, Integer> order = menuListAdapter.getOrder();
+                    if(order.values() == null) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setMessage("You don't have any items in your cart!")
+                                .setCancelable(false)
+                                .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        AlertDialog alert = builder.create();
+                        alert.setTitle("Error");
+                        alert.show();
+                    }else{
+                        Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         );

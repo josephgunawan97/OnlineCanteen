@@ -1,4 +1,4 @@
-package com.example.asus.onlinecanteen.activity;
+package com.example.asus.onlinecanteen.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -85,6 +85,10 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
             }
         });
         return view;
+    }
+
+    public HashMap<String, Integer> getOrder(){
+        return Order;
     }
 
     static class OrderHolder {
