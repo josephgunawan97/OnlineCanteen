@@ -11,12 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.R;
-<<<<<<< HEAD
 import com.example.asus.onlinecanteen.adapter.MenuListAdapter;
-=======
-import com.example.asus.onlinecanteen.activity.MenuListAdapter;
 import com.example.asus.onlinecanteen.adapter.OrderAdapter;
->>>>>>> origin/master
 import com.example.asus.onlinecanteen.adapter.TransactionHistoryAdapter;
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.PurchasedItem;
