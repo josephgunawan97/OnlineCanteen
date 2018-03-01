@@ -33,4 +33,9 @@
     <string name="history_transaction_date_default">Transaction date</string>
     <string name="history_payment_amount_default">Payment amount</string>
 
+    <string name="title_activity_main_register">main_register</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_registration_role">RegistrationRoleActivity</string>
+
 </resources>

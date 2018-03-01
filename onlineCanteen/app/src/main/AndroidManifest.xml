@@ -3,8 +3,9 @@
     package="com.example.asus.onlinecanteen">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="22"/>
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="22" />
 
     <application
         android:allowBackup="true"
@@ -27,8 +28,10 @@
         <activity
             android:name=".activity.MainActivityMerchant"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.CartActivity"/>
-        <activity android:name=".activity.HistoryActivity"/>
+        <activity android:name=".activity.CartActivity" />
+        <activity android:name=".activity.HistoryActivity" />
+        <activity android:name=".activity.RegistrationMainActivity" />
+        <activity android:name=".activity.RegisterStoreActivity"></activity>
     </application>
 
 </manifest>
