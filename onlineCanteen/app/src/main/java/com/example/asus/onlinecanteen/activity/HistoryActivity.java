@@ -1,53 +1,47 @@
 package com.example.asus.onlinecanteen.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import com.example.asus.onlinecanteen.R;
-import com.example.asus.onlinecanteen.adapter.TransactionHistoryAdapter;
-import com.example.asus.onlinecanteen.model.Product;
-import com.example.asus.onlinecanteen.model.PurchasedItem;
+import com.example.asus.onlinecanteen.fragment.TransactionDetailFragment;
+import com.example.asus.onlinecanteen.fragment.TransactionHistoryFragment;
 import com.example.asus.onlinecanteen.model.Transaction;
-
-import java.util.ArrayList;
 
 /**
  * Created by Steven Albert on 10/02/2018.
  */
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity implements TransactionHistoryFragment.TransactionDetailHandler {
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        setTitle(R.string.history_title_item);
+        TransactionHistoryFragment historyFragment = new TransactionHistoryFragment();
+        historyFragment.setTransactionDetailHandler(this);
 
-        ArrayList<Transaction> transactions = getDummyTransactions();
-        TransactionHistoryAdapter adapter = new TransactionHistoryAdapter(transactions);
-
-        recyclerView = findViewById(R.id.history_recycler_view);
-        layoutManager = new LinearLayoutManager(this);
-
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.history_frame_layout, historyFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
-    private ArrayList<Transaction> getDummyTransactions() {
-        ArrayList<PurchasedItem> items = new ArrayList<>();
-        items.add(new PurchasedItem(new Product("A", "Aqua", 10, 3000, null), 5));
-        items.add(new PurchasedItem(new Product("A", "Oreo", 20, 2000, null), 10));
-        ArrayList<Transaction> transactions = new ArrayList<>();
-        for(int i=0; i<10; i++) {
-            transactions.add(new Transaction("Toko " + ((char) (i + 'A')), "User X", items));
-        }
 
-        return transactions;
+    @Override
+    public void transactionDetailHandler(Transaction transaction) {
+        TransactionDetailFragment detailFragment = new TransactionDetailFragment();
+        detailFragment.setTransaction(transaction);
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.history_frame_layout, detailFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

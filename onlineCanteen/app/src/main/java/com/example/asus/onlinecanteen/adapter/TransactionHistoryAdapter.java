@@ -1,6 +1,5 @@
 package com.example.asus.onlinecanteen.adapter;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Transaction;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Steven Albert on 2/17/2018.
@@ -20,15 +18,29 @@ import java.util.List;
 
 public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionHistoryAdapter.ViewHolder> {
 
+    /**
+     * Interface for click listener on caller
+     */
+    public interface TransactionHistoryClickHandler {
+
+        /**
+         * Handle the transaction item which is clicked in the recycler view
+         * @param transaction clicked transaction item
+         */
+        void onClickHandler(Transaction transaction);
+    }
+
+    // Transaction History Click Listener
+    private TransactionHistoryClickHandler clickHandler;
     // Transaction History Items
     private ArrayList<Transaction> transactionHistory;
 
     /**
      * Construct {@link TransactionHistoryAdapter} instance
-     * @param history list of transaction history
+     * @param handler listener when the item of transaction is clicked
      */
-    public TransactionHistoryAdapter(@NonNull List<Transaction> history) {
-        this.transactionHistory = new ArrayList<>(history);
+    public TransactionHistoryAdapter(TransactionHistoryClickHandler handler) {
+        this.clickHandler = handler;
     }
 
     /**
@@ -65,9 +77,17 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
     }
 
     /**
+     * Change the data of transaction history
+     * @param transactionHistory list of transactions
+     */
+    public void setTransactionHistory(ArrayList<Transaction> transactionHistory) {
+        this.transactionHistory = transactionHistory;
+    }
+
+    /**
      * ViewHolder class of {@link TransactionHistoryAdapter}
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         // TextView of store name
         public TextView storeNameTextView;
@@ -86,12 +106,14 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
             storeNameTextView = view.findViewById(R.id.history_item_store_name);
             transactionDateTextView = view.findViewById(R.id.history_item_transaction_date);
             paymentAmountTextView = view.findViewById(R.id.history_item_payment_amount);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    Integer pos = getAdapterPosition();
-                    Toast.makeText(itemView.getContext(), pos.toString() , Toast.LENGTH_SHORT).show();
-                }
-            });
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if(clickHandler != null) clickHandler.onClickHandler(transactionHistory.get(position));
         }
     }
 }
