@@ -8,6 +8,11 @@
         android:icon="@drawable/add_button"
         android:title="@string/add_item"
         app:showAsAction="ifRoom" />
+    <item
+    android:id="@+id/action_delete"
+    android:icon="@drawable/delete_button"
+    android:title="Delete Item"
+    app:showAsAction="ifRoom" />
 
     <!-- Settings, should always be in the overflow -->
     <item android:id="@+id/action_signout"

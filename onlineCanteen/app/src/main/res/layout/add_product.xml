@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.asus.onlinecanteen.activity.RegisterActivity"
+    >
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/productregister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Register Your Product"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/productname"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="8dp"
+            android:text="Product Name:"
+            app:layout_constraintBottom_toBottomOf="@+id/productnamefill"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/productnamefill"
+            app:layout_constraintVertical_bias="0.45" />
+
+        <EditText
+            android:id="@+id/productnamefill"
+            android:layout_width="wrap_content"
+            android:layout_height="53dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="12dp"
+            android:ems="10"
+            android:hint="Enter your product name"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="@+id/productregister"
+            app:layout_constraintTop_toBottomOf="@+id/productregister" />
+
+        <TextView
+            android:id="@+id/productprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Price:"
+            app:layout_constraintBottom_toBottomOf="@+id/productpricefill"
+            app:layout_constraintStart_toStartOf="@+id/productname"
+            app:layout_constraintTop_toTopOf="@+id/productpricefill" />
+
+        <EditText
+            android:id="@+id/productpricefill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Enter your price"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/productnamefill"
+            app:layout_constraintStart_toStartOf="@+id/productnamefill"
+            app:layout_constraintTop_toBottomOf="@+id/productnamefill" />
+
+        <TextView
+            android:id="@+id/productqty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Quantity:"
+            app:layout_constraintBottom_toBottomOf="@+id/productqtyfill"
+            app:layout_constraintStart_toStartOf="@+id/productprice"
+            app:layout_constraintTop_toTopOf="@+id/productqtyfill" />
+
+        <EditText
+            android:id="@+id/productqtyfill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="Enter your quantity"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/productpricefill"
+            app:layout_constraintStart_toStartOf="@+id/productpricefill"
+            app:layout_constraintTop_toBottomOf="@+id/productpricefill" />
+
+
+        <TextView
+            android:id="@+id/productchoosepicture"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_marginTop="12dp"
+            android:text="Choose Product Picture"
+            app:layout_constraintStart_toStartOf="@+id/productqty"
+            app:layout_constraintTop_toBottomOf="@+id/productqtyfill" />
+
+        <Button
+            android:id="@+id/productbrowse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Choose Photo"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/productimageinput"
+            app:layout_constraintTop_toBottomOf="@+id/productimageinput" />
+
+        <ImageView
+            android:id="@+id/productimageinput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="@+id/productchoosepicture"
+            app:layout_constraintTop_toBottomOf="@+id/productchoosepicture"
+            />
+
+        <Button
+            android:id="@+id/productregisterbtn"
+            android:layout_width="155dp"
+            android:layout_height="27dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/register"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/productbrowse" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -1,8 +1,11 @@
 package com.example.asus.onlinecanteen.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +13,10 @@ import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.adapter.MenuListAdapter;
+import com.example.asus.onlinecanteen.adapter.OrderAdapter;
+import com.example.asus.onlinecanteen.adapter.ProductListAdapter;
 import com.example.asus.onlinecanteen.model.Product;
+import com.example.asus.onlinecanteen.model.Transaction;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,10 +26,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 
-public class MerchantProductListFragment extends Fragment{
+public class MerchantProductListFragment extends Fragment  implements SwipeRefreshLayout.OnRefreshListener{
 
     // Product Adapter
-    private MenuListAdapter menuListAdapter;
+    private ProductListAdapter menuListAdapter;
     // List view of products
     private ListView productListView;
     private ChildEventListener productEventListener;
@@ -31,7 +37,7 @@ public class MerchantProductListFragment extends Fragment{
     private DatabaseReference databaseUsers;
     private DatabaseReference databaseProducts;
     private DatabaseReference databaseStore;
-
+    private SwipeRefreshLayout swipeLayout;
     public MerchantProductListFragment(){}
 
     @Override
@@ -42,8 +48,14 @@ public class MerchantProductListFragment extends Fragment{
 
 
         ArrayList<Product> productArrayList = new ArrayList<>();
-        menuListAdapter = new MenuListAdapter((Activity) container.getContext(), productArrayList);
+        menuListAdapter = new ProductListAdapter((Activity) container.getContext(), productArrayList);
 
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        swipeLayout.setOnRefreshListener(this);
+        swipeLayout.setColorSchemeResources(
+                R.color.colorPrimary,
+                R.color.colorPrimaryDark,
+                R.color.colorPrimaryLight);
 
         // Initialize References
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
@@ -101,5 +113,13 @@ public class MerchantProductListFragment extends Fragment{
             databaseProducts.removeEventListener(productEventListener);
             productEventListener = null;
         }
+    }
+
+    public void onRefresh() {
+
+        menuListAdapter.clear();
+        detachDatabaseReadListener();
+        attachDatabaseReadListener();
+        swipeLayout.setRefreshing(false);
     }
 }

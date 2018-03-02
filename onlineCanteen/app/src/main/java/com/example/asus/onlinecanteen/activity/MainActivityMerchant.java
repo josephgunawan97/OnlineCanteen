@@ -77,19 +77,7 @@ public class MainActivityMerchant extends AppCompatActivity {
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
         toolbar.setTitle(merchant.getDisplayName());
-        //To add new Store
-        //addStore();
 
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    */
     }
     public void refreshNow (){
         finish();
@@ -111,16 +99,13 @@ public class MainActivityMerchant extends AppCompatActivity {
                 logout();
                 return true;
             case R.id.action_add:
-                ;
+                Intent intent = new Intent(this, RegisterProduct.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_delete:
                 return true;
         }
         return false;
-    }
-
-    private void addStore() {
-        Store store = new Store("TechnoStall", "8:00","12:00","F Building Floor 2" );
-        String id = databaseStore.push().getKey();
-        databaseStore.child(id).setValue(store);
     }
 
     //User Logout
