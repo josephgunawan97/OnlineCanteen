@@ -1,28 +1,27 @@
 package com.example.asus.onlinecanteen.model;
 
-import android.support.annotation.NonNull;
-
 /**
  * Created by ASUS on 3/2/2018.
  */
 
 public class Cart {
 
-    // Product
-    private Product product;
-    // Quantity
+    //Set Variables
+    private String itemName;
     private int quantity;
+    private int price;
 
-    public Cart(@NonNull Product product, int quantity) {
-        this.product = product;
+    public Cart(String itemName, int price, int quantity) {
+        this.itemName = itemName;
+        this.price = price;
         this.quantity = quantity;
     }
 
     public String getProductName() {
-        return product.getName();
+        return itemName;
     }
 
-    public int getProductPrice() { return product.getPrice();}
+    public int getProductPrice() { return price;}
 
     public int getQuantity() {
         return quantity;

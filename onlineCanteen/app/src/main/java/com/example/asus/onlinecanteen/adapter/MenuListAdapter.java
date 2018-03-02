@@ -1,6 +1,7 @@
 package com.example.asus.onlinecanteen.adapter;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.model.Cart;
 import com.example.asus.onlinecanteen.model.Product;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class MenuListAdapter extends ArrayAdapter<Product> {
 
     HashMap<String, Integer> Order = new HashMap<>();
+    ArrayList<Cart> cart;
+    Product product;
+    Cart cartItem;
 
     public MenuListAdapter(Activity context, List<Product> products) {
         super(context, R.layout.menu_adapter_list, products);
@@ -47,7 +53,15 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
             holder = (OrderHolder)view.getTag();
         }
         // Get product
-        Product product = getItem(position);
+        product = getItem(position);
+
+        cart = new ArrayList<>();
+        cartItem = new Cart(product.getName(), product.getPrice(), 0);
+
+        //Initialize Array List for Cart
+        for(int i=0; i<=getCount(); i++){
+            cart.add(cartItem);
+        }
 
         //Initialize HashMap for Order Quantity
         if(Order.get(product.getName()) == null) {
@@ -70,8 +84,14 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         //Increase Order
         holder.increaseOrder.setOnClickListener(new View.OnClickListener(){
             public void onClick (View v){
+                //Change views
                 Order.put(holder.txtTitle.getText().toString(), Order.get(holder.txtTitle.getText().toString()) + 1);
                 holder.quantityOrder.setText(String.valueOf(Order.get(holder.txtTitle.getText().toString())));
+
+                //Change item's quantity in array list
+                int qty = Order.get(holder.txtTitle.getText().toString());
+                Cart cartItem = new Cart(product.getName(), product.getPrice(), qty);
+                cart.set(getPosition(product), cartItem); //PERBAIKIN LAGI
             }
         });
 
@@ -87,8 +107,9 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         return view;
     }
 
-    public HashMap<String, Integer> getOrder(){
-        return Order;
+    //Return cart arraylist
+    public ArrayList<Cart> getList(){
+        return cart;
     }
 
     static class OrderHolder {

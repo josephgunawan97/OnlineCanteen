@@ -24,7 +24,7 @@ public class CartActivityAdapter extends ArrayAdapter<Cart> {
     }
 
     public View getView(int position, View view, ViewGroup parent) {
-        final CartActivityAdapter.CartHolder holder;
+        final CartHolder holder;
         if (view == null) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
             view = inflater.inflate(R.layout.cart_adapter_list, parent, false);
@@ -36,14 +36,13 @@ public class CartActivityAdapter extends ArrayAdapter<Cart> {
             holder.total = view.findViewById(R.id.totalPrice);
             holder.cancelOrder = view.findViewById(R.id.deleteItem);
 
-
             view.setTag(holder);
         }else{
             holder = (CartHolder)view.getTag();
         }
 
         // Get product
-        final Cart cartItems = getItem(position);
+        Cart cartItems = getItem(position);
 
         //Set Texts
         holder.productName.setText(cartItems.getProductName());
@@ -53,8 +52,8 @@ public class CartActivityAdapter extends ArrayAdapter<Cart> {
         //Cancel Order
         holder.cancelOrder.setOnClickListener(new View.OnClickListener(){
             public void onClick (View v){
-                cartItems.setQuantity(0);
-                notifyDataSetChanged();
+                //cartItems.setQuantity(0);
+                //notifyDataSetChanged();
             }
         });
 

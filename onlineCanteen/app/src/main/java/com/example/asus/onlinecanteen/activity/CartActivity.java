@@ -6,13 +6,16 @@ import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.adapter.CartActivityAdapter;
+import com.example.asus.onlinecanteen.adapter.MenuListAdapter;
 import com.example.asus.onlinecanteen.model.Cart;
+import com.example.asus.onlinecanteen.model.Product;
 
 import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity {
 
     ListView cartList;
+    CartActivityAdapter cartActivityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +23,8 @@ public class CartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         // Product List
-        ArrayList<Cart> cartItemsList = new ArrayList<>();
-        CartActivityAdapter cartActivityAdapter = new CartActivityAdapter (this, cartItemsList);
+        ArrayList<Cart> cart = new ArrayList<>();
+        cartActivityAdapter = new CartActivityAdapter (this, cart);
 
         // Initialize ListView
         cartList = findViewById(R.id.cartList);

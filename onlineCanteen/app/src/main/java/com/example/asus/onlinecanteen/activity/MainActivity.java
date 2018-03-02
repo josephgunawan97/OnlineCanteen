@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     //Initialize Button
     Button placeOrder;
 
+    //Array List for Cart
+    ArrayList<Cart> cart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -96,8 +99,19 @@ public class MainActivity extends AppCompatActivity {
         placeOrder.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick (View v){
-                    HashMap <String, Integer> order = menuListAdapter.getOrder();
-                    if(order.values() == null) {
+                    cart = menuListAdapter.getList();
+
+                    //Check empty cart
+                    boolean emptyCart = true;
+                    for(Cart c: cart){
+                        if(c.getQuantity() != 0){
+                            emptyCart = false;
+                            break;
+                        }
+                    }
+
+                    if(emptyCart == true) {
+                        //Alert dialog if there are no items in cart
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setMessage("You don't have any items in your cart!")
                                 .setCancelable(false)
@@ -111,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                         alert.setTitle("Error");
                         alert.show();
                     }else{
+                        //Go to cart
                         Intent intent = new Intent(MainActivity.this, CartActivity.class);
                         startActivity(intent);
                     }
@@ -118,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
             }
         );
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
