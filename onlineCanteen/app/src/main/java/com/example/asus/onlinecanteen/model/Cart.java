@@ -1,10 +1,12 @@
 package com.example.asus.onlinecanteen.model;
 
+import java.io.Serializable;
+
 /**
  * Created by ASUS on 3/2/2018.
  */
 
-public class Cart {
+public class Cart implements Serializable {
 
     //Set Variables
     private String itemName;

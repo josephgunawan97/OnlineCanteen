@@ -125,15 +125,26 @@ public class MainActivity extends AppCompatActivity {
                         alert.setTitle("Error");
                         alert.show();
                     }else{
+                        //Remove item if qty is 0
+                        ArrayList<Cart> toRemove = new ArrayList<>();
+
+                        for(Cart c: cart){
+                            if(c.getQuantity() == 0){
+                                toRemove.add(c);
+                            }
+                        }
+
+                        cart.removeAll(toRemove);
+
                         //Go to cart
                         Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                        intent.putExtra("Cart", cart);
                         startActivity(intent);
                     }
                 }
             }
         );
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

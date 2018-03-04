@@ -22,7 +22,7 @@ import java.util.List;
 public class MenuListAdapter extends ArrayAdapter<Product> {
 
     HashMap<String, Integer> Order = new HashMap<>();
-    ArrayList<Cart> cart;
+    ArrayList<Cart> cart = new ArrayList<>();;
     Product product;
     Cart cartItem;
 
@@ -30,7 +30,7 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         super(context, R.layout.menu_adapter_list, products);
     }
 
-    public View getView(int position,View view,ViewGroup parent) {
+    public View getView(final int position,View view,ViewGroup parent) {
         final OrderHolder holder;
         if(view == null) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
@@ -55,21 +55,20 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         // Get product
         product = getItem(position);
 
-        cart = new ArrayList<>();
-        cartItem = new Cart(product.getName(), product.getPrice(), 0);
-
-        //Initialize Array List for Cart
-        for(int i=0; i<=getCount(); i++){
-            cart.add(cartItem);
-        }
-
         //Initialize HashMap for Order Quantity
         if(Order.get(product.getName()) == null) {
             Order.put(product.getName(), 0);
         }
 
+        //Make Array List for Cart
+        cartItem = new Cart(product.getName(), product.getPrice(), 0);
+        if(!cart.contains(cartItem)){
+            cart.add(cartItem);
+        }
+
         //Set Texts
         holder.txtTitle.setText(product.getName());
+        holder.price = product.getPrice();
         holder.extratxt.setText("Rp " + product.getPrice());
         holder.seller.setText("Seller : " + product.getTokoId());
         holder.quantityOrder.setText(String.valueOf(Order.get(holder.txtTitle.getText().toString())));
@@ -84,14 +83,14 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         //Increase Order
         holder.increaseOrder.setOnClickListener(new View.OnClickListener(){
             public void onClick (View v){
-                //Change views
-                Order.put(holder.txtTitle.getText().toString(), Order.get(holder.txtTitle.getText().toString()) + 1);
-                holder.quantityOrder.setText(String.valueOf(Order.get(holder.txtTitle.getText().toString())));
-
                 //Change item's quantity in array list
-                int qty = Order.get(holder.txtTitle.getText().toString());
-                Cart cartItem = new Cart(product.getName(), product.getPrice(), qty);
-                cart.set(getPosition(product), cartItem); //PERBAIKIN LAGI
+                int qty = Order.get(holder.txtTitle.getText().toString()) + 1;
+                Cart cartItem = new Cart(holder.txtTitle.getText().toString(), holder.price, qty);
+                cart.set(position, cartItem);
+
+                //Change views
+                Order.put(cartItem.getProductName(), cartItem.getQuantity());
+                holder.quantityOrder.setText(String.valueOf(Order.get(cartItem.getProductName())));
             }
         });
 
@@ -99,8 +98,14 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         holder.decreaseOrder.setOnClickListener(new View.OnClickListener(){
             public void onClick (View v){
                 if(Order.get(holder.txtTitle.getText().toString()) > 0) {
-                    Order.put(holder.txtTitle.getText().toString(), Order.get(holder.txtTitle.getText().toString()) - 1);
-                    holder.quantityOrder.setText(String.valueOf(Order.get(holder.txtTitle.getText().toString())));
+                    //Change item's quantity in array list
+                    int qty = Order.get(holder.txtTitle.getText().toString()) - 1;
+                    Cart cartItem = new Cart(holder.txtTitle.getText().toString(), holder.price, qty);
+                    cart.set(position, cartItem);
+
+                    //Change views
+                    Order.put(cartItem.getProductName(), cartItem.getQuantity());
+                    holder.quantityOrder.setText(String.valueOf(Order.get(cartItem.getProductName())));
                 }
             }
         });
@@ -120,5 +125,6 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         ImageView imageView;
         TextView extratxt;
         TextView seller;
+        int price;
     }
 }
