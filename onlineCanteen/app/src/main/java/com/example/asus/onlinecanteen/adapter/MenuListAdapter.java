@@ -1,6 +1,7 @@
 package com.example.asus.onlinecanteen.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +13,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.activity.LoginActivity;
+import com.example.asus.onlinecanteen.activity.MainActivityMerchant;
 import com.example.asus.onlinecanteen.model.Cart;
 import com.example.asus.onlinecanteen.model.Product;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +33,7 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
     ArrayList<Cart> cart = new ArrayList<>();;
     Product product;
     Cart cartItem;
+    DatabaseReference storeDatabase;
 
     public MenuListAdapter(Activity context, List<Product> products) {
         super(context, R.layout.menu_adapter_list, products);
@@ -70,8 +79,23 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         holder.txtTitle.setText(product.getName());
         holder.price = product.getPrice();
         holder.extratxt.setText("Rp " + product.getPrice());
-        holder.seller.setText("Seller : " + product.getTokoId());
         holder.quantityOrder.setText(String.valueOf(Order.get(holder.txtTitle.getText().toString())));
+        
+        //Set seller Text
+        String id = product.getTokoId();
+        String name = null;
+        storeDatabase = FirebaseDatabase.getInstance().getReference();
+        storeDatabase.child("store").child(id).child("storeName").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                String value = (String) snapshot.getValue();
+                holder.seller.setText("Seller : " + value);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
 
         // Get image
         if(product.getImageUrl() != null) {
@@ -111,6 +135,7 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         });
         return view;
     }
+
 
     //Return cart arraylist
     public ArrayList<Cart> getList(){

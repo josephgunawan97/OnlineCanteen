@@ -186,17 +186,6 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void addProducts() {
-        Product product = new Product("Jessica","Nasi", 30, 12000, "https://firebasestorage.googleapis.com/v0/b/onlinecanteenuph.appspot.com/o/product%2Fnasi.jpg?alt=media&token=cd6c28a4-9670-4d8c-b396-73df222496e7");
-        databaseProducts.push().setValue(product);
-    }
-
-    private void addStore() {
-        Store store = new Store("TechnoStall", "8:00","12:00","F Building Floor 2" );
-        String id = databaseStore.push().getKey();
-        databaseStore.child(id).setValue(store);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
