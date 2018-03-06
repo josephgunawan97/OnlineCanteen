@@ -25,6 +25,6 @@ public final class TransactionUtil {
     }
 
     public static Query query(String orderBy, String value) {
-        return query();
+        return query().orderByChild(orderBy).equalTo(value);
     }
 }

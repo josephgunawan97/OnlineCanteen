@@ -78,6 +78,17 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
      */
     public void setTransactionHistory(ArrayList<Transaction> transactionHistory) {
         this.transactionHistory = transactionHistory;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Add transaction to current transaction history
+     * @param transaction new transaction
+     */
+    public void addTransactionHistory(Transaction transaction) {
+        if(transaction == null) return;
+        this.transactionHistory.add(transaction);
+        notifyDataSetChanged();
     }
 
     /**

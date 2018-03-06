@@ -8,22 +8,25 @@ import android.support.annotation.NonNull;
 
 public class PurchasedItem {
 
-    // Product
-    private Product product;
+    // Product name
+    private String productName;
+    // Product price
+    private int productPrice;
     // Quantity
     private int quantity;
 
-    public PurchasedItem(@NonNull Product product, int quantity) {
-        this.product = product;
+    public PurchasedItem(@NonNull String productName, int productPrice, int quantity) {
+        this.productName = productName;
+        this.productPrice = productPrice;
         this.quantity = quantity;
     }
 
     public String getProductName() {
-        return product.getName();
+        return productName;
     }
 
     public int getProductPrice() {
-        return product.getPrice();
+        return productPrice;
     }
 
     public int getQuantity() {

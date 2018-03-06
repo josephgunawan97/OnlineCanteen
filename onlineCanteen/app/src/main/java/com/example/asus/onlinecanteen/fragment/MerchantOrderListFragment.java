@@ -85,8 +85,8 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
 
     private ArrayList<Transaction> getDummyTransactions() {
         ArrayList<PurchasedItem> items = new ArrayList<>();
-        items.add(new PurchasedItem(new Product("A", "Aqua", 10, 3000, null), 5));
-        items.add(new PurchasedItem(new Product("A", "Oreo", 20, 2000, null), 10));
+        items.add(new PurchasedItem("Aqua", 3000, 5));
+        items.add(new PurchasedItem("Oreo", 2000, 10));
         ArrayList<Transaction> transactions = new ArrayList<>();
         for(Integer i=0; i<10; i++) {
             transactions.add(new Transaction("Toko " + ((char) (i + 'A')), "User X", items,i.toString()));

@@ -18,6 +18,14 @@ import com.example.asus.onlinecanteen.adapter.TransactionHistoryAdapter;
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.PurchasedItem;
 import com.example.asus.onlinecanteen.model.Transaction;
+import com.example.asus.onlinecanteen.utils.TransactionUtil;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
@@ -27,17 +35,26 @@ import java.util.ArrayList;
  */
 public class TransactionHistoryFragment extends Fragment implements TransactionHistoryAdapter.TransactionHistoryClickHandler {
 
+    // Recycler View
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-
+    // Adapter of recycler view
+    private TransactionHistoryAdapter adapter;
+    // Handler of transaction details
+    // What will be done to see the details
     private TransactionDetailHandler transactionDetailHandler;
+    // Firebase Query
+    private Query transactionQuery;
+    private ChildEventListener transactionEventListener;
 
     public interface TransactionDetailHandler {
 
         void transactionDetailHandler(Transaction transaction);
     }
 
-    public TransactionHistoryFragment() {}
+    public TransactionHistoryFragment() {
+        transactionQuery = TransactionUtil.query("uid", FirebaseAuth.getInstance().getUid());
+    }
 
     public void setTransactionDetailHandler(TransactionDetailHandler transactionDetailHandler) {
         this.transactionDetailHandler = transactionDetailHandler;
@@ -56,8 +73,8 @@ public class TransactionHistoryFragment extends Fragment implements TransactionH
 
         getActivity().setTitle(R.string.history_title_item);
 
-        ArrayList<Transaction> transactions = getDummyTransactions();
-        TransactionHistoryAdapter adapter = new TransactionHistoryAdapter(this);
+        ArrayList<Transaction> transactions = new ArrayList<>();
+        adapter = new TransactionHistoryAdapter(this);
         adapter.setTransactionHistory(transactions);
 
         recyclerView = view.findViewById(R.id.history_recycler_view);
@@ -68,20 +85,53 @@ public class TransactionHistoryFragment extends Fragment implements TransactionH
         recyclerView.setAdapter(adapter);
     }
 
-    private ArrayList<Transaction> getDummyTransactions() {
-        ArrayList<PurchasedItem> items = new ArrayList<>();
-        items.add(new PurchasedItem(new Product("A", "Aqua", 10, 3000, null), 5));
-        items.add(new PurchasedItem(new Product("A", "Oreo", 20, 2000, null), 10));
-        ArrayList<Transaction> transactions = new ArrayList<>();
-        for(int i=0; i<10; i++) {
-            transactions.add(new Transaction("Toko " + ((char) (i + 'A')), "User X", items, "abc"));
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        attachTransactionEventListener();
+    }
 
-        return transactions;
+    @Override
+    public void onPause() {
+        super.onPause();
+        detachTransactionEventListener();
     }
 
     @Override
     public void onClickHandler(Transaction transaction) {
         transactionDetailHandler.transactionDetailHandler(transaction);
+    }
+
+    private void attachTransactionEventListener() {
+        if(transactionEventListener == null) {
+            transactionEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Transaction newTransaction = dataSnapshot.getValue(Transaction.class);
+                    adapter.addTransactionHistory(newTransaction);
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+
+            transactionQuery.addChildEventListener(transactionEventListener);
+        }
+    }
+
+    private void detachTransactionEventListener() {
+        if(transactionEventListener != null) {
+            transactionQuery.removeEventListener(transactionEventListener);
+            transactionEventListener = null;
+        }
     }
 }

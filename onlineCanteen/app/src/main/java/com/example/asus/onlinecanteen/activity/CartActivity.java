@@ -3,14 +3,22 @@ package com.example.asus.onlinecanteen.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.adapter.CartActivityAdapter;
 import com.example.asus.onlinecanteen.adapter.MenuListAdapter;
 import com.example.asus.onlinecanteen.model.Cart;
 import com.example.asus.onlinecanteen.model.Product;
+import com.example.asus.onlinecanteen.model.PurchasedItem;
+import com.example.asus.onlinecanteen.model.Transaction;
+import com.example.asus.onlinecanteen.utils.TransactionUtil;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -18,6 +26,8 @@ public class CartActivity extends AppCompatActivity {
 
     ListView cartList;
     TextView grandTotal, deliveryFee;
+    EditText locationEditText;
+    Button orderButton;
     CartActivityAdapter cartActivityAdapter;
     ArrayList<Cart> cart;
     int total;
@@ -39,11 +49,28 @@ public class CartActivity extends AppCompatActivity {
         cartList = findViewById(R.id.cartList);
         grandTotal = findViewById(R.id.grandTotal);
         deliveryFee = findViewById(R.id.deliveryFee);
+        orderButton = findViewById(R.id.OrderButton);
+        locationEditText = findViewById(R.id.userLocation);
 
         //Set views
         grandTotal.setText("Grand Total : Rp " + total);
         deliveryFee.setText("Delivery Fee :         Rp ");
 
         cartList.setAdapter(cartActivityAdapter);
+
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<PurchasedItem> items = new ArrayList<>();
+                for(Cart c: cart) {
+                    PurchasedItem item = new PurchasedItem(c.getProductName(), c.getProductPrice(), c.getQuantity());
+                    items.add(item);
+                }
+                Transaction transaction = new Transaction("store", FirebaseAuth.getInstance().getUid(), items, locationEditText.getText().toString());
+                TransactionUtil.insert(transaction);
+                Toast.makeText(getApplicationContext(), "Transcation done", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 }
