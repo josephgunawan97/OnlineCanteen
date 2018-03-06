@@ -29,7 +29,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     // Constants
@@ -139,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                         //Go to cart
                         Intent intent = new Intent(MainActivity.this, CartActivity.class);
                         intent.putExtra("Cart", cart);
+                        intent.putExtra("Seller", menuListAdapter.getSeller());
                         startActivity(intent);
                     }
                 }

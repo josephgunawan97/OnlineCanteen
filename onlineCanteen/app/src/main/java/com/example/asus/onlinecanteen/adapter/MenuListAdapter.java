@@ -1,8 +1,6 @@
 package com.example.asus.onlinecanteen.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
-import com.example.asus.onlinecanteen.activity.LoginActivity;
-import com.example.asus.onlinecanteen.activity.MainActivityMerchant;
 import com.example.asus.onlinecanteen.model.Cart;
 import com.example.asus.onlinecanteen.model.Product;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +30,7 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
     Product product;
     Cart cartItem;
     DatabaseReference storeDatabase;
+    String value;
 
     public MenuListAdapter(Activity context, List<Product> products) {
         super(context, R.layout.menu_adapter_list, products);
@@ -88,7 +85,7 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         storeDatabase.child("store").child(id).child("storeName").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                String value = (String) snapshot.getValue();
+                value = (String) snapshot.getValue();
                 holder.seller.setText("Seller : " + value);
             }
             @Override
@@ -141,6 +138,8 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
     public ArrayList<Cart> getList(){
         return cart;
     }
+
+    public String getSeller() {return value;}
 
     static class OrderHolder {
         TextView quantityOrder;

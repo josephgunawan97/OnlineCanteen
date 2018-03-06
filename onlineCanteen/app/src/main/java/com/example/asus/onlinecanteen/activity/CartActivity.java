@@ -1,8 +1,10 @@
 package com.example.asus.onlinecanteen.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,15 +63,38 @@ public class CartActivity extends AppCompatActivity {
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<PurchasedItem> items = new ArrayList<>();
-                for(Cart c: cart) {
-                    PurchasedItem item = new PurchasedItem(c.getProductName(), c.getProductPrice(), c.getQuantity());
-                    items.add(item);
+                if(!locationEditText.getText().toString().isEmpty()) {
+                    //Make new transaction
+                    ArrayList<PurchasedItem> items = new ArrayList<>();
+                    for (Cart c : cart) {
+                        PurchasedItem item = new PurchasedItem(c.getProductName(), c.getProductPrice(), c.getQuantity());
+                        items.add(item);
+                    }
+
+                    Intent intent = getIntent();
+                    Transaction transaction = new Transaction(intent.getStringExtra("Seller"), FirebaseAuth.getInstance().getUid(), items, locationEditText.getText().toString());
+                    TransactionUtil.insert(transaction);
+                    Toast.makeText(getApplicationContext(), "Transcation done", Toast.LENGTH_SHORT).show();
+
+                    //Go back to main menu
+                    intent = new Intent(CartActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    //Alert dialog if the location is not filled in
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
+                    builder.setMessage("Please enter your location!")
+                            .setCancelable(false)
+                            .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert = builder.create();
+                    alert.setTitle("Error");
+                    alert.show();
                 }
-                Transaction transaction = new Transaction("store", FirebaseAuth.getInstance().getUid(), items, locationEditText.getText().toString());
-                TransactionUtil.insert(transaction);
-                Toast.makeText(getApplicationContext(), "Transcation done", Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
     }
