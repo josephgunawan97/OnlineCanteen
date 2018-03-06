@@ -1,24 +1,24 @@
-package com.example.asus.onlinecanteen.fragment;
+package com.example.asus.onlinecanteen.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
-import com.example.asus.onlinecanteen.adapter.MenuListAdapter;
-import com.example.asus.onlinecanteen.adapter.OrderAdapter;
+import com.example.asus.onlinecanteen.adapter.DeleteProductAdapter;
 import com.example.asus.onlinecanteen.adapter.ProductListAdapter;
 import com.example.asus.onlinecanteen.model.Product;
-import com.example.asus.onlinecanteen.model.Transaction;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,41 +28,42 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 
-public class MerchantProductListFragment extends Fragment  implements SwipeRefreshLayout.OnRefreshListener{
+public class DeleteProduct extends AppCompatActivity  {
 
     // Product Adapter
-    private ProductListAdapter menuListAdapter;
+    private DeleteProductAdapter deleteProductAdapter;
     // List view of products
-    private ListView productListView;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
     private ChildEventListener productEventListener;
-
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser merchant;
     private DatabaseReference databaseUsers;
     private DatabaseReference databaseProducts;
     private DatabaseReference databaseStore;
-    private SwipeRefreshLayout swipeLayout;
-    public MerchantProductListFragment(){}
+    private Button delete;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_activity_merchant, container, false);
-        // Inflate the layout for this fragment
+    public void onCreate(Bundle savedInstanceState) {
 
+        setTheme(R.style.AppTheme);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.delete_product);
 
         ArrayList<Product> productArrayList = new ArrayList<>();
-        menuListAdapter = new ProductListAdapter((Activity) container.getContext(), productArrayList);
+        deleteProductAdapter = new DeleteProductAdapter( this, productArrayList);
 
-        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
-        swipeLayout.setOnRefreshListener(this);
-        swipeLayout.setColorSchemeResources(
-                R.color.colorPrimary,
-                R.color.colorPrimaryDark,
-                R.color.colorPrimaryLight);
+        delete = (Button) findViewById(R.id.delete);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        merchant = firebaseAuth.getCurrentUser();
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer a=0;
+                for (int i=0; i<deleteProductAdapter.getCount(); i++){
+                    if(deleteProductAdapter.getChecked())
+                        a++;
+
+                }
+                Toast.makeText(v.getContext(), a.toString() , Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Initialize References
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
@@ -70,9 +71,11 @@ public class MerchantProductListFragment extends Fragment  implements SwipeRefre
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
         // Initialize ListView
-       productListView = view.findViewById(R.id.list);
-       productListView.setAdapter(menuListAdapter);
-        return view;
+        recyclerView = findViewById(R.id.list);
+        layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(layoutManager);
+        //recyclerView.setAdapter(adapter);
     }
 
 
@@ -85,7 +88,7 @@ public class MerchantProductListFragment extends Fragment  implements SwipeRefre
     @Override
     public void onPause() {
         super.onPause();
-        menuListAdapter.clear();
+        deleteProductAdapter.clear();
         detachDatabaseReadListener();
     }
 
@@ -95,8 +98,7 @@ public class MerchantProductListFragment extends Fragment  implements SwipeRefre
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Product product = dataSnapshot.getValue(Product.class);
-                    if(merchant.getUid().equals(product.getTokoId()))
-                    menuListAdapter.add(product);
+                    deleteProductAdapter.add(product);
                 }
 
                 @Override
@@ -123,11 +125,4 @@ public class MerchantProductListFragment extends Fragment  implements SwipeRefre
         }
     }
 
-    public void onRefresh() {
-
-        menuListAdapter.clear();
-        detachDatabaseReadListener();
-        attachDatabaseReadListener();
-        swipeLayout.setRefreshing(false);
-    }
 }

@@ -103,6 +103,8 @@ public class MainActivityMerchant extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.action_delete:
+                Intent intent2 = new Intent(this, DeleteProduct.class);
+                startActivity(intent2);
                 return true;
         }
         return false;
