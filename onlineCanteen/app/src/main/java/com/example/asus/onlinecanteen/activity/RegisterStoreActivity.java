@@ -244,11 +244,6 @@ public class RegisterStoreActivity extends AppCompatActivity {
         return valid;
     }
 
-    //DRAFT
-    //private void addUsers() {
-    // User user = new User("Jessica","00000013452", "00000013452", "jessicaseaan@gmail.com", "A", null ,"081511030993" );
-    // databaseUsers.push().setValue(user);
-    //}
 
     private void requestReadStoragePermission() {
         ActivityCompat.requestPermissions(RegisterStoreActivity.this,

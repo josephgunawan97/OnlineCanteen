@@ -47,22 +47,23 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
         getSupportActionBar().hide();
 
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-        /*
+        //Check if user signed-in
         if (user != null) {
             login();
         }
-        */
+        else {
+            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        }
+
+
 
         // Initialize views
         loginUsernameEditText = findViewById(R.id.loginUsername);
@@ -87,8 +88,8 @@ public class LoginActivity extends AppCompatActivity {
                 if(!validateLoginInfo()) {
                     findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     signIn.setClickable(true);
-                   // Toast.makeText(view.getContext(), "User not Found", Toast.LENGTH_SHORT).show();
-                    // Requirements are not fulfilled
+                    Toast.makeText(view.getContext(), "User not Found", Toast.LENGTH_SHORT).show();
+                    //Requirements are not fulfilled
                     return;
                 }
 
@@ -101,37 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                                         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                                         firebaseAuth = FirebaseAuth.getInstance();
                                         user = firebaseAuth.getCurrentUser();
-                                        uid = user.getUid();
-                                        userDatabase = FirebaseDatabase.getInstance().getReference();
-
-                                        userDatabase.child("users").addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot snapshot) {
-                                                if (snapshot.child(uid).exists()) {
-                                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                }
-
-                                            }
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-                                            }
-                                        });
-
-                                        userDatabase.child("store").addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot snapshot) {
-                                                if (snapshot.child(uid).exists()) {
-                                                    Intent intent = new Intent(LoginActivity.this, MainActivityMerchant.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                }
-                                            }
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-                                            }
-                                        });
+                                        login();
 
                                     } else {
                                         signIn.setClickable(true);
@@ -147,6 +118,39 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login() {
         //Check if User or Store]
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        uid = user.getUid();
+        userDatabase = FirebaseDatabase.getInstance().getReference();
+
+        userDatabase.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.child(uid).exists()) {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        userDatabase.child("store").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.child(uid).exists()) {
+                    Intent intent = new Intent(LoginActivity.this, MainActivityMerchant.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
     }
 
