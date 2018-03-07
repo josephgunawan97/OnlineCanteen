@@ -36,7 +36,6 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
     // Product Adapter
     private MenuListAdapter menuListAdapter;
     // List view of products
-    private ListView productListView;
     private ChildEventListener productEventListener;
 
     private DatabaseReference databaseUsers;

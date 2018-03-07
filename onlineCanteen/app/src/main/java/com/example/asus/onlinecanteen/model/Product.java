@@ -11,10 +11,13 @@ public class Product {
     private int stock;
     private int price;
     private String imageUrl;
+    private boolean checked;
 
     // Empty Constructor
     public Product() {
     }
+
+
 
     public Product(String tokoId, String productName, int productStock, int productPrice, String imageUrl) {
         this.tokoId = tokoId;
@@ -22,8 +25,15 @@ public class Product {
         this.stock = productStock;
         this.price = productPrice;
         this.imageUrl = imageUrl;
+        this.checked = false;
+    }
+    public boolean isChecked() {
+        return checked;
     }
 
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
     public void setTokoId(String tokoId) {
         this.tokoId = tokoId;
     }

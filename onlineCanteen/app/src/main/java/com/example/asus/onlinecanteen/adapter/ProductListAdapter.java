@@ -86,6 +86,7 @@ public class ProductListAdapter extends ArrayAdapter<Product> {
         return view;
     }
 
+
     public HashMap<String, Integer> getOrder(){
         return Order;
     }
