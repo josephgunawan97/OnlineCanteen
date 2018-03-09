@@ -2,10 +2,12 @@ package com.example.asus.onlinecanteen.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.activity.MerchantOrderDetailActivity;
 import com.example.asus.onlinecanteen.adapter.MenuListAdapter;
 import com.example.asus.onlinecanteen.adapter.OrderAdapter;
 import com.example.asus.onlinecanteen.adapter.TransactionHistoryAdapter;
@@ -42,7 +45,6 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
     private DatabaseReference databaseProducts;
     private DatabaseReference databaseStore;
     SwipeRefreshLayout swipeLayout;
-
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -81,7 +83,6 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
         return view;
     }
 
-
     private ArrayList<Transaction> getDummyTransactions() {
         ArrayList<PurchasedItem> items = new ArrayList<>();
         items.add(new PurchasedItem("Aqua", 3000, 5));
@@ -93,7 +94,6 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
 
         return transactions;
     }
-
 
     @Override
     public void onResume() {
@@ -143,7 +143,6 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-
         ArrayList<Transaction> transactions = getDummyTransactions();
         OrderAdapter adapter = new OrderAdapter(transactions);
         adapter.setTransactionHistory(transactions);

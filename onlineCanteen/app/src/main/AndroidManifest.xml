@@ -28,13 +28,15 @@
         <activity
             android:name=".activity.MainActivityMerchant"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.CartActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".activity.CartActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activity.HistoryActivity" />
         <activity android:name=".activity.RegistrationMainActivity" />
-        <activity android:name=".activity.RegisterProduct"/>
-        <activity android:name=".activity.DeleteProduct"/>
-        <activity android:name=".activity.RegisterStoreActivity"></activity>
+        <activity android:name=".activity.RegisterProduct" />
+        <activity android:name=".activity.DeleteProduct" />
+        <activity android:name=".activity.RegisterStoreActivity" />
+        <activity android:name=".activity.MerchantOrderDetailActivity"></activity>
     </application>
 
 </manifest>

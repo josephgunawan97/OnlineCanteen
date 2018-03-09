@@ -40,6 +40,10 @@
     <string name="transaction_adapter_quantity_title">Qty x item price</string>
     <string name="transaction_adapter_total_price">Price</string>
 
+    <!-- Order Details Default Values -->
+    <string name="user_name_default">Username</string>
+    <string name="user_location">User Location</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

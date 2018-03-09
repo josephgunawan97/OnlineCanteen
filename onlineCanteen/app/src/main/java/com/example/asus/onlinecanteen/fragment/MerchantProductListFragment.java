@@ -70,8 +70,8 @@ public class MerchantProductListFragment extends Fragment  implements SwipeRefre
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
         // Initialize ListView
-       productListView = view.findViewById(R.id.list);
-       productListView.setAdapter(menuListAdapter);
+        productListView = view.findViewById(R.id.list);
+        productListView.setAdapter(menuListAdapter);
         return view;
     }
 

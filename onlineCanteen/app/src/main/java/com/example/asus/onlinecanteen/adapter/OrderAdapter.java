@@ -1,5 +1,7 @@
 package com.example.asus.onlinecanteen.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.activity.MerchantOrderDetailActivity;
 import com.example.asus.onlinecanteen.model.Transaction;
 
 import java.util.ArrayList;
@@ -90,6 +93,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
          */
         public ViewHolder(View view) {
             super(view);
+            final Context context = itemView.getContext();
             // Set the holder attributes
             userNameTextView = view.findViewById(R.id.order_name);
             transactionDateTextView = view.findViewById(R.id.order_item_transaction_date);
@@ -97,8 +101,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             locationTextView = view.findViewById(R.id.order_location);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    Integer pos = getAdapterPosition();
-                    Toast.makeText(itemView.getContext(), pos.toString() , Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, MerchantOrderDetailActivity.class);
+                    context.startActivity(intent);
                 }
             });
         }

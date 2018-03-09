@@ -56,7 +56,7 @@ public class CartActivity extends AppCompatActivity {
 
         //Set views
         grandTotal.setText("Grand Total : Rp " + total);
-        deliveryFee.setText("Delivery Fee :         Rp ");
+        deliveryFee.setText("Delivery Fee : Rp ");
 
         cartList.setAdapter(cartActivityAdapter);
 
