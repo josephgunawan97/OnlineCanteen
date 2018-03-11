@@ -23,6 +23,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/productnamechoose"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="8dp"
+            android:text="Choose Product:"
+            app:layout_constraintBottom_toBottomOf="@+id/spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/spinner"
+            app:layout_constraintVertical_bias="0.45" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="230dp"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="54dp"
+            android:layout_height="53dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="12dp"
+            android:ems="10"
+            app:layout_constraintStart_toStartOf="@+id/productregister"
+            app:layout_constraintTop_toBottomOf="@+id/productregister"/>
 
         <TextView
             android:id="@+id/productname"
@@ -41,19 +65,19 @@
             android:id="@+id/productnamefill"
             android:layout_width="wrap_content"
             android:layout_height="53dp"
-            android:layout_marginStart="100dp"
             android:layout_marginTop="12dp"
             android:ems="10"
             android:hint="Enter your product name"
             android:inputType="textPersonName"
-            app:layout_constraintStart_toStartOf="@+id/productregister"
-            app:layout_constraintTop_toBottomOf="@+id/productregister" />
+            app:layout_constraintStart_toStartOf="@+id/spinner"
+            app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
         <TextView
             android:id="@+id/productprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:inputType="number"
             android:text="Price:"
             app:layout_constraintBottom_toBottomOf="@+id/productpricefill"
             app:layout_constraintStart_toStartOf="@+id/productname"
@@ -66,7 +90,7 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="Enter your price"
-            android:inputType="number"
+            android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="@+id/productnamefill"
             app:layout_constraintStart_toStartOf="@+id/productnamefill"
             app:layout_constraintTop_toBottomOf="@+id/productnamefill" />
@@ -123,7 +147,7 @@
             />
 
         <Button
-            android:id="@+id/productregisterbtn"
+            android:id="@+id/producteditbtn"
             android:layout_width="155dp"
             android:layout_height="27dp"
             android:layout_marginBottom="8dp"
@@ -133,6 +157,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/productbrowse" />
+
+
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

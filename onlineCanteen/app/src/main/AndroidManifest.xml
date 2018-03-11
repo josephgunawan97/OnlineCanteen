@@ -36,6 +36,7 @@
         <activity android:name=".activity.RegisterProduct" />
         <activity android:name=".activity.DeleteProduct" />
         <activity android:name=".activity.RegisterStoreActivity" />
+        <activity android:name=".activity.EditProductActivity"/>
         <activity android:name=".activity.MerchantOrderDetailActivity"></activity>
     </application>
 

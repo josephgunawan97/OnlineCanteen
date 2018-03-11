@@ -87,7 +87,7 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="example@domain.com"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="@+id/storepasswordfill"
             app:layout_constraintStart_toStartOf="@+id/storepasswordfill"
             app:layout_constraintTop_toBottomOf="@+id/storepasswordfill" />
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Enter opening hour"
-            android:inputType="textPersonName"
+            android:inputType="numberSigned|numberDecimal"
             app:layout_constraintEnd_toEndOf="@+id/storeemailfill"
             app:layout_constraintStart_toStartOf="@+id/storeemailfill"
             app:layout_constraintTop_toBottomOf="@+id/storeemailfill" />
@@ -130,7 +130,7 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="Enter close hour"
-            android:inputType="textPersonName"
+            android:inputType="numberSigned|numberDecimal"
             app:layout_constraintEnd_toEndOf="@+id/storeopenhour"
             app:layout_constraintStart_toStartOf="@+id/storeopenhour"
             app:layout_constraintTop_toBottomOf="@+id/storeopenhour" />

@@ -18,5 +18,8 @@
     <item android:id="@+id/action_signout"
         android:title="@string/sign_out"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_edit"
+        android:title="Edit"
+        app:showAsAction="never"/>
 
 </menu>

@@ -33,7 +33,7 @@
             android:background="@drawable/username"
             android:ems="10"
             android:hint="Email"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:paddingLeft="60dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
