@@ -45,7 +45,8 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
      * @param viewType the view type of the new View
      * @return new ViewHolder instance
      */
-    @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_adapter_item, parent, false);
 
         return new ViewHolder(layoutView);
@@ -56,7 +57,8 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
      * @param holder ViewHolder which should be updated
      * @param position position of items in the adapter
      */
-    @Override public void onBindViewHolder(ViewHolder holder, int position) {
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
         // Get Transaction Item
         Transaction transaction = transactionHistory.get(position);
         // Set Information on View
@@ -68,8 +70,10 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
      * Retrieved the amount of items in adapter
      * @return amount of items in adapter
      */
-    @Override public int getItemCount() {
-        return transactionHistory.size();
+    @Override
+    public int getItemCount() {
+        if(transactionHistory != null) return transactionHistory.size();
+        else return 0;
     }
 
     /**

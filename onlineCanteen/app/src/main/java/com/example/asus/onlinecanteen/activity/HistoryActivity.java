@@ -16,7 +16,7 @@ import com.example.asus.onlinecanteen.model.Transaction;
 
 public class HistoryActivity extends AppCompatActivity implements TransactionHistoryFragment.TransactionDetailHandler {
 
-    FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
