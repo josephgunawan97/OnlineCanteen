@@ -1,6 +1,14 @@
 package com.example.asus.onlinecanteen.model;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.example.asus.onlinecanteen.fragment.MerchantOrderListFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -21,6 +29,7 @@ public class Transaction {
     // Transaction is finished, Items are delivered
     public static final int DELIVERED = 2;
 
+    private String name;
     // Store Identity Variable
     private String sid;
     // User Identity Variable
@@ -115,6 +124,15 @@ public class Transaction {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public void setName(String names){this.name = names;
+        Log.i(MerchantOrderListFragment.class.getSimpleName(),"NAMA ORNG22"+name);
+    }
+
+    public String getName(){
+
+        return this.name;
     }
 
 }
