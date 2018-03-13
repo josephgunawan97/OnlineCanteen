@@ -71,7 +71,7 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
-        ArrayList<Transaction> transactions = getDummyTransactions();
+        ArrayList<Transaction> transactions = getTransactions();
         OrderAdapter adapter = new OrderAdapter(transactions);
         adapter.setTransactionHistory(transactions);
 
@@ -83,14 +83,8 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
         return view;
     }
 
-    private ArrayList<Transaction> getDummyTransactions() {
-        ArrayList<PurchasedItem> items = new ArrayList<>();
-        items.add(new PurchasedItem("Aqua", 3000, 5));
-        items.add(new PurchasedItem("Oreo", 2000, 10));
+    private ArrayList<Transaction> getTransactions() {
         ArrayList<Transaction> transactions = new ArrayList<>();
-        for(Integer i=0; i<10; i++) {
-            transactions.add(new Transaction("Toko " + ((char) (i + 'A')), "User X", items,i.toString()));
-        }
 
         return transactions;
     }
@@ -143,7 +137,7 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        ArrayList<Transaction> transactions = getDummyTransactions();
+        ArrayList<Transaction> transactions = getTransactions();
         OrderAdapter adapter = new OrderAdapter(transactions);
         adapter.setTransactionHistory(transactions);
         recyclerView.setLayoutManager(layoutManager);
