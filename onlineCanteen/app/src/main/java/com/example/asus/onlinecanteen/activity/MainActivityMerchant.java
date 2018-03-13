@@ -2,7 +2,6 @@ package com.example.asus.onlinecanteen.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,13 +13,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MerchantOrderListFragment;
 import com.example.asus.onlinecanteen.fragment.MerchantProductListFragment;
-import com.example.asus.onlinecanteen.model.Store;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -99,11 +96,11 @@ public class MainActivityMerchant extends AppCompatActivity {
                 logout();
                 return true;
             case R.id.action_add:
-                Intent intent = new Intent(this, RegisterProduct.class);
+                Intent intent = new Intent(this, RegisterProductActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_delete:
-                Intent intent2 = new Intent(this, DeleteProduct.class);
+                Intent intent2 = new Intent(this, DeleteProductActivity.class);
                 startActivity(intent2);
                 return true;
             case R.id.action_edit:

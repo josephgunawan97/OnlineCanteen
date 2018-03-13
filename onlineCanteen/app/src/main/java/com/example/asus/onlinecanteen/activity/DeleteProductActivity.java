@@ -1,5 +1,6 @@
 package com.example.asus.onlinecanteen.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,7 +12,7 @@ import com.example.asus.onlinecanteen.fragment.TransactionDetailFragment;
 import com.example.asus.onlinecanteen.fragment.TransactionHistoryFragment;
 import com.example.asus.onlinecanteen.model.Transaction;
 
-public class DeleteProduct extends AppCompatActivity {
+public class DeleteProductActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
 
@@ -26,6 +27,8 @@ public class DeleteProduct extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.delete_frame_layout, deleteFragment);
         fragmentTransaction.commit();
+
+        getSupportActionBar().setTitle("Delete Product");
     }
 
 }

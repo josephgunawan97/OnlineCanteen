@@ -85,7 +85,7 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
         productName = findViewById(R.id.productnamefill);
         productPrice = findViewById(R.id.productpricefill);
         productQty = findViewById(R.id.productqtyfill);
-
+        getSupportActionBar().setTitle("Edit Product");
         //Browse Image in Gallery & set as Profile Picture
         button.setOnClickListener(new View.OnClickListener() {
             @Override

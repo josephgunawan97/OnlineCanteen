@@ -2,13 +2,11 @@ package com.example.asus.onlinecanteen.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,24 +18,19 @@ import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Product;
-import com.example.asus.onlinecanteen.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-public class RegisterProduct extends AppCompatActivity {
+public class RegisterProductActivity extends AppCompatActivity {
 
-    private static final String TAG = RegisterProduct.class.getSimpleName();
+    private static final String TAG = RegisterProductActivity.class.getSimpleName();
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 999;
 
     ImageView imageView;
@@ -189,7 +182,7 @@ public class RegisterProduct extends AppCompatActivity {
     //}
 
     private void requestReadStoragePermission() {
-        ActivityCompat.requestPermissions(RegisterProduct.this,
+        ActivityCompat.requestPermissions(RegisterProductActivity.this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 REQUEST_READ_EXTERNAL_STORAGE);
     }
