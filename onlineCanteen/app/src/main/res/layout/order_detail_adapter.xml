@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/transaction_adapter_item_name_title"
-        android:textColor="@color/colorFontBlack"/>
+        android:textColor="@color/black"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/transaction_adapter_quantity_title"
-            android:textColor="@color/colorFontBlack"/>
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/transaction_detail_adapter_item_total_price"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
             android:text="@string/transaction_adapter_total_price"
-            android:textColor="@color/colorFontBlack"/>
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 
