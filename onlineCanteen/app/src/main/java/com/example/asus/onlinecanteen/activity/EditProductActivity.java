@@ -46,6 +46,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class EditProductActivity extends AppCompatActivity implements DeleteProductAdapter.DeleteClickHandler{
@@ -85,7 +86,7 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
         productName = findViewById(R.id.productnamefill);
         productPrice = findViewById(R.id.productpricefill);
         productQty = findViewById(R.id.productqtyfill);
-
+        getSupportActionBar().setTitle("Edit Product");
         //Browse Image in Gallery & set as Profile Picture
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,12 +211,37 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
     //To submit data
     private void submitData() {
 
-        if(!validateRegisterInfo()) {
-            return;
-        }
-        else{
+        if(validateRegisterInfo())
+        {
 
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference reference = firebaseDatabase.getReference();
+            Query query = reference.child("products").orderByChild("tokoId").equalTo(merchant.getUid());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+                    Log.i(TAG,"TEXT "+nodeDataSnapshot.getValue().toString());
+                    String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+                    String path = "/" + dataSnapshot.getKey() + "/" + key;
+                    HashMap<String, Object> result = new HashMap<>();
+                    //result.put("imageUrl", );
+                    result.put("name", productName.getText().toString());
+                    // HashMap<Integer, Object> result2 = new HashMap<>();
+                    result.put("price", Integer.parseInt(productPrice.getText().toString()));
+                    result.put("stock", Integer.parseInt(productQty.getText().toString()));
+                    reference.child(path).updateChildren(result);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //Logger.error(TAG, ">>> Error:" + "find onCancelled:" + databaseError);
+
+                }
+            });
+            backToScreen();
         }
+
     }
 
     private boolean validateRegisterInfo() {
@@ -249,12 +275,6 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
         return valid;
     }
 
-
-    private void requestReadStoragePermission() {
-        ActivityCompat.requestPermissions(EditProductActivity.this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                REQUEST_READ_EXTERNAL_STORAGE);
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

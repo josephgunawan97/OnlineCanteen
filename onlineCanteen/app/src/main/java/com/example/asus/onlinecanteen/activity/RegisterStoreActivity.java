@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Store;
-import com.example.asus.onlinecanteen.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,7 +27,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,11 +45,14 @@ public class RegisterStoreActivity extends AppCompatActivity {
     String profPicUrl;
     FirebaseAuth mAuth;
     FirebaseUser user;
-    DatabaseReference StoreReferences;
+    DatabaseReference StoreReferences, walletReferences;
     private DatabaseReference databaseStore;
 
     //EditText
     EditText usernameET, passwordET, emailET, openhourET, closehourET, locationET;
+
+    //String
+    String username, password, email, openh, closeh, location;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -84,6 +85,13 @@ public class RegisterStoreActivity extends AppCompatActivity {
         submitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                username = usernameET.getText().toString();
+                password = passwordET.getText().toString();
+                email = emailET.getText().toString();
+                openh = openhourET.getText().toString();
+                closeh = closehourET.getText().toString();
+                location= locationET.getText().toString();
                 submitData();
             }
         });
@@ -121,13 +129,9 @@ public class RegisterStoreActivity extends AppCompatActivity {
                             if(imageUri != null) {
                                 if(ContextCompat.checkSelfPermission(RegisterStoreActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                     requestReadStoragePermission();
-                                } else {
-                                    addAdditionalUserInformation();
                                 }
-                            } else {
-                                addAdditionalUserInformation();
-                                backToLoginScreen();
                             }
+                            addAdditionalUserInformation();
                         } else {
                             emailET.setText("");
                             emailET.setError("Email is registered");
@@ -142,66 +146,50 @@ public class RegisterStoreActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             user = mAuth.getCurrentUser();
 
-                            UserProfileChangeRequest.Builder profileBuilder = new UserProfileChangeRequest.Builder();
-                            profileBuilder.setDisplayName(usernameET.getText().toString());
-
-                            UserProfileChangeRequest profileChangeRequest = profileBuilder.build();
-                            user.updateProfile(profileChangeRequest);
-
                             String uid = user.getUid();
-                            Store storeInfo = new Store(usernameET.getText().toString(),openhourET.getText().toString(),closehourET.getText().toString(),locationET.getText().toString());
+                            String img = uploadImage();
+                            Store storeInfo = new Store(username, openh, closeh, location, img);
                             StoreReferences = FirebaseDatabase.getInstance().getReference("store").child(uid);
                             StoreReferences.setValue(storeInfo);
 
-                            if (user != null && imageUri != null &&
-                                    ContextCompat.checkSelfPermission(RegisterStoreActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                                uploadImage();
-                            } else backToLoginScreen();
+                            walletReferences = FirebaseDatabase.getInstance().getReference("wallet").child(uid);
+                            walletReferences.setValue(0);
 
-                        } else {
-                            Toast.makeText(RegisterStoreActivity.this, "Failed to update profile.", Toast.LENGTH_SHORT).show();
+                            backToLoginScreen();
                         }
                     }
                 });
     }
 
     //To upload image
-    private void uploadImage() {
+    private String uploadImage() {
+
         Log.d(TAG, "Uploading...");
-        StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/"+System.currentTimeMillis()+".jpg");
+        final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/"+System.currentTimeMillis()+".jpg");
         if (imageUri!=null){
             profileImageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    profPicUrl = taskSnapshot.getDownloadUrl().toString();
+                    @SuppressWarnings("VisibleForTests") Uri downloadUrl =taskSnapshot.getDownloadUrl();
+                    profPicUrl = downloadUrl.toString();
                     Log.d(TAG, "Success in uploading");
-                    UserProfileChangeRequest.Builder profileBuilder = new UserProfileChangeRequest.Builder();
-                    if(profPicUrl != null) {
-                        Log.d(TAG, "Photo is taken");
-                        profileBuilder.setPhotoUri(Uri.parse(profPicUrl));
-                    }
-                    UserProfileChangeRequest profileChangeRequest = profileBuilder.build();
-                    user.updateProfile(profileChangeRequest);
-
-                    backToLoginScreen();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(getApplicationContext(),"Image failed to upload",Toast.LENGTH_LONG).show();
-                    backToLoginScreen();
                 }
             });
         }
+        return profPicUrl;
     }
 
     private boolean validateRegisterInfo() {
         boolean valid = true;
 
-        String username = usernameET.getText().toString();
         if(TextUtils.isEmpty(username)) {
             usernameET.setError("Username required");
             valid = false;
@@ -209,7 +197,6 @@ public class RegisterStoreActivity extends AppCompatActivity {
             usernameET.setError(null);
         }
 
-        String password = passwordET.getText().toString();
         if(TextUtils.isEmpty(password)) {
             passwordET.setError("Password required");
             valid = false;
@@ -217,7 +204,6 @@ public class RegisterStoreActivity extends AppCompatActivity {
             passwordET.setError(null);
         }
 
-        String email = emailET.getText().toString();
         if(TextUtils.isEmpty(email)) {
             emailET.setError("Email required");
             valid = false;
@@ -225,20 +211,25 @@ public class RegisterStoreActivity extends AppCompatActivity {
             emailET.setError(null);
         }
 
-        String nim = openhourET.getText().toString();
-        if(TextUtils.isEmpty(nim)) {
+        if(TextUtils.isEmpty(openh)) {
             openhourET.setError("Open Hour required");
             valid = false;
         } else {
             openhourET.setError(null);
         }
 
-        String phone = closehourET.getText().toString();
-        if(TextUtils.isEmpty(phone)) {
+        if(TextUtils.isEmpty(closeh)) {
             closehourET.setError("Close Hour required");
             valid = false;
         } else {
             closehourET.setError(null);
+        }
+
+        if(TextUtils.isEmpty(location)) {
+            locationET.setError("Location required");
+            valid = false;
+        } else {
+            locationET.setError(null);
         }
 
         return valid;

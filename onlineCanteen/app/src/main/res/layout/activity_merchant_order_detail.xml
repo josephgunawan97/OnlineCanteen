@@ -11,8 +11,8 @@
         android:orientation="horizontal"
         android:background="@color/colorPrimary"
         android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp" >
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,8 +36,8 @@
         android:orientation="horizontal"
         android:background="@color/colorPrimary"
         android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp" >
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -60,8 +60,8 @@
         android:orientation="horizontal"
         android:background="@color/colorPrimary"
         android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp" >
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -78,6 +78,32 @@
             android:text="@string/user_location" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        android:paddingStart="16dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status: "
+            android:textColor="@color/colorFontWhite"/>
+
+        <TextView
+            android:id="@+id/order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorFontWhite"
+            android:text="@string/order_status" />
+
+    </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/transaction_detail_items"

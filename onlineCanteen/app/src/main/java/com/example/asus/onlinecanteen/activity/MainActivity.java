@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference databaseUsers;
     private DatabaseReference databaseProducts;
     private DatabaseReference databaseStore;
+    private DatabaseReference databaseWallet;
 
     // Firebase Listener
     private ChildEventListener productEventListener;
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
+        databaseWallet = FirebaseDatabase.getInstance().getReference("wallet");
 
         // Product List
         ArrayList<Product> productArrayList = new ArrayList<>();

@@ -63,8 +63,6 @@ public class LoginActivity extends AppCompatActivity {
             findViewById(R.id.loadingPanel).setVisibility(View.GONE);
         }
 
-
-
         // Initialize views
         loginUsernameEditText = findViewById(R.id.loginUsername);
         loginPasswordEditText = findViewById(R.id.loginPass);

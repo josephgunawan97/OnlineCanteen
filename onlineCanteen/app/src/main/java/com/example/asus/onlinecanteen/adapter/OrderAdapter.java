@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.activity.MerchantOrderDetailActivity;
+import com.example.asus.onlinecanteen.fragment.MerchantOrderListFragment;
 import com.example.asus.onlinecanteen.model.Transaction;
 
 import java.util.ArrayList;
@@ -56,7 +58,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         // Get Transaction Item
         Transaction transaction = transactionHistory.get(position);
         // Set Information on View
-        holder.userNameTextView.setText(transaction.getUid());
+        holder.userNameTextView.setText(transaction.getName());
+        Log.i(OrderAdapter.class.getSimpleName(),"NAMA ORDER= "+transaction.getName());
         holder.transactionDateTextView.setText(String.valueOf(transaction.getPurchaseDate()));
         holder.paymentAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
         holder.locationTextView.setText("Location: "+transaction.getLocation());
@@ -76,7 +79,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     /**
      * ViewHolder class of {@link OrderAdapter}
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         // TextView of store name
         public TextView userNameTextView;
@@ -102,6 +105,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     Intent intent = new Intent(context, MerchantOrderDetailActivity.class);
+                    intent.putExtra("Transaction", transactionHistory);
+                    intent.putExtra("Position", getAdapterPosition());
                     context.startActivity(intent);
                 }
             });

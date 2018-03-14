@@ -12,14 +12,16 @@ public class Store {
     private String openHour;
     private String closeHour;
     private String location;
+    private String img;
 
     public Store() {}
 
-    public Store(String storeName, String openHour, String closeHour, String location) {
+    public Store(String storeName, String openHour, String closeHour, String location, String img) {
         this.storeName = storeName;
         this.openHour = openHour;
         this.closeHour = closeHour;
         this.location = location;
+        this.img = img;
     }
 
     public void setStoreName(String storeName) {
@@ -42,6 +44,10 @@ public class Store {
         this.openHour = openHour;
     }
 
+    public void setImage(String img) {
+        this.img = img;
+    }
+
     public String getStoreName() {
         return storeName;
     }
@@ -61,4 +67,6 @@ public class Store {
     public String getLocation() {
         return location;
     }
+
+    public String getImg() {return img;}
 }

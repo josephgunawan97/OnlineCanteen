@@ -100,7 +100,11 @@ public class MerchantProductListFragment extends Fragment  implements SwipeRefre
                 }
 
                 @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Product product = dataSnapshot.getValue(Product.class);
+                    if(merchant.getUid().equals(product.getTokoId()))
+                        menuListAdapter.add(product);
+                }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {}

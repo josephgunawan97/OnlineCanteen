@@ -10,23 +10,16 @@ public class User {
 
     String name;
     String userNim;
-    String userCategory;
     String userPhone;
+    String img;
 
-    // Empty Constructor
-    public User() {
-    }
-
-    public User(String name, String userNim, String userCategory, String userPhone) {
+    public User(String name, String userNim, String userPhone, String img) {
         this.name = name;
         this.userNim = userNim;
-        this.userCategory = userCategory;
         this.userPhone = userPhone;
+        this.img = img;
     }
 
-    public void setUserCategory(String userCategory) {
-        this.userCategory = userCategory;
-    }
 
     public void setUserNim(String userNim) {
         this.userNim = userNim;
@@ -40,11 +33,9 @@ public class User {
         return userNim;
     }
 
-    public String getUserCategory() {
-        return userCategory;
-    }
-
     public String getUserPhone() {
         return userPhone;
     }
+
+    public String getimg() { return img; }
 }
