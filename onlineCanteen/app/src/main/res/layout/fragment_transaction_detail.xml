@@ -18,14 +18,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date : "
-            android:textColor="@color/colorFontWhite"/>
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/transaction_detail_transaction_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:textColor="@color/colorFontWhite"
+            android:textColor="@color/white"
             android:text="@string/history_transaction_date_default" />
 
     </LinearLayout>
@@ -43,13 +43,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Purchased from : "
-            android:textColor="@color/colorFontWhite"/>
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/transaction_detail_store_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorFontWhite"
+            android:textColor="@color/white"
             android:text="@string/history_store_name_default" />
 
     </LinearLayout>
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:background="@color/colorPrimary"
-        android:textColor="@color/colorFontWhite"
+        android:textColor="@color/white"
         android:text="@string/history_payment_amount_default"
         android:textAlignment="textEnd"/>
 

@@ -64,7 +64,7 @@
             android:layout_marginTop="7dp"
             android:background="@color/colorPrimary"
             android:text="Sign in"
-            android:textColor="@color/colorFontWhite"
+            android:textColor="@color/white"
             app:layout_constraintLeft_toLeftOf="@id/loginPass"
             app:layout_constraintRight_toRightOf="@id/loginPass"
             app:layout_constraintTop_toBottomOf="@id/loginPass" />

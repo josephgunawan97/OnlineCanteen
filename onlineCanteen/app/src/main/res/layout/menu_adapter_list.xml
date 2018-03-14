@@ -54,7 +54,7 @@
         android:textSize="15dp"
         android:text="-"
         android:background="@color/colorPrimary"
-        android:textColor="@color/colorFontWhite" />
+        android:textColor="@color/white" />
     <TextView
         android:id="@+id/quantityOrder"
         android:layout_width="30dp"
@@ -74,6 +74,6 @@
         android:textAlignment="center"
         android:text="+"
         android:background="@color/colorPrimary"
-        android:textColor="@color/colorFontWhite"/>
+        android:textColor="@color/white"/>
     </LinearLayout>
 </LinearLayout>

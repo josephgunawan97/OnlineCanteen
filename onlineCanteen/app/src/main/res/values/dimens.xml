@@ -4,4 +4,19 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+    <!-- User navigation header dimensions -->
+    <dimen name="user_navigation_header_height">176dp</dimen>
+    <dimen name="user_navigation_header_photo_size">80dp</dimen>
+    <dimen name="user_navigation_header_horizontal_margin">16dp</dimen>
+    <dimen name="user_navigation_header_top_margin">40dp</dimen>
+    <dimen name="user_navigation_header_name_margin">8dp</dimen>
+    <dimen name="user_navigation_vertical_gap_margin">8dp</dimen>
+
+    <!-- User view margin -->
+    <dimen name="user_margin_horizontal">16dp</dimen>
+
+    <!-- Product information dimensions -->
+    <dimen name="product_image_size">80dp</dimen>
+    <dimen name="product_info_margin">8dp</dimen>
 </resources>

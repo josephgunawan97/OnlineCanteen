@@ -54,4 +54,13 @@
     <string name="add_item">Add Item</string>
     <string name="sign_out">Sign Out</string>
 
+    <!-- User Navigation Default Values -->
+    <string name="user_navigation_default_name">User name</string>
+    <string name="user_navigation_default_email">xyz@example.com</string>
+
+    <!-- Product -->
+    <string name="product_image_description">Product Image</string>
+    <string name="product_name_default">Product Name</string>
+    <string name="product_price_default">Price</string>
+
 </resources>

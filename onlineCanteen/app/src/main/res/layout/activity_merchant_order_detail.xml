@@ -18,14 +18,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Date : "
-            android:textColor="@color/colorFontWhite"/>
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/transaction_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:textColor="@color/colorFontWhite"
+            android:textColor="@color/white"
             android:text="@string/history_transaction_date_default" />
 
     </LinearLayout>
@@ -43,13 +43,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Purchased by : "
-            android:textColor="@color/colorFontWhite"/>
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorFontWhite"
+            android:textColor="@color/white"
             android:text="@string/user_name_default" />
 
     </LinearLayout>
@@ -67,14 +67,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Location : "
-            android:textColor="@color/colorFontWhite"/>
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/user_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:textColor="@color/colorFontWhite"
+            android:textColor="@color/white"
             android:text="@string/user_location" />
 
     </LinearLayout>
@@ -92,7 +92,7 @@
         android:padding="5dp"
         android:gravity="center"
         android:background="@color/colorPrimary"
-        android:textColor="@color/colorFontWhite"
+        android:textColor="@color/white"
         android:text="@string/history_payment_amount_default" />
 
     <LinearLayout

@@ -74,7 +74,7 @@
         android:background="@color/colorPrimary"
         android:text="Order"
         android:textAlignment="center"
-        android:textColor="@color/colorFontWhite"
+        android:textColor="@color/white"
         android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

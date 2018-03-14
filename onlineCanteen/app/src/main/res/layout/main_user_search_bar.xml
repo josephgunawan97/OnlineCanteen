@@ -16,7 +16,7 @@
         android:layout_weight="1"
         android:hint="Search by name"
         android:padding="8dp"
-        android:background="@color/colorFontWhite"/>
+        android:background="@color/white"/>
 
     <ImageButton
         android:id="@+id/search_bar_search_button"
@@ -25,7 +25,7 @@
         android:layout_marginLeft="4dp"
         android:padding="8dp"
         android:src="@drawable/ic_search_black_24dp"
-        android:background="@color/colorFontWhite" />
+        android:background="@color/white" />
 
     <ImageButton
         android:id="@+id/search_bar_scan_qr_button"
@@ -33,7 +33,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="4dp"
         android:padding="4dp"
-        android:background="@color/colorFontWhite"
+        android:background="@color/white"
         android:src="@drawable/ic_qrcode_black_24dp"/>
 
 </LinearLayout>

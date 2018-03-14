@@ -19,5 +19,5 @@
         android:layout_weight="0"
         android:backgroundTint="@color/colorPrimary"
         android:text="Delete"
-        android:textColor="@color/colorFontWhite" />
+        android:textColor="@color/white" />
 </LinearLayout>

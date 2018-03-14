@@ -24,7 +24,7 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="Nama Merchant"
-            android:tint="@color/colorFontWhite">
+            android:tint="@color/white">
 
 
         </android.support.v7.widget.Toolbar>

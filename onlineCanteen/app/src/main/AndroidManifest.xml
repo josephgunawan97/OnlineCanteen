@@ -38,7 +38,8 @@
         <activity android:name=".activity.RegisterStoreActivity" />
         <activity android:name=".activity.EditProductActivity" />
         <activity android:name=".activity.MerchantOrderDetailActivity" />
-        <activity android:name=".activity.MainUserActivity"/>
+        <activity android:name=".activity.MainUserActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

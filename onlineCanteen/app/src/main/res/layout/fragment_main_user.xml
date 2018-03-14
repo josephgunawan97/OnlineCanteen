@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.asus.onlinecanteen.fragment.MainUserFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <include layout="@layout/main_user_search_bar" />
 
@@ -16,7 +18,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:textAllCaps="true"
-        android:textColor="@color/colorFontBlack"
+        android:textColor="@color/black"
         android:text="Featured Products" />
 
     <android.support.v7.widget.RecyclerView
@@ -37,7 +39,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:textAllCaps="true"
-        android:textColor="@color/colorFontBlack"
+        android:textColor="@color/black"
         android:text="Shops" />
 
     <android.support.v7.widget.RecyclerView

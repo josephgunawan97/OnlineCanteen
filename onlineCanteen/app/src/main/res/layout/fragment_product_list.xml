@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.asus.onlinecanteen.fragment.ProductListFragment">
+
+    <android.support.v7.widget.RecyclerView android:id="@+id/product_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/user_margin_horizontal"
+        android:layout_marginEnd="@dimen/user_margin_horizontal"/>
+
+</FrameLayout>

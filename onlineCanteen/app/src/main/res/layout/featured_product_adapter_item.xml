@@ -1,33 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
-    android:padding="4dp"
-    android:layout_marginLeft="8dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/featured_product_image"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:background="@color/colorPrimaryLight" />
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="4dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="1dp"
+        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:cardPreventCornerOverlap="true">
 
-    <TextView
-        android:id="@+id/featured_product_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
-        android:textColor="@color/colorFontWhite"
-        android:textSize="16sp"
-        android:text="Item name" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:textColor="@color/colorFontWhite"
-        android:textSize="12sp"
-        android:text="Shop name" />
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="4dp"
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@color/cardview_light_background" >
 
-</LinearLayout>
+                <ImageView
+                    android:id="@+id/featured_product_image"
+                    android:layout_width="90dp"
+                    android:layout_height="100dp" />
+
+            </android.support.v7.widget.CardView>
+
+            <TextView
+                android:id="@+id/featured_product_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:includeFontPadding="false"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:text="Item name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="4dp"
+                android:includeFontPadding="false"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:text="Shop name" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

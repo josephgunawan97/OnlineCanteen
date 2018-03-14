@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <bitmap
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:filter="@color/colorFontWhite"
+    android:filter="@color/white"
     android:src="@android:drawable/ic_input_add"
-    android:tint="@color/colorFontWhite"/>
+    android:tint="@color/white"/>
