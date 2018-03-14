@@ -67,7 +67,7 @@ public class MainUserFragment extends Fragment {
     private ArrayList<Store> getDummyShops() {
         ArrayList<Store> shops = new ArrayList<>();
         for(int i=0; i<10; i++) {
-            shops.add(new Store("Store #" + (i + 1), "08.00", "16.00", "UPH"));
+            shops.add(new Store("Store #" + (i + 1), "08.00", "16.00", "UPH",null));
         }
         return shops;
     }

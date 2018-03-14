@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,6 +29,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -52,6 +54,9 @@ public class RegisterActivity extends AppCompatActivity {
     //EditText
     EditText usernameET, passwordET, emailET, nimET, phoneET;
 
+    //String
+    String username, password, email, nim, phone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -70,6 +75,8 @@ public class RegisterActivity extends AppCompatActivity {
         nimET = findViewById(R.id.nimfill);
         phoneET = findViewById(R.id.phonefill);
 
+
+
         //Browse Image in Gallery & set as Profile Picture
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +89,11 @@ public class RegisterActivity extends AppCompatActivity {
         submitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                username = usernameET.getText().toString();
+                password = passwordET.getText().toString();
+                email = emailET.getText().toString();
+                nim = nimET.getText().toString();
+                phone = phoneET.getText().toString();
                 submitData();
             }
         });
@@ -111,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(emailET.getText().toString(),passwordET.getText().toString())
+        mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -119,13 +131,9 @@ public class RegisterActivity extends AppCompatActivity {
                             if(imageUri != null) {
                                 if(ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                     requestReadStoragePermission();
-                                } else {
-                                    addAdditionalUserInformation();
                                 }
-                            } else {
-                                addAdditionalUserInformation();
-                                backToLoginScreen();
                             }
+                            addAdditionalUserInformation();
                         } else {
                             emailET.setText("");
                             emailET.setError("Email is registered");
@@ -140,66 +148,47 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             user = mAuth.getCurrentUser();
 
-                            UserProfileChangeRequest.Builder profileBuilder = new UserProfileChangeRequest.Builder();
-                            profileBuilder.setDisplayName(usernameET.getText().toString());
-
-                            UserProfileChangeRequest profileChangeRequest = profileBuilder.build();
-                            user.updateProfile(profileChangeRequest);
-
                             String uid = user.getUid();
-                            User userInfo = new User(usernameET.getText().toString(), nimET.getText().toString(), "USER", phoneET.getText().toString());
+                            String img = uploadImage();
+                            User userInfo = new User(username, nim, phone, img);
                             userReferences = FirebaseDatabase.getInstance().getReference("users").child(uid);
                             userReferences.setValue(userInfo);
 
-                            if (user != null && imageUri != null &&
-                                    ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                                uploadImage();
-                            } else backToLoginScreen();
-
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "Failed to update profile.", Toast.LENGTH_SHORT).show();
+                            backToLoginScreen();
                         }
                     }
                 });
     }
 
     //To upload image
-    private void uploadImage() {
+    private String uploadImage() {
+
         Log.d(TAG, "Uploading...");
-        StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/"+System.currentTimeMillis()+".jpg");
+        final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/"+System.currentTimeMillis()+".jpg");
         if (imageUri!=null){
             profileImageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    profPicUrl = taskSnapshot.getDownloadUrl().toString();
+                    @SuppressWarnings("VisibleForTests") Uri downloadUrl =taskSnapshot.getDownloadUrl();
+                    profPicUrl = downloadUrl.toString();
                     Log.d(TAG, "Success in uploading");
-                    UserProfileChangeRequest.Builder profileBuilder = new UserProfileChangeRequest.Builder();
-                    if(profPicUrl != null) {
-                        Log.d(TAG, "Photo is taken");
-                        profileBuilder.setPhotoUri(Uri.parse(profPicUrl));
-                    }
-                    UserProfileChangeRequest profileChangeRequest = profileBuilder.build();
-                    user.updateProfile(profileChangeRequest);
-
-                    backToLoginScreen();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(getApplicationContext(),"Image failed to upload",Toast.LENGTH_LONG).show();
-                    backToLoginScreen();
                 }
             });
         }
+        return profPicUrl;
     }
 
     private boolean validateRegisterInfo() {
         boolean valid = true;
 
-        String username = usernameET.getText().toString();
         if(TextUtils.isEmpty(username)) {
             usernameET.setError("Username required");
             valid = false;
@@ -207,7 +196,6 @@ public class RegisterActivity extends AppCompatActivity {
             usernameET.setError(null);
         }
 
-        String password = passwordET.getText().toString();
         if(TextUtils.isEmpty(password)) {
             passwordET.setError("Password required");
             valid = false;
@@ -215,7 +203,6 @@ public class RegisterActivity extends AppCompatActivity {
             passwordET.setError(null);
         }
 
-        String email = emailET.getText().toString();
         if(TextUtils.isEmpty(email)) {
             emailET.setError("Email required");
             valid = false;
@@ -223,7 +210,6 @@ public class RegisterActivity extends AppCompatActivity {
             emailET.setError(null);
         }
 
-        String nim = nimET.getText().toString();
         if(TextUtils.isEmpty(nim)) {
             nimET.setError("Email required");
             valid = false;
@@ -231,7 +217,6 @@ public class RegisterActivity extends AppCompatActivity {
             nimET.setError(null);
         }
 
-        String phone = phoneET.getText().toString();
         if(TextUtils.isEmpty(phone)) {
             phoneET.setError("Email required");
             valid = false;
@@ -241,12 +226,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         return valid;
     }
-
-    //DRAFT
-    //private void addUsers() {
-       // User user = new User("Jessica","00000013452", "00000013452", "jessicaseaan@gmail.com", "A", null ,"081511030993" );
-       // databaseUsers.push().setValue(user);
-    //}
 
     private void requestReadStoragePermission() {
         ActivityCompat.requestPermissions(RegisterActivity.this,

@@ -12,12 +12,14 @@ public class Store {
     private String openHour;
     private String closeHour;
     private String location;
+    private String img;
 
-    public Store(String storeName, String openHour, String closeHour, String location) {
+    public Store(String storeName, String openHour, String closeHour, String location, String img) {
         this.storeName = storeName;
         this.openHour = openHour;
         this.closeHour = closeHour;
         this.location = location;
+        this.img = img;
     }
 
     public String getStoreName() {
@@ -39,4 +41,6 @@ public class Store {
     public String getLocation() {
         return location;
     }
+
+    public String getImg() {return img;}
 }
