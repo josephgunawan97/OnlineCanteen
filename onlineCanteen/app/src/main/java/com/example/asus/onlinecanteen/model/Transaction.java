@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.TimeZone;
  * Created by steve on 2/10/2018.
  */
 
-public class Transaction {
+public class Transaction implements Serializable{
 
     // CONSTANTS
     // Transaction is pending, Items is not processed

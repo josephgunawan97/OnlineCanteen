@@ -43,6 +43,7 @@
     <!-- Order Details Default Values -->
     <string name="user_name_default">Username</string>
     <string name="user_location">User Location</string>
+    <string name="order_status">Order Status</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

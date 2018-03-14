@@ -79,7 +79,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     /**
      * ViewHolder class of {@link OrderAdapter}
      */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         // TextView of store name
         public TextView userNameTextView;
@@ -105,6 +105,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     Intent intent = new Intent(context, MerchantOrderDetailActivity.class);
+                    intent.putExtra("Transaction", transactionHistory);
+                    intent.putExtra("Position", getAdapterPosition());
                     context.startActivity(intent);
                 }
             });
