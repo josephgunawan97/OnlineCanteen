@@ -13,7 +13,6 @@ public class User {
     String userPhone;
     String img;
 
-
     public User(String name, String userNim, String userPhone, String img) {
         this.name = name;
         this.userNim = userNim;

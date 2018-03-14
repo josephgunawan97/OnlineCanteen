@@ -48,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
     String profPicUrl;
     FirebaseAuth mAuth;
     FirebaseUser user;
-    DatabaseReference userReferences;
+    DatabaseReference userReferences, walletReferences;
     private DatabaseReference databaseUsers;
 
     //EditText
@@ -156,6 +156,9 @@ public class RegisterActivity extends AppCompatActivity {
                             User userInfo = new User(username, nim, phone, img);
                             userReferences = FirebaseDatabase.getInstance().getReference("users").child(uid);
                             userReferences.setValue(userInfo);
+
+                            walletReferences = FirebaseDatabase.getInstance().getReference("wallet").child(uid);
+                            walletReferences.setValue(0);
 
                             backToLoginScreen();
                         }

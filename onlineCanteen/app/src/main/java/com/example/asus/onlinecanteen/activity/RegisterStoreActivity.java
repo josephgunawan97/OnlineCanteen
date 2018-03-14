@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Store;
-import com.example.asus.onlinecanteen.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,7 +27,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,7 +45,7 @@ public class RegisterStoreActivity extends AppCompatActivity {
     String profPicUrl;
     FirebaseAuth mAuth;
     FirebaseUser user;
-    DatabaseReference StoreReferences;
+    DatabaseReference StoreReferences, walletReferences;
     private DatabaseReference databaseStore;
 
     //EditText
@@ -156,6 +154,9 @@ public class RegisterStoreActivity extends AppCompatActivity {
                             Store storeInfo = new Store(username, openh, closeh, location, img);
                             StoreReferences = FirebaseDatabase.getInstance().getReference("store").child(uid);
                             StoreReferences.setValue(storeInfo);
+
+                            walletReferences = FirebaseDatabase.getInstance().getReference("wallet").child(uid);
+                            walletReferences.setValue(0);
 
                             backToLoginScreen();
                         }
