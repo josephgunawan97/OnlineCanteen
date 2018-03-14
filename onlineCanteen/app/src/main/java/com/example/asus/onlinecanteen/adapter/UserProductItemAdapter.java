@@ -14,11 +14,11 @@ import com.example.asus.onlinecanteen.model.Product;
 
 import java.util.ArrayList;
 
-public class ProductItemAdapter extends RecyclerView.Adapter<ProductItemAdapter.ViewHolder> {
+public class UserProductItemAdapter extends RecyclerView.Adapter<UserProductItemAdapter.ViewHolder> {
 
     private ArrayList<Product> products;
 
-    public ProductItemAdapter() {
+    public UserProductItemAdapter() {
 
     }
 

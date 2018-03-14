@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,9 +14,9 @@ import android.widget.EditText;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.adapter.FeaturedProductAdapter;
-import com.example.asus.onlinecanteen.adapter.ShopAdapter;
+import com.example.asus.onlinecanteen.adapter.UserStoreAdapter;
 import com.example.asus.onlinecanteen.model.Store;
-import com.example.asus.onlinecanteen.utils.ShopUtil;
+import com.example.asus.onlinecanteen.utils.StoreUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,32 +28,32 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainUserFragment extends Fragment implements ShopAdapter.ShopItemClickHandler {
+public class MainUserFragment extends Fragment implements UserStoreAdapter.StoreItemClickHandler {
 
     private EditText searchBarEditText;
     private RecyclerView featuredRecyclerView;
-    private RecyclerView shopsRecyclerView;
+    private RecyclerView storesRecyclerView;
     private RecyclerView.LayoutManager featuredLayoutManager;
-    private RecyclerView.LayoutManager shopLayoutManager;
+    private RecyclerView.LayoutManager storeLayoutManager;
 
-    private ShopAdapter shopAdapter;
+    private UserStoreAdapter userStoreAdapter;
 
-    private ShopClickHandler shopClickHandler;
+    private StoreClickHandler storeClickHandler;
 
     // Firebase
-    private Query shopsQuery;
-    private ChildEventListener shopsEventListener;
+    private Query storesQuery;
+    private ChildEventListener storesEventListener;
 
-    public interface ShopClickHandler {
-        void shopClickHandler(Store shop);
+    public interface StoreClickHandler {
+        void storeClickHandler(Store store);
     }
 
     public MainUserFragment() {
         // Required empty public constructor
     }
 
-    public void setShopClickHandler(ShopClickHandler shopClickHandler) {
-        this.shopClickHandler = shopClickHandler;
+    public void setStoreClickHandler(StoreClickHandler storeClickHandler) {
+        this.storeClickHandler = storeClickHandler;
     }
 
     @Override
@@ -70,22 +69,22 @@ public class MainUserFragment extends Fragment implements ShopAdapter.ShopItemCl
 
         searchBarEditText = view.findViewById(R.id.search_bar_search_edit_text);
         featuredRecyclerView = view.findViewById(R.id.featured_recycler_view);
-        shopsRecyclerView = view.findViewById(R.id.shops_recycler_view);
+        storesRecyclerView = view.findViewById(R.id.stores_recycler_view);
 
         FeaturedProductAdapter featuredProductAdapter = new FeaturedProductAdapter();
         featuredProductAdapter.setFeaturedProducts(getDummyFeaturedProducts());
         featuredRecyclerView.setAdapter(featuredProductAdapter);
 
-        shopAdapter = new ShopAdapter(this);
-        shopsRecyclerView.setAdapter(shopAdapter);
+        userStoreAdapter = new UserStoreAdapter(this);
+        storesRecyclerView.setAdapter(userStoreAdapter);
 
         featuredLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         featuredRecyclerView.setLayoutManager(featuredLayoutManager);
 
-        shopLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        shopsRecyclerView.setLayoutManager(shopLayoutManager);
+        storeLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        storesRecyclerView.setLayoutManager(storeLayoutManager);
 
-        shopsQuery = ShopUtil.query();
+        storesQuery = StoreUtil.query();
     }
 
     private ArrayList<String> getDummyFeaturedProducts() {
@@ -97,9 +96,9 @@ public class MainUserFragment extends Fragment implements ShopAdapter.ShopItemCl
     }
 
     @Override
-    public void onClickHandler(Store shop) {
-        if(shopClickHandler != null) {
-            shopClickHandler.shopClickHandler(shop);
+    public void onClickHandler(Store store) {
+        if(storeClickHandler != null) {
+            storeClickHandler.storeClickHandler(store);
         }
     }
 
@@ -107,25 +106,25 @@ public class MainUserFragment extends Fragment implements ShopAdapter.ShopItemCl
     public void onResume() {
         super.onResume();
         getActivity().setTitle(R.string.app_name);
-        attachProductDatabaseListener();
+        attachStoreDatabaseListener();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        detachProductDatabaseListener();
-        if(shopAdapter != null) shopAdapter.removeAllShops();
+        detachStoreDatabaseListener();
+        if(userStoreAdapter != null) userStoreAdapter.removeAllStores();
     }
 
     //----------------  FIREBASE CHILD EVENT LISTENER -----------------//
-    private void attachProductDatabaseListener() {
-        if (shopsEventListener == null) {
-            shopsEventListener = new ChildEventListener() {
+    private void attachStoreDatabaseListener() {
+        if (storesEventListener == null) {
+            storesEventListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Store shop = dataSnapshot.getValue(Store.class);
-                    shop.setStoreId(dataSnapshot.getKey());
-                    shopAdapter.addShop(shop);
+                    Store store = dataSnapshot.getValue(Store.class);
+                    store.setStoreId(dataSnapshot.getKey());
+                    userStoreAdapter.addStore(store);
                 }
 
                 @Override
@@ -141,14 +140,14 @@ public class MainUserFragment extends Fragment implements ShopAdapter.ShopItemCl
                 public void onCancelled(DatabaseError databaseError) {}
             };
 
-            shopsQuery.addChildEventListener(shopsEventListener);
+            storesQuery.addChildEventListener(storesEventListener);
         }
     }
 
-    private void detachProductDatabaseListener() {
-        if(shopsEventListener != null) {
-            shopsQuery.removeEventListener(shopsEventListener);
-            shopsEventListener = null;
+    private void detachStoreDatabaseListener() {
+        if(storesEventListener != null) {
+            storesQuery.removeEventListener(storesEventListener);
+            storesEventListener = null;
         }
     }
     //-------------  END OF FIREBASE CHILD EVENT LISTENER --------------//

@@ -40,10 +40,10 @@
         android:textStyle="bold"
         android:textAllCaps="true"
         android:textColor="@color/black"
-        android:text="Shops" />
+        android:text="Stores" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/shops_recycler_view"
+        android:id="@+id/stores_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

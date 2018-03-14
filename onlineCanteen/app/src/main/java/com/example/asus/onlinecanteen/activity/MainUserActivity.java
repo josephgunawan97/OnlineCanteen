@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,10 +12,10 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MainUserFragment;
-import com.example.asus.onlinecanteen.fragment.ProductListFragment;
+import com.example.asus.onlinecanteen.fragment.UserProductListFragment;
 import com.example.asus.onlinecanteen.model.Store;
 
-public class MainUserActivity extends AppCompatActivity implements MainUserFragment.ShopClickHandler {
+public class MainUserActivity extends AppCompatActivity implements MainUserFragment.StoreClickHandler {
 
     private NavigationView navigationView;
     private FragmentManager fragmentManager;
@@ -37,7 +36,7 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
 
         // Put default fragment
         MainUserFragment userFragment = new MainUserFragment();
-        userFragment.setShopClickHandler(this);
+        userFragment.setStoreClickHandler(this);
 
         fragmentManager = getSupportFragmentManager();
         changeFragment(userFragment);
@@ -47,9 +46,9 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
     }
 
     @Override
-    public void shopClickHandler(Store shop) {
-        ProductListFragment fragment = new ProductListFragment();
-        fragment.setCurrentShop(shop);
+    public void storeClickHandler(Store store) {
+        UserProductListFragment fragment = new UserProductListFragment();
+        fragment.setCurrentStore(store);
         changeFragment(fragment);
     }
 

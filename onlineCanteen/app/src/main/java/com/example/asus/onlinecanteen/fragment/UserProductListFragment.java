@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.asus.onlinecanteen.R;
-import com.example.asus.onlinecanteen.adapter.ProductItemAdapter;
+import com.example.asus.onlinecanteen.adapter.UserProductItemAdapter;
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.Store;
 import com.example.asus.onlinecanteen.utils.ProductsUtil;
@@ -22,37 +22,35 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 
-import java.util.ArrayList;
+public class UserProductListFragment extends Fragment {
 
-public class ProductListFragment extends Fragment {
-
-    // Shop
-    private Store currentShop;
+    // Store
+    private Store currentStore;
 
     // Recycler View
     private RecyclerView productRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
 
     // Adapter
-    private ProductItemAdapter productItemAdapter;
+    private UserProductItemAdapter userProductItemAdapter;
 
     // Firebase
     private Query productsQuery;
     private ChildEventListener productsEventListener;
 
-    public ProductListFragment() {
+    public UserProductListFragment() {
         // Required empty public constructor
     }
 
-    public void setCurrentShop(Store currentShop) {
-        this.currentShop = currentShop;
+    public void setCurrentStore(Store currentStore) {
+        this.currentStore = currentStore;
         if(productsQuery != null) {
-            if(productItemAdapter != null) {
-                productItemAdapter.removeAllProducts();
+            if(userProductItemAdapter != null) {
+                userProductItemAdapter.removeAllProducts();
                 detachProductDatabaseListener();
             }
         }
-        productsQuery = ProductsUtil.query(currentShop);
+        productsQuery = ProductsUtil.query(currentStore);
     }
 
     @Override
@@ -66,7 +64,7 @@ public class ProductListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(currentShop != null) getActivity().setTitle(currentShop.getStoreName());
+        if(currentStore != null) getActivity().setTitle(currentStore.getStoreName());
 
         // Set up recycler view
         productRecyclerView = view.findViewById(R.id.product_recycler_view);
@@ -76,8 +74,8 @@ public class ProductListFragment extends Fragment {
         DividerItemDecoration divider = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         productRecyclerView.addItemDecoration(divider);
 
-        productItemAdapter = new ProductItemAdapter();
-        productRecyclerView.setAdapter(productItemAdapter);
+        userProductItemAdapter = new UserProductItemAdapter();
+        productRecyclerView.setAdapter(userProductItemAdapter);
     }
 
     @Override
@@ -90,7 +88,7 @@ public class ProductListFragment extends Fragment {
     public void onPause() {
         super.onPause();
         detachProductDatabaseListener();
-        if(productItemAdapter != null) productItemAdapter.removeAllProducts();
+        if(userProductItemAdapter != null) userProductItemAdapter.removeAllProducts();
     }
 
 
@@ -101,7 +99,7 @@ public class ProductListFragment extends Fragment {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Product product = dataSnapshot.getValue(Product.class);
-                    productItemAdapter.addProduct(product);
+                    userProductItemAdapter.addProduct(product);
                 }
 
                 @Override

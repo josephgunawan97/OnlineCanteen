@@ -10,14 +10,14 @@ import com.google.firebase.database.Query;
  * Created by Steven Albert on 3/14/2018.
  */
 
-public class ShopUtil {
+public class StoreUtil {
 
     // Firebase path to transactions
     private static final String FIREBASE_PATH = "store";
 
-    public static DatabaseReference insert(Store shop) {
+    public static DatabaseReference insert(Store store) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(FIREBASE_PATH).push();
-        reference.setValue(shop);
+        reference.setValue(store);
         return reference;
     }
 
