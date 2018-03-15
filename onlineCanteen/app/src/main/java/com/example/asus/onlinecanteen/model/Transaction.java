@@ -11,6 +11,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -111,8 +113,9 @@ public class Transaction implements Serializable{
         return items;
     }
 
-    public long getPurchaseDate() {
-        return purchaseDate;
+    public String getPurchaseDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+        return sdf.format(purchaseDate);
     }
 
     public int getTotalPrice() {

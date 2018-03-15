@@ -60,7 +60,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         // Set Information on View
         holder.userNameTextView.setText(transaction.getName());
         Log.i(OrderAdapter.class.getSimpleName(),"NAMA ORDER= "+transaction.getName());
-        holder.transactionDateTextView.setText(String.valueOf(transaction.getPurchaseDate()));
+        holder.transactionDateTextView.setText(transaction.getPurchaseDate());
         holder.paymentAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
         holder.locationTextView.setText("Location: "+transaction.getLocation());
     }

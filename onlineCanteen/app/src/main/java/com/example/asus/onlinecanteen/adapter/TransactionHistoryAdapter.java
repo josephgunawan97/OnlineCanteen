@@ -63,7 +63,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         Transaction transaction = transactionHistory.get(position);
         // Set Information on View
         holder.storeNameTextView.setText(transaction.getSid());
-        holder.transactionDateTextView.setText(String.valueOf(transaction.getPurchaseDate()));
+        holder.transactionDateTextView.setText(transaction.getPurchaseDate());
         holder.paymentAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
     }
     /**
