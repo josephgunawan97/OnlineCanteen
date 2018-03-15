@@ -1,6 +1,7 @@
 package com.example.asus.onlinecanteen.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.activity.QrActivity;
 import com.example.asus.onlinecanteen.adapter.FeaturedProductAdapter;
 import com.example.asus.onlinecanteen.adapter.UserStoreAdapter;
 import com.example.asus.onlinecanteen.model.Store;
@@ -35,6 +38,7 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
     private RecyclerView storesRecyclerView;
     private RecyclerView.LayoutManager featuredLayoutManager;
     private RecyclerView.LayoutManager storeLayoutManager;
+    private ImageButton searchBarScanQrButton;
 
     private UserStoreAdapter userStoreAdapter;
 
@@ -70,6 +74,17 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
         searchBarEditText = view.findViewById(R.id.search_bar_search_edit_text);
         featuredRecyclerView = view.findViewById(R.id.featured_recycler_view);
         storesRecyclerView = view.findViewById(R.id.stores_recycler_view);
+        searchBarScanQrButton = view.findViewById(R.id.search_bar_scan_qr_button);
+
+        searchBarScanQrButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Intent i = new Intent(MainUserFragment.this.getActivity(),QrActivity.class);
+                startActivity(i);
+            }
+        });
+
 
         FeaturedProductAdapter featuredProductAdapter = new FeaturedProductAdapter();
         featuredProductAdapter.setFeaturedProducts(getDummyFeaturedProducts());
