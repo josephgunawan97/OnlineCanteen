@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import com.example.asus.onlinecanteen.R;
@@ -33,7 +34,7 @@ public class MerchantProductListFragment extends Fragment  implements SwipeRefre
     // Product Adapter
     private ProductListAdapter menuListAdapter;
     // List view of products
-    private ListView productListView;
+    private GridView productListView;
     private ChildEventListener productEventListener;
 
     private FirebaseAuth firebaseAuth;
@@ -70,7 +71,7 @@ public class MerchantProductListFragment extends Fragment  implements SwipeRefre
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
         // Initialize ListView
-        productListView = view.findViewById(R.id.list);
+        productListView = view.findViewById(R.id.gridview);
         productListView.setAdapter(menuListAdapter);
         return view;
     }
