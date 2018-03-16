@@ -63,5 +63,8 @@
     <string name="product_image_description">Product Image</string>
     <string name="product_name_default">Product Name</string>
     <string name="product_price_default">Price</string>
+    <string name="product_stock_default">Stock: 0</string>
 
+    <!-- Order Product -->
+    <string name="user_order_product_button_text">Place Order</string>
 </resources>

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class MainUserFragment extends Fragment implements UserStoreAdapter.StoreItemClickHandler {
+
+    private static final String TAG = MainUserFragment.class.getSimpleName();
 
     private EditText searchBarEditText;
     private RecyclerView featuredRecyclerView;
@@ -71,6 +74,8 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.d(TAG, "onViewCreated of " + TAG);
+
         searchBarEditText = view.findViewById(R.id.search_bar_search_edit_text);
         featuredRecyclerView = view.findViewById(R.id.featured_recycler_view);
         storesRecyclerView = view.findViewById(R.id.stores_recycler_view);
@@ -79,7 +84,6 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
         searchBarScanQrButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent i = new Intent(MainUserFragment.this.getActivity(),QrActivity.class);
                 startActivity(i);
             }
@@ -90,7 +94,9 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
         featuredProductAdapter.setFeaturedProducts(getDummyFeaturedProducts());
         featuredRecyclerView.setAdapter(featuredProductAdapter);
 
-        userStoreAdapter = new UserStoreAdapter(this);
+        if(userStoreAdapter == null) {
+            userStoreAdapter = new UserStoreAdapter(this);
+        }
         storesRecyclerView.setAdapter(userStoreAdapter);
 
         featuredLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -120,6 +126,7 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume of " + TAG);
         getActivity().setTitle(R.string.app_name);
         attachStoreDatabaseListener();
     }
@@ -127,8 +134,9 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
     @Override
     public void onPause() {
         super.onPause();
-        detachStoreDatabaseListener();
-        if(userStoreAdapter != null) userStoreAdapter.removeAllStores();
+        Log.d(TAG, "onPause of " + TAG);
+//        detachStoreDatabaseListener();
+//        if(userStoreAdapter != null) userStoreAdapter.removeAllStores();
     }
 
     //----------------  FIREBASE CHILD EVENT LISTENER -----------------//

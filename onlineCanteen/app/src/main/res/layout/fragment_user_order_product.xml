@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.asus.onlinecanteen.UserOrderProductFragment">
+
+    <android.support.v7.widget.RecyclerView android:id="@+id/user_order_product_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button android:id="@+id/user_order_product_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:padding="@dimen/user_order_product_padding"
+        android:text="@string/user_order_product_button_text"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="16sp"/>
+
+</LinearLayout>

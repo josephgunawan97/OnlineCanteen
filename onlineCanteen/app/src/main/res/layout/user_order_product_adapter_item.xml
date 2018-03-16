@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/user_order_product_padding">
+
+    <ImageView android:id="@+id/user_order_product_image_view"
+        android:layout_width="@dimen/product_image_size"
+        android:layout_height="@dimen/product_image_size"
+        android:layout_marginEnd="@dimen/product_info_margin"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/product_image_description"/>
+
+    <LinearLayout android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/user_order_product_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/product_info_margin"
+            android:layout_marginEnd="@dimen/product_info_margin"
+            android:layout_marginTop="@dimen/product_info_margin"
+            android:text="@string/product_name_default"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:textColor="@color/colorSecondary" />
+
+        <TextView
+            android:id="@+id/user_order_product_price_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/product_info_margin"
+            android:textColor="@color/black"
+            android:text="@string/product_price_default" />
+
+    </LinearLayout>
+
+    <Button android:id="@+id/user_order_product_inc_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:text="-" />
+
+    <TextView android:id="@+id/user_order_product_quantity"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:text="0" />
+
+    <Button android:id="@+id/user_order_product_dec_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        android:text="+" />
+
+</LinearLayout>

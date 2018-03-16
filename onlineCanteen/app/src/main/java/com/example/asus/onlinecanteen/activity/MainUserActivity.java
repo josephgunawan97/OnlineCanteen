@@ -46,6 +46,11 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     public void storeClickHandler(Store store) {
         UserProductListFragment fragment = new UserProductListFragment();
         fragment.setCurrentStore(store);
