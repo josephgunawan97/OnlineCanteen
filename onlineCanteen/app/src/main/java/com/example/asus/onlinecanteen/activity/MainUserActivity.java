@@ -14,8 +14,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MainUserFragment;
 import com.example.asus.onlinecanteen.fragment.UserProductListFragment;
@@ -70,11 +72,13 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         user = firebaseAuth.getCurrentUser();
 
         //Set up header navigation
-        NavigationView navigationView = (NavigationView) findViewById(R.id.main_user_navigation_view);
-        View header=navigationView.getHeaderView(0);
-        userWallet = (TextView)header.findViewById(R.id.user_wallet);
-        TextView username = (TextView) header.findViewById(R.id.user_navigation_user_name) ;
-        TextView email = (TextView) header.findViewById(R.id.user_navigation_user_email) ;
+        NavigationView navigationView = findViewById(R.id.main_user_navigation_view);
+        View header = navigationView.getHeaderView(0);
+        userWallet = header.findViewById(R.id.user_wallet);
+        TextView username =  header.findViewById(R.id.user_navigation_user_name) ;
+        TextView email =  header.findViewById(R.id.user_navigation_user_email) ;
+        ImageView profilePicture = header.findViewById(R.id.user_navigation_user_picture);
+
         //Get wallet amount
         walletRef = FirebaseDatabase.getInstance().getReference().child("wallet");
         walletRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
@@ -92,7 +96,14 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
             }
         });
 
-
+        // Set username and email
+        username.setText(user.getDisplayName());
+        email.setText(user.getEmail());
+        if(user.getPhotoUrl() != null) {
+            Glide.with(this)
+                    .load(user.getPhotoUrl())
+                    .into(profilePicture);
+        }
     }
 
     @Override
