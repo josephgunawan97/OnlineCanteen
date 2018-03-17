@@ -37,4 +37,18 @@
         android:textColor="@color/white"
         android:text="@string/user_navigation_default_email" />
 
+    <TextView android:id="@+id/user_wallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/user_navigation_header_horizontal_margin"
+        android:layout_marginEnd="@dimen/user_navigation_header_horizontal_margin"
+        android:layout_marginBottom="@dimen/user_navigation_vertical_gap_margin"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@fonts/roboto_regular"
+        android:textSize="14sp"
+        android:textColor="@color/white" />
+
+
+
+
 </LinearLayout>

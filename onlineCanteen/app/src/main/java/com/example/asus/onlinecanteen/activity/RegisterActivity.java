@@ -36,6 +36,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
@@ -48,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
     String profPicUrl;
     FirebaseAuth mAuth;
     FirebaseUser user;
-    DatabaseReference userReferences, walletReferences, roleReferences;
+    DatabaseReference userReferences, walletReferences, roleReferences, emailRef;
     private DatabaseReference databaseUsers;
 
     //EditText
@@ -144,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void addAdditionalUserInformation() {
-        mAuth.signInWithEmailAndPassword(emailET.getText().toString(), passwordET.getText().toString())
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -162,6 +164,9 @@ public class RegisterActivity extends AppCompatActivity {
 
                             roleReferences = FirebaseDatabase.getInstance().getReference("role").child(uid);
                             roleReferences.setValue("USER");
+
+                            emailRef = FirebaseDatabase.getInstance().getReference("emailtouid").child(email.replaceAll(Pattern.quote("."),","));
+                            emailRef.setValue(uid);
 
                             backToLoginScreen();
                         }

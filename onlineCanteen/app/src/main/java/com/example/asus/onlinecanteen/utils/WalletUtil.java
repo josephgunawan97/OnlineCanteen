@@ -1,6 +1,7 @@
 package com.example.asus.onlinecanteen.utils;
 
 import android.content.Intent;
+import android.util.Log;
 
 import com.example.asus.onlinecanteen.activity.LoginActivity;
 import com.example.asus.onlinecanteen.activity.MainActivity;
@@ -20,43 +21,26 @@ public class WalletUtil {
     DatabaseReference walletDatabase, walletReferences;
     String uid;
     int value, credit, debit;
+    int amount;
 
-    public Integer getAmount(String id){
-        uid = id;
-        walletDatabase = FirebaseDatabase.getInstance().getReference();
+    private boolean success = false;
 
-        walletDatabase.child("wallet").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.child(uid).exists()) {
-                    value = snapshot.getValue(Integer.class);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        return value;
-    }
-
-    Boolean success = false;
-
-    public Boolean creditAmount(String id, final int credit)
+    public boolean creditAmount(String id, final int creditx)
     {
-        this.success = false;
+        success = false;
         uid = id;
-        this.credit = credit;
+        credit = creditx;
         walletDatabase = FirebaseDatabase.getInstance().getReference();
 
-        walletDatabase.child("wallet").addValueEventListener(new ValueEventListener() {
+        walletDatabase.child("wallet").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.child(uid).exists()) {
-                    value = snapshot.child(uid).getValue(Integer.class);
+                if (snapshot.exists()) {
+                    String valueString = snapshot.getValue().toString();
+                    value = Integer.parseInt(valueString);
                     if(value >= credit)
                     {
-                        value -= credit;
-                        setAmount(uid,value);
+                        setAmount(uid,value-credit);
                         success = true;
                     }
                     else success = false;
@@ -69,21 +53,31 @@ public class WalletUtil {
         return success;
     }
 
-    public Boolean debitAmount(String id, int add)
+    private void setSuccess(boolean success){
+        this.success = success;
+    }
+
+    public boolean debitAmount(String id, int add)
     {
-        success = false;
+        setSuccess(true);
         walletDatabase = FirebaseDatabase.getInstance().getReference();
-        uid = walletDatabase.child("wallet").child(id).getKey();
+        uid = id;
         debit = add;
 
-        walletDatabase.child("wallet").child(uid).addValueEventListener(new ValueEventListener() {
+        walletDatabase.child("wallet").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if((dataSnapshot.getKey().toString()).equals(uid))
+                if(dataSnapshot.exists())
                 {
-                    value = Integer.parseInt(dataSnapshot.getValue().toString()) + debit;
-                    setAmount(uid,0);
-                    success = true;
+                    String valueString = dataSnapshot.getValue().toString();
+                    value = Integer.parseInt(valueString);
+                    setAmount(uid,value+debit);
+                    Log.d("Test",""+success);
+                    return;
+                }
+                else
+                {
+                    setSuccess(false);
                 }
             }
 
@@ -92,6 +86,7 @@ public class WalletUtil {
 
             }
         });
+        Log.d("Test","kok "+success);
         return success;
 
 
@@ -101,5 +96,7 @@ public class WalletUtil {
         walletReferences = FirebaseDatabase.getInstance().getReference("wallet").child(uid);
         walletReferences.setValue(value);
     }
+
+
 
 }
