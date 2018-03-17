@@ -39,7 +39,7 @@
 
     </LinearLayout>
 
-    <Button android:id="@+id/user_order_product_inc_button"
+    <Button android:id="@+id/user_order_product_dec_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"
@@ -47,7 +47,7 @@
         android:textColor="@color/white"
         android:text="-" />
 
-    <TextView android:id="@+id/user_order_product_quantity"
+    <TextView android:id="@+id/user_order_product_quantity_text_view"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -55,7 +55,7 @@
         android:textColor="@color/black"
         android:text="0" />
 
-    <Button android:id="@+id/user_order_product_dec_button"
+    <Button android:id="@+id/user_order_product_inc_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center_vertical"

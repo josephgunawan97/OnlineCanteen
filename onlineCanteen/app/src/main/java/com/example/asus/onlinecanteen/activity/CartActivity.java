@@ -77,8 +77,6 @@ public class CartActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Transcation done", Toast.LENGTH_SHORT).show();
 
                     //Go back to main menu
-                    intent = new Intent(CartActivity.this, MainActivity.class);
-                    startActivity(intent);
                     finish();
                 }else{
                     //Alert dialog if the location is not filled in

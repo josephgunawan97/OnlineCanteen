@@ -57,7 +57,7 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         changeFragment(fragment);
     }
 
-    private void changeFragment(Fragment fragment) {
+    public void changeFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_user_frame_layout, fragment);
         fragmentTransaction.addToBackStack(null);

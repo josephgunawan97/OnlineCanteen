@@ -31,6 +31,16 @@ public class Cart implements Serializable {
 
     public void setQuantity(int quantity) {this.quantity = quantity;}
 
+    public void increaseQuantity(int incQuantity) {
+        if(incQuantity < 0) return;
+        this.quantity += incQuantity;
+    }
+
+    public void decreaseQuantity(int decQuantity) {
+        if(decQuantity < 0) return;
+        this.quantity -= decQuantity;
+    }
+
     public static int getTotalPrice(Cart cart) {
         return cart.getQuantity() * cart.getProductPrice();
     }

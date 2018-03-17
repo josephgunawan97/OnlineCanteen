@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.activity.MainUserActivity;
 import com.example.asus.onlinecanteen.adapter.UserProductItemAdapter;
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.Store;
@@ -26,6 +27,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 
 public class UserProductListFragment extends Fragment {
+
+    public static final String PRODUCT_LIST_KEY = "Products";
 
     // Store
     private Store currentStore;
@@ -76,7 +79,10 @@ public class UserProductListFragment extends Fragment {
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                UserOrderProductFragment orderProductFragment = new UserOrderProductFragment();
+                orderProductFragment.setCurrentStore(currentStore);
+                orderProductFragment.setProductList(userProductItemAdapter.getProducts());
+                ((MainUserActivity) getActivity()).changeFragment(orderProductFragment);
             }
         });
 

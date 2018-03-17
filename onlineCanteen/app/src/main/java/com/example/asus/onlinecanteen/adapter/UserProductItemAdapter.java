@@ -1,5 +1,6 @@
 package com.example.asus.onlinecanteen.adapter;
 
+import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,6 +37,7 @@ public class UserProductItemAdapter extends RecyclerView.Adapter<UserProductItem
         // Set on view
         holder.productNameTextView.setText(product.getName());
         holder.productPriceTextView.setText("Rp " + String.valueOf(product.getPrice()));
+        holder.productStockTextView.setText("Stock: " + String.valueOf(product.getStock()));
         // Get image
         if(product.getImageUrl() != null) {
             Glide.with(holder.productImageView.getContext())
@@ -69,11 +71,16 @@ public class UserProductItemAdapter extends RecyclerView.Adapter<UserProductItem
         notifyDataSetChanged();
     }
 
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView productImageView;
         public TextView productNameTextView;
         public TextView productPriceTextView;
+        public TextView productStockTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -81,6 +88,7 @@ public class UserProductItemAdapter extends RecyclerView.Adapter<UserProductItem
             productImageView = itemView.findViewById(R.id.product_image_view);
             productNameTextView = itemView.findViewById(R.id.product_name_text_view);
             productPriceTextView = itemView.findViewById(R.id.product_price_text_view);
+            productStockTextView = itemView.findViewById(R.id.product_stock_text_view);
         }
     }
 }
