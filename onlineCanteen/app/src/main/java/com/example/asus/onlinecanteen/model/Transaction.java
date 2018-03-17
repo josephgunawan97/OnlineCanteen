@@ -113,9 +113,8 @@ public class Transaction implements Serializable{
         return items;
     }
 
-    public String getPurchaseDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
-        return sdf.format(purchaseDate);
+    public long getPurchaseDate() {
+        return purchaseDate;
     }
 
     public int getTotalPrice() {
@@ -135,8 +134,11 @@ public class Transaction implements Serializable{
     }
 
     public String getName(){
-
         return this.name;
     }
 
+    public static String getPurchasedDateString(long time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+        return sdf.format(time);
+    }
 }

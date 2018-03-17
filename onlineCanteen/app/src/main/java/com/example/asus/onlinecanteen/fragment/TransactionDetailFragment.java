@@ -53,7 +53,7 @@ public class TransactionDetailFragment extends Fragment {
         itemsRecyclerView = view.findViewById(R.id.transaction_detail_items);
         totalAmountTextView = view.findViewById(R.id.transaction_detail_amount);
 
-        transactionDateTextView.setText(String.valueOf(transaction.getPurchaseDate()));
+        transactionDateTextView.setText(Transaction.getPurchasedDateString(transaction.getPurchaseDate()));
         storeNameTextView.setText(transaction.getSid());
         totalAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
 

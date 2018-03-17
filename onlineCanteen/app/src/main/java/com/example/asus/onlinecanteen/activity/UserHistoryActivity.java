@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.TransactionDetailFragment;
@@ -14,7 +15,9 @@ import com.example.asus.onlinecanteen.model.Transaction;
  * Created by Steven Albert on 10/02/2018.
  */
 
-public class HistoryActivity extends AppCompatActivity implements TransactionHistoryFragment.TransactionDetailHandler {
+public class UserHistoryActivity extends AppCompatActivity implements TransactionHistoryFragment.TransactionDetailHandler {
+
+    private static final String TAG = UserHistoryActivity.class.getSimpleName();
 
     private FragmentManager fragmentManager;
 
@@ -22,6 +25,8 @@ public class HistoryActivity extends AppCompatActivity implements TransactionHis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TransactionHistoryFragment historyFragment = new TransactionHistoryFragment();
         historyFragment.setTransactionDetailHandler(this);
@@ -33,6 +38,14 @@ public class HistoryActivity extends AppCompatActivity implements TransactionHis
         fragmentTransaction.commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed() count: " + fragmentManager.getBackStackEntryCount());
+        super.onBackPressed();
+        if(fragmentManager.getBackStackEntryCount() == 0) {
+            finish();
+        }
+    }
 
     @Override
     public void transactionDetailHandler(Transaction transaction) {

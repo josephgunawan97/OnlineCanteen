@@ -1,14 +1,18 @@
 package com.example.asus.onlinecanteen.activity;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,7 +20,6 @@ import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MainUserFragment;
 import com.example.asus.onlinecanteen.fragment.UserProductListFragment;
 import com.example.asus.onlinecanteen.model.Store;
-import com.example.asus.onlinecanteen.utils.WalletUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,10 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 public class MainUserActivity extends AppCompatActivity implements MainUserFragment.StoreClickHandler {
 
+    private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private FragmentManager fragmentManager;
 
@@ -47,9 +49,9 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         Toolbar toolbar = findViewById(R.id.main_user_toolbar);
         setSupportActionBar(toolbar);
         // Add drawer toggle
-        DrawerLayout drawer = findViewById(R.id.main_user_drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.app_name, R.string.app_name);
-        drawer.addDrawerListener(toggle);
+        drawerLayout = findViewById(R.id.main_user_drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         // Put default fragment
@@ -61,6 +63,7 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
 
         // Set up navigation view
         navigationView = findViewById(R.id.main_user_navigation_view);
+        navigationView.setNavigationItemSelectedListener(new MainNavigationListener());
 
         //Get User
         firebaseAuth = FirebaseAuth.getInstance();
@@ -109,5 +112,27 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         fragmentTransaction.replace(R.id.main_user_frame_layout, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    private class MainNavigationListener implements NavigationView.OnNavigationItemSelectedListener {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            // Checked the item
+            item.setChecked(true);
+
+            // Close the drawer
+            drawerLayout.closeDrawer(GravityCompat.START);
+
+            switch (item.getItemId()) {
+                case R.id.menu_history_item:
+                    Intent historyIntent = new Intent(MainUserActivity.this, UserHistoryActivity.class);
+                    startActivity(historyIntent);
+                    break;
+                default:
+                    break;
+            }
+            return true;
+        }
     }
 }

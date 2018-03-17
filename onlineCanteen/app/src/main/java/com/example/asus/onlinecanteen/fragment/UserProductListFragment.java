@@ -7,9 +7,11 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +30,7 @@ import com.google.firebase.database.Query;
 
 public class UserProductListFragment extends Fragment {
 
+    private static final String TAG = UserProductListFragment.class.getSimpleName();
     public static final String PRODUCT_LIST_KEY = "Products";
 
     // Store
@@ -72,8 +75,10 @@ public class UserProductListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
 
         if(currentStore != null) getActivity().setTitle(currentStore.getStoreName());
+
         // Order Floating Action Button
         orderButton = view.findViewById(R.id.order_floating_action_button);
         orderButton.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +118,7 @@ public class UserProductListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "Item clicked");
         switch (item.getItemId()) {
             case android.R.id.home:
                 FragmentManager fragmentManager = getFragmentManager();

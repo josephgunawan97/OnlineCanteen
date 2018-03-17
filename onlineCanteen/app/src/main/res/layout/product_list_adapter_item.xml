@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:padding="@dimen/user_order_product_padding">
 
@@ -11,18 +10,16 @@
         android:layout_height="@dimen/product_image_size"
         android:layout_marginEnd="@dimen/product_info_margin"
         android:scaleType="centerCrop"
-        android:contentDescription="@string/product_image_description"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:contentDescription="@string/product_image_description" />
 
     <TextView
         android:id="@+id/product_name_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/product_info_margin"
-        app:layout_constraintTop_toTopOf="@id/product_image_view"
-        app:layout_constraintBottom_toBottomOf="@id/product_image_view"
-        app:layout_constraintStart_toEndOf="@id/product_image_view"
+        android:layout_marginEnd="@dimen/product_info_margin"
         android:text="@string/product_name_default"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold"
@@ -31,10 +28,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/product_image_view"
-        app:layout_constraintBottom_toBottomOf="@id/product_image_view"
         android:layout_marginEnd="@dimen/product_info_margin">
 
         <TextView
@@ -52,4 +47,4 @@
             android:text="@string/product_price_default" />
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

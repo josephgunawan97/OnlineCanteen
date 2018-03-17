@@ -32,7 +32,8 @@
         <activity
             android:name=".activity.CartActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activity.HistoryActivity" />
+        <activity android:name=".activity.UserHistoryActivity"
+            android:parentActivityName=".activity.MainUserActivity" />
         <activity android:name=".activity.RegistrationMainActivity" />
         <activity android:name=".activity.RegisterProductActivity" />
         <activity android:name=".activity.DeleteProductActivity" />

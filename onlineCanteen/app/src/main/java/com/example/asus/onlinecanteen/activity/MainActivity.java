@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_history_item:
-                    Intent historyIntent = new Intent(MainActivity.this, HistoryActivity.class);
+                    Intent historyIntent = new Intent(MainActivity.this, UserHistoryActivity.class);
                     startActivity(historyIntent);
                     break;
                 default:
