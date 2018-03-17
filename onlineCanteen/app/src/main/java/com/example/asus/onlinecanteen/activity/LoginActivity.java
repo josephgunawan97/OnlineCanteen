@@ -121,13 +121,31 @@ public class LoginActivity extends AppCompatActivity {
         uid = user.getUid();
         userDatabase = FirebaseDatabase.getInstance().getReference();
 
-        userDatabase.child("users").addValueEventListener(new ValueEventListener() {
+        userDatabase.child("role").child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.child(uid).exists()) {
-                    Intent intent = new Intent(LoginActivity.this, MainUserActivity.class);
-                    startActivity(intent);
-                    finish();
+                if (snapshot.exists()) {
+                    String role = snapshot.getValue().toString();
+                    Intent intent;
+                    switch (role){
+                        case "USER":
+                            intent = new Intent(LoginActivity.this, MainUserActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        case "STORE":
+                            intent = new Intent(LoginActivity.this, MainActivityMerchant.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        case "ADMIN":
+                            intent = new Intent(LoginActivity.this, MainActivityAdmin.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+                        default: break;
+
+                    }
                 }
 
             }
@@ -135,22 +153,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
-        userDatabase.child("store").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot.child(uid).exists()) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivityMerchant.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
     }
+
+
 
     private boolean validateLoginInfo() {
         boolean valid = true;

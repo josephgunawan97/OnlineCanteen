@@ -67,4 +67,5 @@
 
     <!-- Order Product -->
     <string name="user_order_product_button_text">Place Order</string>
+    <string name="title_activity_main_admin">MainActivityAdmin</string>
 </resources>

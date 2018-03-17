@@ -6,7 +6,8 @@
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="22" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_round"
@@ -38,9 +39,13 @@
         <activity android:name=".activity.RegisterStoreActivity" />
         <activity android:name=".activity.EditProductActivity" />
         <activity android:name=".activity.MerchantOrderDetailActivity" />
-        <activity android:name=".activity.QrActivity"/>
-        <activity android:name=".activity.MainUserActivity"
+        <activity android:name=".activity.QrActivity" />
+        <activity
+            android:name=".activity.MainUserActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activity.MainActivityAdmin" />
+        <activity android:name=".activity.AdminTopUpActivity" />
+        <activity android:name=".activity.AdminStoreWithdrawal"></activity>
     </application>
 
 </manifest>

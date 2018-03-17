@@ -45,7 +45,7 @@ public class RegisterStoreActivity extends AppCompatActivity {
     String profPicUrl;
     FirebaseAuth mAuth;
     FirebaseUser user;
-    DatabaseReference StoreReferences, walletReferences;
+    DatabaseReference StoreReferences, walletReferences, roleReferences;
     private DatabaseReference databaseStore;
 
     //EditText
@@ -141,6 +141,8 @@ public class RegisterStoreActivity extends AppCompatActivity {
                 });
     }
 
+    private String uid;
+
     private void addAdditionalUserInformation() {
         mAuth.signInWithEmailAndPassword(emailET.getText().toString(), passwordET.getText().toString())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -149,19 +151,30 @@ public class RegisterStoreActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             user = mAuth.getCurrentUser();
 
-                            String uid = user.getUid();
+                            uid = user.getUid();
                             String img = uploadImage();
                             Store storeInfo = new Store(username, openh, closeh, location, img);
                             StoreReferences = FirebaseDatabase.getInstance().getReference("store").child(uid);
                             StoreReferences.setValue(storeInfo);
 
+
                             walletReferences = FirebaseDatabase.getInstance().getReference("wallet").child(uid);
                             walletReferences.setValue(0);
 
+                            roleReferences = FirebaseDatabase.getInstance().getReference("role").child(uid);
+                            roleReferences.setValue("STORE");
+
                             backToLoginScreen();
+
+
                         }
                     }
                 });
+
+
+
+
+
     }
 
     //To upload image
