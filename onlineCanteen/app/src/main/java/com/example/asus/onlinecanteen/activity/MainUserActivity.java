@@ -36,6 +36,8 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
     private FirebaseUser user;
     private DatabaseReference walletRef;
 
+    private TextView userWallet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +69,7 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         //Set up header navigation
         NavigationView navigationView = (NavigationView) findViewById(R.id.main_user_navigation_view);
         View header=navigationView.getHeaderView(0);
-        final TextView userWallet = (TextView)header.findViewById(R.id.user_wallet);
+        userWallet = (TextView)header.findViewById(R.id.user_wallet);
         TextView username = (TextView) header.findViewById(R.id.user_navigation_user_name) ;
         TextView email = (TextView) header.findViewById(R.id.user_navigation_user_email) ;
         //Get wallet amount
