@@ -39,9 +39,8 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/toolbar"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="14dp"
+                android:layout_above="@+id/locate"
+                android:layout_alignStart="@+id/locate"
                 android:layout_weight="1"
                 android:shadowColor="#000000"
                 android:shadowDx="-1.0"
@@ -51,6 +50,19 @@
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/locate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/toolbar"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="14dp"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

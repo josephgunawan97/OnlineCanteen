@@ -23,6 +23,7 @@ import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MerchantOrderListFragment;
 import com.example.asus.onlinecanteen.fragment.MerchantProductListFragment;
 import com.example.asus.onlinecanteen.model.Product;
+import com.example.asus.onlinecanteen.model.Store;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -39,10 +41,12 @@ public class MainActivityMerchant extends AppCompatActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager mViewPager;
-    TextView title;
+    TextView title,locate;
     ImageView image;
     private ChildEventListener eventListener;
     ViewPagerAdapter viewPagerAdapter;
+    Store store;
+
 
     // Firebase References
     private DatabaseReference databaseUsers;
@@ -59,6 +63,7 @@ public class MainActivityMerchant extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_merchant);
 
+        locate = (TextView) findViewById(R.id.locate);
         title = (TextView) findViewById(R.id.title) ;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,12 +86,28 @@ public class MainActivityMerchant extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         merchant = firebaseAuth.getCurrentUser();
 
+
+
         // Initialize References
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
-        title.setText(merchant.getDisplayName());
+        databaseStore.child(merchant.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                store = dataSnapshot.getValue(Store.class);
+                title.setText(store.getStoreName());
+                locate.setText(store.getLocation() +" | " + store.getOpenHour() +" - "+ store.getCloseHour());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //title.setText(merchant.getDisplayName());
         if(merchant.getPhotoUrl() != null) {
             //toolbar.setTitle(merchant.getPhotoUrl().toString());
         }
