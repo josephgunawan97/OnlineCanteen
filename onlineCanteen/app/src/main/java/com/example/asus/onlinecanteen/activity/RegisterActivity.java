@@ -156,6 +156,11 @@ public class RegisterActivity extends AppCompatActivity {
                             String uid = user.getUid();
                             String img = uploadImage();
                             User userInfo = new User(username, nim, phone, img);
+
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(username).build();
+                            user.updateProfile(profileUpdates);
+
                             userReferences = FirebaseDatabase.getInstance().getReference("users").child(uid);
                             userReferences.setValue(userInfo);
 

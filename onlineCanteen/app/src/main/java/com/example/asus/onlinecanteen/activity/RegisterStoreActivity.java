@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -153,6 +154,10 @@ public class RegisterStoreActivity extends AppCompatActivity {
 
                             uid = user.getUid();
                             String img = uploadImage();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(username).build();
+                            user.updateProfile(profileUpdates);
+
                             Store storeInfo = new Store(username, openh, closeh, location, img);
                             StoreReferences = FirebaseDatabase.getInstance().getReference("store").child(uid);
                             StoreReferences.setValue(storeInfo);
