@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="180dp"
+    android:layout_width="match_parent"
     android:layout_height="180dp"
     android:background="#0D000000"
     android:orientation="horizontal">
@@ -14,11 +14,11 @@
         <ImageView
             android:id="@+id/icon"
             android:layout_width="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
             android:layout_height="113dp"
             android:layout_weight="1"
-            android:padding="5dp" />
+            android:adjustViewBounds="true"
+            android:padding="5dp"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/itemName"

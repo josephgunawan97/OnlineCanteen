@@ -120,7 +120,7 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
                     Transaction trans = productSnapshot.getValue(Transaction.class);
                     Log.i(MerchantOrderListFragment.class.getSimpleName(),"IF+ "+merchant.getDisplayName() +" "+ trans.getSid());
 
-                    if(merchant.getDisplayName().equals(trans.getSid())) {
+                    if(merchant.getUid().equals(trans.getSid())) {
                         //trans.setNameData();
                         transactions.add(trans);
                         Log.i(MerchantOrderListFragment.class.getSimpleName(),"Add2");

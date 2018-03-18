@@ -3,6 +3,7 @@ package com.example.asus.onlinecanteen.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,12 +15,19 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MerchantOrderListFragment;
 import com.example.asus.onlinecanteen.fragment.MerchantProductListFragment;
+import com.example.asus.onlinecanteen.model.Product;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -31,6 +39,9 @@ public class MainActivityMerchant extends AppCompatActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager mViewPager;
+    TextView title;
+    ImageView image;
+    private ChildEventListener eventListener;
     ViewPagerAdapter viewPagerAdapter;
 
     // Firebase References
@@ -48,9 +59,11 @@ public class MainActivityMerchant extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_merchant);
 
-
+        title = (TextView) findViewById(R.id.title) ;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setTitle("");
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -73,17 +86,15 @@ public class MainActivityMerchant extends AppCompatActivity {
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
-        toolbar.setTitle(merchant.getDisplayName());
+        title.setText(merchant.getDisplayName());
+        if(merchant.getPhotoUrl() != null) {
+            //toolbar.setTitle(merchant.getPhotoUrl().toString());
+        }
+    }
 
-    }
-    public void refreshNow (){
-        finish();
-        overridePendingTransition( 0, 0);
-        startActivity(getIntent());
-        overridePendingTransition( 0, 0);
-    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_merchant, menu);
         //menu.add(0, MENU_LOGOUT, 0, R.string.signOut_title);
         return true;

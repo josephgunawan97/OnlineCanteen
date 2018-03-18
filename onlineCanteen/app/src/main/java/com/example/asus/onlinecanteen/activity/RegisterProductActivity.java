@@ -115,7 +115,7 @@ public class RegisterProductActivity extends AppCompatActivity {
 
 
     //To upload image
-    private String uploadImage() {
+    private void uploadImage() {
 
         Log.d(TAG, "Uploading...");
         final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("product/"+System.currentTimeMillis()+".jpg");
@@ -140,7 +140,6 @@ public class RegisterProductActivity extends AppCompatActivity {
                 }
             });
         }
-        return profPicUrl;
     }
 
     private boolean validateRegisterInfo() {
