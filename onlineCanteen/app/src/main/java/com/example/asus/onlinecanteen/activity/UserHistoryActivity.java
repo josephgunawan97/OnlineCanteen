@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.TransactionDetailFragment;
@@ -56,5 +57,16 @@ public class UserHistoryActivity extends AppCompatActivity implements Transactio
         fragmentTransaction.replace(R.id.history_frame_layout, detailFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

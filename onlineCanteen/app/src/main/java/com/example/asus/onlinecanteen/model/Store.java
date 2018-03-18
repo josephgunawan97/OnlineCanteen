@@ -1,12 +1,15 @@
 package com.example.asus.onlinecanteen.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.sql.Time;
 
 /**
  * Created by ASUS on 2/12/2018.
  */
 
-public class Store {
+public class Store implements Parcelable {
     private String storeName;
     private String storeId;
     private String openHour;
@@ -23,6 +26,27 @@ public class Store {
         this.location = location;
         this.img = img;
     }
+
+    protected Store(Parcel in) {
+        storeName = in.readString();
+        storeId = in.readString();
+        openHour = in.readString();
+        closeHour = in.readString();
+        location = in.readString();
+        img = in.readString();
+    }
+
+    public static final Creator<Store> CREATOR = new Creator<Store>() {
+        @Override
+        public Store createFromParcel(Parcel in) {
+            return new Store(in);
+        }
+
+        @Override
+        public Store[] newArray(int size) {
+            return new Store[size];
+        }
+    };
 
     public void setStoreName(String storeName) {
         this.storeName = storeName;
@@ -69,4 +93,19 @@ public class Store {
     }
 
     public String getImg() {return img;}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(getStoreName());
+        dest.writeString(getStoreId());
+        dest.writeString(getOpenHour());
+        dest.writeString(getCloseHour());
+        dest.writeString(getLocation());
+        dest.writeString(getImg());
+    }
 }

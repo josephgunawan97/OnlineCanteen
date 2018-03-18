@@ -1,6 +1,7 @@
 package com.example.asus.onlinecanteen.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.activity.MainUserActivity;
+import com.example.asus.onlinecanteen.activity.UserOrderProductActivity;
 import com.example.asus.onlinecanteen.adapter.UserProductItemAdapter;
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.Store;
@@ -75,7 +77,6 @@ public class UserProductListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
 
         if(currentStore != null) getActivity().setTitle(currentStore.getStoreName());
 
@@ -84,10 +85,10 @@ public class UserProductListFragment extends Fragment {
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserOrderProductFragment orderProductFragment = new UserOrderProductFragment();
-                orderProductFragment.setCurrentStore(currentStore);
-                orderProductFragment.setProductList(userProductItemAdapter.getProducts());
-                ((MainUserActivity) getActivity()).changeFragment(orderProductFragment);
+                Intent intent = new Intent(getActivity(), UserOrderProductActivity.class);
+                intent.putExtra(UserOrderProductActivity.CURRENT_STORE_KEY, currentStore);
+                intent.putExtra(UserOrderProductActivity.PRODUCT_LIST_KEY, userProductItemAdapter.getProducts());
+                startActivity(intent);
             }
         });
 
@@ -112,8 +113,13 @@ public class UserProductListFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        detachProductDatabaseListener();
-        if(userProductItemAdapter != null) userProductItemAdapter.removeAllProducts();
+//        detachProductDatabaseListener();
+//        if(userProductItemAdapter != null) userProductItemAdapter.removeAllProducts();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override

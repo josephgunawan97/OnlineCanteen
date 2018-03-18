@@ -55,7 +55,7 @@ public class CartActivity extends AppCompatActivity {
         locationEditText = findViewById(R.id.userLocation);
 
         //Set views
-        grandTotal.setText("Grand Total : Rp " + total);
+        grandTotal.setText("TOTAL: Rp " + total);
         deliveryFee.setText("Delivery Fee : Rp ");
 
         cartList.setAdapter(cartActivityAdapter);

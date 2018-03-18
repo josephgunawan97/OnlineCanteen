@@ -114,11 +114,12 @@ public class UserOrderProductFragment extends Fragment {
                         }
                     }
 
-                    carts.removeAll(toRemove);
-
                     //Go to cart
                     Intent intent = new Intent(getActivity(), CartActivity.class);
-                    intent.putExtra("Cart", carts);
+                    ArrayList<Cart> intentCart = new ArrayList<>();
+                    intentCart.addAll(carts);
+                    intentCart.removeAll(toRemove);
+                    intent.putExtra("Cart", intentCart);
                     intent.putExtra("Seller", currentStore.getStoreName());
                     startActivity(intent);
                 }

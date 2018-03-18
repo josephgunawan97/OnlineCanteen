@@ -32,7 +32,8 @@
         <activity
             android:name=".activity.CartActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activity.UserHistoryActivity"
+        <activity
+            android:name=".activity.UserHistoryActivity"
             android:parentActivityName=".activity.MainUserActivity" />
         <activity android:name=".activity.RegistrationMainActivity" />
         <activity android:name=".activity.RegisterProductActivity" />
@@ -46,7 +47,12 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activity.MainActivityAdmin" />
         <activity android:name=".activity.AdminTopUpActivity" />
-        <activity android:name=".activity.AdminStoreWithdrawal"></activity>
+        <activity android:name=".activity.AdminStoreWithdrawal" />
+        <activity
+            android:name=".activity.UserOrderProductActivity"
+            android:parentActivityName=".activity.UserStoreProductActivity" />
+        <activity android:name=".activity.UserStoreProductActivity"
+            android:parentActivityName=".activity.MainUserActivity"/>
     </application>
 
 </manifest>

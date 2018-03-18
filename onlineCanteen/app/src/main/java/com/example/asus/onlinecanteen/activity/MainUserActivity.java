@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainUserActivity extends AppCompatActivity implements MainUserFragment.StoreClickHandler {
 
+    private static final String TAG = MainUserActivity.class.getSimpleName();
+
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private FragmentManager fragmentManager;
@@ -46,6 +49,8 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_user);
+
+        Log.d(TAG, "onCreate() called");
 
         // Set up customized toolbar
         Toolbar toolbar = findViewById(R.id.main_user_toolbar);
@@ -113,12 +118,12 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
 
     @Override
     public void storeClickHandler(Store store) {
-        UserProductListFragment fragment = new UserProductListFragment();
-        fragment.setCurrentStore(store);
-        changeFragment(fragment);
+        Intent intent = new Intent(MainUserActivity.this, UserStoreProductActivity.class);
+        intent.putExtra(UserStoreProductActivity.CURRENT_STORE_KEY, store);
+        startActivity(intent);
     }
 
-    public void changeFragment(Fragment fragment) {
+    private void changeFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_user_frame_layout, fragment);
         fragmentTransaction.addToBackStack(null);
