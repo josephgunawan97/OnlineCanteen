@@ -99,7 +99,7 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
         submitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                submitData();
+                uploadImage();
             }
         });
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
@@ -208,6 +208,29 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
 
 
     }
+    private void uploadImage() {
+
+        Log.d(TAG, "Uploading...");
+        final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("product/"+System.currentTimeMillis()+".jpg");
+        if (imageUri!=null){
+            profileImageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    @SuppressWarnings("VisibleForTests") Uri downloadUrl =taskSnapshot.getDownloadUrl();
+                    profPicUrl = downloadUrl.toString();
+                    submitData();
+                    Log.d(TAG, "Success in uploading");
+                    // backToScreen();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(),"Image failed to upload",Toast.LENGTH_LONG).show();
+                    // backToScreen();
+                }
+            });
+        }
+    }
     //To submit data
     private void submitData() {
 
@@ -220,9 +243,11 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
                     DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
-                    Log.i(TAG,"TEXT "+nodeDataSnapshot.getValue().toString());
-                    String key = nodeDataSnapshot.getKey(); // this key is `K1NRz9l5PU_0CFDtgXz`
+                    Product product = nodeDataSnapshot.getValue(Product.class);
+                    //Log.i(TAG,"TEXT2 "+nodeDataSnapshot.getValue().toString() +"test "+ dataSnapshot.getValue().toString() );
+                    String key = nodeDataSnapshot.getKey();
                     String path = "/" + dataSnapshot.getKey() + "/" + key;
                     HashMap<String, Object> result = new HashMap<>();
                     //result.put("imageUrl", );
@@ -230,6 +255,25 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
                     // HashMap<Integer, Object> result2 = new HashMap<>();
                     result.put("price", Integer.parseInt(productPrice.getText().toString()));
                     result.put("stock", Integer.parseInt(productQty.getText().toString()));
+                    result.put("imageUrl", profPicUrl);
+
+                    StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(product.getImageUrl());
+                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            // File deleted successfully
+                            Log.d(TAG, "onSuccess: deleted file");
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Uh-oh, an error occurred!
+                            Log.d(TAG, "onFailure: did not delete file");
+                        }
+                    });
+
+                    //if(!product.getImageUrl().equals())
+
                     reference.child(path).updateChildren(result);
                 }
 
