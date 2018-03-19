@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +40,8 @@ public class CartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         cart = (ArrayList<Cart>) getIntent().getSerializableExtra("Cart");
         cartActivityAdapter = new CartActivityAdapter(this, cart);
@@ -75,7 +79,7 @@ public class CartActivity extends AppCompatActivity {
                     Transaction transaction = new Transaction(intent.getStringExtra("Seller"), FirebaseAuth.getInstance().getUid(), items, locationEditText.getText().toString());
                     TransactionUtil.insert(transaction);
                     Toast.makeText(getApplicationContext(), "Transcation done", Toast.LENGTH_SHORT).show();
-
+                    setResult(RESULT_OK);
                     //Go back to main menu
                     finish();
                 }else{
@@ -95,5 +99,16 @@ public class CartActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

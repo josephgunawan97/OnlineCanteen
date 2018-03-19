@@ -1,6 +1,7 @@
 package com.example.asus.onlinecanteen.fragment;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,6 +45,13 @@ public class UserOrderProductFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private UserOrderProductAdapter orderProductAdapter;
 
+    // Handler
+    private PlaceOrderHandler placeOrderHandler;
+
+    public interface PlaceOrderHandler {
+        void onClickPlaceOrder(ArrayList<Cart> carts);
+    }
+
     public UserOrderProductFragment() {
         // Required empty public constructor
     }
@@ -79,51 +87,19 @@ public class UserOrderProductFragment extends Fragment {
         placeOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Cart> carts = orderProductAdapter.getOrders();
-
-                //Check empty cart
-                boolean emptyCart = true;
-                for (Cart c : carts) {
-                    if (c.getQuantity() != 0) {
-                        emptyCart = false;
-                        break;
-                    }
-                }
-
-                if (emptyCart == true) {
-                    //Alert dialog if there are no items in cart
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("You don't have any items in your cart!")
-                    .setCancelable(false)
-                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                    }
-                    });
-
-                    AlertDialog alert = builder.create();
-                    alert.setTitle("Error");
-                    alert.show();
-                } else {
-                    //Remove item if qty is 0
-                    ArrayList<Cart> toRemove = new ArrayList<>();
-
-                    for (Cart c : carts) {
-                        if (c.getQuantity() == 0) {
-                            toRemove.add(c);
-                        }
-                    }
-
-                    //Go to cart
-                    Intent intent = new Intent(getActivity(), CartActivity.class);
-                    ArrayList<Cart> intentCart = new ArrayList<>();
-                    intentCart.addAll(carts);
-                    intentCart.removeAll(toRemove);
-                    intent.putExtra("Cart", intentCart);
-                    intent.putExtra("Seller", currentStore.getStoreName());
-                    startActivity(intent);
+                if(placeOrderHandler != null) {
+                    placeOrderHandler.onClickPlaceOrder(orderProductAdapter.getOrders());
                 }
             }
         });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if(context instanceof PlaceOrderHandler){
+            this.placeOrderHandler = (PlaceOrderHandler) context;
+        }
     }
 }

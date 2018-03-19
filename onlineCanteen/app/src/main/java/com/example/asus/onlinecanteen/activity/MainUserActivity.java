@@ -115,7 +115,10 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if(fragmentManager.getBackStackEntryCount() == 1) {
+            finish();
+        }
+        else super.onBackPressed();
     }
 
     @Override
