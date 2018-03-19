@@ -13,6 +13,7 @@ public class User {
     String userPhone;
     String img;
 
+
     public User(String name, String userNim, String userPhone, String img) {
         this.name = name;
         this.userNim = userNim;
@@ -38,4 +39,12 @@ public class User {
     }
 
     public String getimg() { return img; }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

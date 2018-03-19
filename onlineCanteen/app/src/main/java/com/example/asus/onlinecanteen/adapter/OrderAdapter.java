@@ -15,6 +15,10 @@ import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.activity.MerchantOrderDetailActivity;
 import com.example.asus.onlinecanteen.fragment.MerchantOrderListFragment;
 import com.example.asus.onlinecanteen.model.Transaction;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,11 +58,29 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
      * @param holder ViewHolder which should be updated
      * @param position position of items in the adapter
      */
-    @Override public void onBindViewHolder(ViewHolder holder, int position) {
+    @Override public void onBindViewHolder(final ViewHolder holder, int position) {
         // Get Transaction Item
-        Transaction transaction = transactionHistory.get(position);
+        final Transaction transaction = transactionHistory.get(position);
         // Set Information on View
-        holder.userNameTextView.setText(transaction.getName());
+        //transaction.setName("TEST");
+
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(transaction.getUid()).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Log.i(Transaction.class.getSimpleName(),"IF+ "+dataSnapshot.getKey() +" "+ transaction.getUid());
+                // Log.i(MerchantOrderListFragment.class.getSimpleName(),"IF+ "+merchant.getDisplayName() +" "+ trans.getSid());
+                    transaction.setName(dataSnapshot.child("name").getValue().toString());
+                    holder.userNameTextView.setText(dataSnapshot.child("name").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         Log.i(OrderAdapter.class.getSimpleName(),"NAMA ORDER= "+transaction.getName());
         holder.transactionDateTextView.setText(Transaction.getPurchasedDateString(transaction.getPurchaseDate()));
         holder.paymentAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));

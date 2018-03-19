@@ -71,6 +71,8 @@ public class Transaction implements Serializable{
 
         this.purchaseDate = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime().getTime();
         this.deliveryStatus = Transaction.PENDING;
+
+
     }
 
     public void setSid(String sid) {
