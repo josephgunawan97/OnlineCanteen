@@ -5,5 +5,14 @@
         <item android:id="@+id/menu_history_item"
             android:icon="@drawable/ic_archive_black_24dp"
             android:title="@string/history_title_item"/>
+
     </group>
+
+    <item android:title="Account">
+        <menu>
+            <item android:id="@+id/navigation_menu_logout"
+                android:title="@string/sign_out"
+                android:icon="@drawable/logout"/>
+        </menu>
+    </item>
 </menu>

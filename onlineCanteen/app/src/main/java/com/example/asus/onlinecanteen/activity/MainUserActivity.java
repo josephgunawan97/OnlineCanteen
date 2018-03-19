@@ -1,5 +1,6 @@
 package com.example.asus.onlinecanteen.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -130,6 +132,30 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         fragmentTransaction.commit();
     }
 
+    //User Logout
+    public void logout(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.signOut_confirmation)
+                .setCancelable(false)
+                .setPositiveButton(R.string.signOut_confirm, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        firebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(MainUserActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.signOut_cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.setTitle(R.string.signOut_title);
+        alert.show();
+    }
+
     private class MainNavigationListener implements NavigationView.OnNavigationItemSelectedListener {
 
         @Override
@@ -144,6 +170,9 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
                 case R.id.menu_history_item:
                     Intent historyIntent = new Intent(MainUserActivity.this, UserHistoryActivity.class);
                     startActivity(historyIntent);
+                    break;
+                case R.id.navigation_menu_logout:
+                    logout();
                     break;
                 default:
                     break;
