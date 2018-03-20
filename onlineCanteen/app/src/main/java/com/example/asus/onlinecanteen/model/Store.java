@@ -16,10 +16,12 @@ public class Store implements Parcelable {
     private String closeHour;
     private String location;
     private String img;
+    private String email;
 
     public Store() {}
 
-    public Store(String storeName, String openHour, String closeHour, String location, String img) {
+    public Store(String storeName, String openHour, String closeHour, String location, String img, String email) {
+        this.email = email;
         this.storeName = storeName;
         this.openHour = openHour;
         this.closeHour = closeHour;
@@ -34,7 +36,9 @@ public class Store implements Parcelable {
         closeHour = in.readString();
         location = in.readString();
         img = in.readString();
+        email = in.readString();
     }
+
 
     public static final Creator<Store> CREATOR = new Creator<Store>() {
         @Override
@@ -50,6 +54,10 @@ public class Store implements Parcelable {
 
     public void setStoreName(String storeName) {
         this.storeName = storeName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setStoreId(String storeId) {
@@ -68,8 +76,10 @@ public class Store implements Parcelable {
         this.openHour = openHour;
     }
 
-    public void setImage(String img) {
-        this.img = img;
+    public void setImage(String img) { this.img = img; }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getStoreName() {
@@ -80,9 +90,7 @@ public class Store implements Parcelable {
         return storeId;
     }
 
-    public String getOpenHour() {
-        return openHour;
-    }
+    public String getOpenHour() { return openHour; }
 
     public String getCloseHour() {
         return closeHour;
@@ -107,5 +115,6 @@ public class Store implements Parcelable {
         dest.writeString(getCloseHour());
         dest.writeString(getLocation());
         dest.writeString(getImg());
+        dest.writeString(getEmail());
     }
 }

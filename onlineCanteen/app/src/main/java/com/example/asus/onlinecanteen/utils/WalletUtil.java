@@ -21,13 +21,9 @@ public class WalletUtil {
     DatabaseReference walletDatabase, walletReferences;
     String uid;
     int value, credit, debit;
-    int amount;
 
-    private boolean success = false;
-
-    public boolean creditAmount(String id, final int creditx)
+    public void creditAmount(String id, final int creditx)
     {
-        success = false;
         uid = id;
         credit = creditx;
         walletDatabase = FirebaseDatabase.getInstance().getReference();
@@ -41,25 +37,18 @@ public class WalletUtil {
                     if(value >= credit)
                     {
                         setAmount(uid,value-credit);
-                        success = true;
                     }
-                    else success = false;
                 }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        return success;
     }
 
-    private void setSuccess(boolean success){
-        this.success = success;
-    }
 
-    public boolean debitAmount(String id, int add)
+    public void debitAmount(String id, int add)
     {
-        setSuccess(true);
         walletDatabase = FirebaseDatabase.getInstance().getReference();
         uid = id;
         debit = add;
@@ -72,13 +61,9 @@ public class WalletUtil {
                     String valueString = dataSnapshot.getValue().toString();
                     value = Integer.parseInt(valueString);
                     setAmount(uid,value+debit);
-                    Log.d("Test",""+success);
                     return;
                 }
-                else
-                {
-                    setSuccess(false);
-                }
+
             }
 
             @Override
@@ -86,15 +71,34 @@ public class WalletUtil {
 
             }
         });
-        Log.d("Test","kok "+success);
-        return success;
-
 
     }
 
     private void setAmount(String uid, Integer value) {
         walletReferences = FirebaseDatabase.getInstance().getReference("wallet").child(uid);
         walletReferences.setValue(value);
+    }
+
+    public int getAmount(String id){
+        walletDatabase = FirebaseDatabase.getInstance().getReference();
+        uid = id;
+        final int[] x = new int[1];
+
+        walletDatabase.child("wallet").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    String valueString = dataSnapshot.getValue().toString();
+                    x[0] = Integer.parseInt(valueString);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return x[0];
     }
 
 

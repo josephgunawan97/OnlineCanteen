@@ -22,9 +22,17 @@ import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.PurchasedItem;
 import com.example.asus.onlinecanteen.model.Transaction;
 import com.example.asus.onlinecanteen.utils.TransactionUtil;
+import com.example.asus.onlinecanteen.utils.WalletUtil;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -35,6 +43,10 @@ public class CartActivity extends AppCompatActivity {
     CartActivityAdapter cartActivityAdapter;
     ArrayList<Cart> cart;
     int total;
+    FirebaseUser user;
+    WalletUtil walletUtil;
+    FirebaseAuth mAuth;
+    DatabaseReference walletRef, merchantRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +57,10 @@ public class CartActivity extends AppCompatActivity {
 
         cart = (ArrayList<Cart>) getIntent().getSerializableExtra("Cart");
         cartActivityAdapter = new CartActivityAdapter(this, cart);
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        walletUtil = new WalletUtil();
 
         //Calculating the grand total
         for(Cart c: cart){
@@ -68,20 +84,78 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!locationEditText.getText().toString().isEmpty()) {
-                    //Make new transaction
-                    ArrayList<PurchasedItem> items = new ArrayList<>();
-                    for (Cart c : cart) {
-                        PurchasedItem item = new PurchasedItem(c.getProductName(), c.getProductPrice(), c.getQuantity());
-                        items.add(item);
-                    }
 
-                    Intent intent = getIntent();
-                    Transaction transaction = new Transaction(intent.getStringExtra("Seller"), FirebaseAuth.getInstance().getUid(), items, locationEditText.getText().toString());
-                    TransactionUtil.insert(transaction);
-                    Toast.makeText(getApplicationContext(), "Transcation done", Toast.LENGTH_SHORT).show();
-                    setResult(RESULT_OK);
-                    //Go back to main menu
-                    finish();
+                    //Make new transaction
+                    walletRef = FirebaseDatabase.getInstance().getReference().child("wallet");
+                    walletRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists())
+                            {
+                                String valueString = dataSnapshot.getValue().toString();
+                                int walletCash = Integer.parseInt(valueString);
+
+                                //if wallet money >= total
+                                if(walletCash>=total)
+                                {
+                                    //Purchase with Wallet
+                                    walletUtil.creditAmount(user.getUid(),total);
+
+                                    //Send money to Merchant
+                                    merchantRef = FirebaseDatabase.getInstance().getReference().child("emailtouid");
+
+                                    Intent intent = getIntent();
+                                    String emailMerchant = intent.getStringExtra("SellerEmail");
+                                    emailMerchant = emailMerchant.replaceAll(Pattern.quote("."),",");
+
+                                    merchantRef.child(emailMerchant).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()){
+                                                WalletUtil walletUtil = new WalletUtil();
+                                                walletUtil.debitAmount(dataSnapshot.getValue().toString(),total);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+
+                                    ArrayList<PurchasedItem> items = new ArrayList<>();
+                                    for (Cart c : cart) {
+                                        PurchasedItem item = new PurchasedItem(c.getProductName(), c.getProductPrice(), c.getQuantity());
+                                        items.add(item);
+                                    }
+
+
+                                    Transaction transaction = new Transaction(intent.getStringExtra("Seller"), FirebaseAuth.getInstance().getUid(), items, locationEditText.getText().toString());
+                                    TransactionUtil.insert(transaction);
+                                    Toast.makeText(getApplicationContext(), "Transcation done", Toast.LENGTH_SHORT).show();
+                                    setResult(RESULT_OK);
+                                    //Go back to main menu
+                                    finish();
+                                }
+                                else {
+
+                                    Toast.makeText(getApplicationContext(), "Not enough wallet cash, please top-up at our counter",
+                                            Toast.LENGTH_SHORT).show();
+                                    finish();
+
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
                 }else{
                     //Alert dialog if the location is not filled in
                     AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);

@@ -25,6 +25,7 @@ import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MainUserFragment;
 import com.example.asus.onlinecanteen.fragment.UserProductListFragment;
 import com.example.asus.onlinecanteen.model.Store;
+import com.example.asus.onlinecanteen.utils.WalletUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +47,8 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
     private DatabaseReference walletRef;
 
     private TextView userWallet;
+
+    private WalletUtil walletUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +105,8 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
 
             }
         });
+
+
 
         // Set username and email
         username.setText(user.getDisplayName());

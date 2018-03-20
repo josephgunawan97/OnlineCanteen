@@ -34,6 +34,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.regex.Pattern;
+
 public class RegisterStoreActivity extends AppCompatActivity {
 
     private static final String TAG = RegisterActivity.class.getSimpleName();
@@ -46,7 +48,7 @@ public class RegisterStoreActivity extends AppCompatActivity {
     String profPicUrl;
     FirebaseAuth mAuth;
     FirebaseUser user;
-    DatabaseReference StoreReferences, walletReferences, roleReferences;
+    DatabaseReference StoreReferences, walletReferences, roleReferences, emailReferences;
     private DatabaseReference databaseStore;
 
     //EditText
@@ -158,7 +160,7 @@ public class RegisterStoreActivity extends AppCompatActivity {
                                     .setDisplayName(username).build();
                             user.updateProfile(profileUpdates);
 
-                            Store storeInfo = new Store(username, openh, closeh, location, img);
+                            Store storeInfo = new Store(username, openh, closeh, location, img, email);
                             StoreReferences = FirebaseDatabase.getInstance().getReference("store").child(uid);
                             StoreReferences.setValue(storeInfo);
 
@@ -169,8 +171,11 @@ public class RegisterStoreActivity extends AppCompatActivity {
                             roleReferences = FirebaseDatabase.getInstance().getReference("role").child(uid);
                             roleReferences.setValue("STORE");
 
-                            backToLoginScreen();
+                            String passemail = email.replaceAll(Pattern.quote("."),",");
+                            emailReferences = FirebaseDatabase.getInstance().getReference("emailtouid").child(passemail);
+                            emailReferences.setValue(uid);
 
+                            backToLoginScreen();
 
                         }
                     }

@@ -50,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
     String profPicUrl;
     FirebaseAuth mAuth;
     FirebaseUser user;
-    DatabaseReference userReferences, walletReferences, roleReferences, emailRef;
+    DatabaseReference userReferences, walletReferences, roleReferences, emailRef, emailReferences;
     private DatabaseReference databaseUsers;
 
     //EditText
@@ -172,6 +172,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                             emailRef = FirebaseDatabase.getInstance().getReference("emailtouid").child(email.replaceAll(Pattern.quote("."),","));
                             emailRef.setValue(uid);
+
+                            String passemail = email.replaceAll(Pattern.quote("."),",");
+                            emailReferences = FirebaseDatabase.getInstance().getReference("emailtouid").child(passemail);
+                            emailReferences.setValue(uid);
 
                             backToLoginScreen();
                         }

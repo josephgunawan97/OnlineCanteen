@@ -68,11 +68,10 @@ public class AdminTopUpActivity extends AppCompatActivity {
                             WalletUtil walletUtil = new WalletUtil();
                             String id = dataSnapshot.getValue().toString();
 
-                            if(walletUtil.debitAmount(id,amount)==true){
+                                walletUtil.debitAmount(id,amount);
                                 Intent intent = new Intent(AdminTopUpActivity.this, MainActivityAdmin.class);
                                 startActivity(intent);
                                 finish();
-                            }
 
                         }
                     }

@@ -41,7 +41,7 @@ public class MainActivityMerchant extends AppCompatActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager mViewPager;
-    TextView title,locate;
+    TextView title,locate, wallet;
     ImageView image;
     private ChildEventListener eventListener;
     ViewPagerAdapter viewPagerAdapter;
@@ -52,6 +52,7 @@ public class MainActivityMerchant extends AppCompatActivity {
     private DatabaseReference databaseUsers;
     private DatabaseReference databaseProducts;
     private DatabaseReference databaseStore;
+    private DatabaseReference databaseWallet;
 
     // Firebase Auth and User
     private FirebaseAuth firebaseAuth;
@@ -66,6 +67,8 @@ public class MainActivityMerchant extends AppCompatActivity {
         locate = (TextView) findViewById(R.id.locate);
         title = (TextView) findViewById(R.id.title) ;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        wallet = (TextView) findViewById(R.id.merchant_wallet);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitle("");
@@ -86,12 +89,23 @@ public class MainActivityMerchant extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         merchant = firebaseAuth.getCurrentUser();
 
-
-
         // Initialize References
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
+        databaseWallet = FirebaseDatabase.getInstance().getReference("wallet");
+
+        databaseWallet.child(merchant.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                wallet.setText(""+dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         databaseStore.child(merchant.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
