@@ -112,18 +112,18 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
         adapter = new OrderAdapter(transactions);
         Log.i(MerchantOrderListFragment.class.getSimpleName(),"Add3");
         databaseTransaction = FirebaseDatabase.getInstance().getReference();
-        databaseTransaction.child("transactions").addValueEventListener(new ValueEventListener() {
+        databaseTransaction.child("transactions").orderByChild("sid").equalTo(merchant.getUid()).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 for(DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
                     Transaction trans = productSnapshot.getValue(Transaction.class);
-                    Log.i(MerchantOrderListFragment.class.getSimpleName(),"IF+ "+merchant.getDisplayName() +" "+ trans.getSid());
+                    Log.i(MerchantOrderListFragment.class.getSimpleName(),"IF+ "+merchant.getUid() +" "+ trans.getSid());
 
-                    if(merchant.getDisplayName().equals(trans.getSid())) {
                         transactions.add(trans);
                         Log.i(MerchantOrderListFragment.class.getSimpleName(),"Add2");
-                    }
+
                 }
                 adapter.setTransactionHistory(transactions);
                 if(adapter!=null)
