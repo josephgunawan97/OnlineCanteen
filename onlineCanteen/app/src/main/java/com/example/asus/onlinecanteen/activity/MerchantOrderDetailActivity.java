@@ -81,7 +81,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
         });
 
         //Set views
-        transactiondate.setText(String.valueOf(transaction.getPurchaseDate()));
+        transactiondate.setText(Transaction.getPurchasedDateString(transaction.getPurchaseDate()));
         username.setText(transaction.getName());
         location.setText(transaction.getLocation());
         grandTotal.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
