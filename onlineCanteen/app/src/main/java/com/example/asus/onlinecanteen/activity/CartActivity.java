@@ -103,39 +103,13 @@ public class CartActivity extends AppCompatActivity {
                                 //if wallet money >= total
                                 if(walletCash>=total)
                                 {
-                                    //Purchase with Wallet
-                                    walletUtil.creditAmount(user.getUid(),total);
-
-                                    //Send money to Merchant
-                                    merchantRef = FirebaseDatabase.getInstance().getReference().child("emailtouid");
-
-                                    Intent intent = getIntent();
-                                    String emailMerchant = intent.getStringExtra("SellerEmail");
-                                    emailMerchant = emailMerchant.replaceAll(Pattern.quote("."),",");
-
-                                    merchantRef.child(emailMerchant).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.exists()){
-                                                WalletUtil walletUtil = new WalletUtil();
-                                                walletUtil.debitAmount(dataSnapshot.getValue().toString(),total);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-
-
                                     ArrayList<PurchasedItem> items = new ArrayList<>();
                                     for (Cart c : cart) {
                                         PurchasedItem item = new PurchasedItem(c.getProductName(), c.getProductPrice(), c.getQuantity());
                                         items.add(item);
                                     }
 
-
+                                    Intent intent = getIntent();
                                     Transaction transaction = new Transaction(intent.getStringExtra("Seller"), FirebaseAuth.getInstance().getUid(), items, locationEditText.getText().toString());
                                     TransactionUtil.insert(transaction);
                                     Toast.makeText(getApplicationContext(), "Transcation done", Toast.LENGTH_SHORT).show();
