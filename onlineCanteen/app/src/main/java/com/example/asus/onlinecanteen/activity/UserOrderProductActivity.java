@@ -120,7 +120,8 @@ public class UserOrderProductActivity extends AppCompatActivity implements UserO
             intentCart.addAll(carts);
             intentCart.removeAll(toRemove);
             intent.putExtra("Cart", intentCart);
-            intent.putExtra("Seller", currentStore.getStoreName());
+            intent.putExtra("Seller", currentStore.getStoreId());
+            Log.d(TAG, currentStore.getStoreId());
             intent.putExtra("SellerEmail",currentStore.getEmail());
             startActivityForResult(intent, PLACE_ORDER_CODE);
         }
