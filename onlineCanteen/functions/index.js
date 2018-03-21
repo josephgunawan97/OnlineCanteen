@@ -7,8 +7,8 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 exports.sendNotification = functions.database.ref('/notifications/{user_id}/{notification_id}').onWrite(event =>{
-    //const user_id = event.params.user_id;
-    const user_id = "ZUrDHqo2G8dTHeeNeoAxEq3Hgtf2";
+    const user_id = event.params.user_id;
+    //const user_id = "ZUrDHqo2G8dTHeeNeoAxEq3Hgtf2";
     const notification = event.params.notification;
 
     console.log('Sent a notification to : ', user_id);
@@ -26,7 +26,7 @@ exports.sendNotification = functions.database.ref('/notifications/{user_id}/{not
             notification: {
                 title : "Sit 'n Shop",
                 body : "You have a new order!",
-                icon : "default",
+                icon : "logo",
                 sound: "default"
             }
         };
