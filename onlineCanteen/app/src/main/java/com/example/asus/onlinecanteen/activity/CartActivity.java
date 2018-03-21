@@ -23,6 +23,7 @@ import com.example.asus.onlinecanteen.model.PurchasedItem;
 import com.example.asus.onlinecanteen.model.Transaction;
 import com.example.asus.onlinecanteen.utils.TransactionUtil;
 import com.example.asus.onlinecanteen.utils.WalletUtil;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class CartActivity extends AppCompatActivity {
@@ -46,7 +48,7 @@ public class CartActivity extends AppCompatActivity {
     FirebaseUser user;
     WalletUtil walletUtil;
     FirebaseAuth mAuth;
-    DatabaseReference walletRef, merchantRef;
+    DatabaseReference walletRef, merchantRef, notificationRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,8 @@ public class CartActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         walletUtil = new WalletUtil();
+
+        notificationRef = FirebaseDatabase.getInstance().getReference().child("notifications");
 
         //Calculating the grand total
         for(Cart c: cart){
@@ -136,6 +140,13 @@ public class CartActivity extends AppCompatActivity {
                                     TransactionUtil.insert(transaction);
                                     Toast.makeText(getApplicationContext(), "Transcation done", Toast.LENGTH_SHORT).show();
                                     setResult(RESULT_OK);
+
+                                    //Make notification to the seller
+                                    HashMap<String,String> notificationData = new HashMap<>();
+                                    notificationData.put("from", transaction.getUid());
+                                    notificationData.put("type", "new order");
+                                    notificationRef.child(transaction.getSid()).push().setValue(notificationData);
+
                                     //Go back to main menu
                                     finish();
                                 }

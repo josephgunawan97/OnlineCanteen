@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseUser user;
     private String userRole;
 
-    DatabaseReference userDatabase;
+    DatabaseReference userDatabase, mUser, mStore;
 
     // Firebase Authentication
     private FirebaseAuth firebaseAuth;
@@ -112,6 +113,8 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+        mUser = FirebaseDatabase.getInstance().getReference().child("users");
+        mStore = FirebaseDatabase.getInstance().getReference().child("store");
     }
 
     private void login() {
@@ -127,13 +130,18 @@ public class LoginActivity extends AppCompatActivity {
                 if (snapshot.exists()) {
                     String role = snapshot.getValue().toString();
                     Intent intent;
+
+                    String currentUser = firebaseAuth.getCurrentUser().getUid();
+                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
                     switch (role){
                         case "USER":
+                            mUser.child(currentUser).child("device_token").setValue(deviceToken);
                             intent = new Intent(LoginActivity.this, MainUserActivity.class);
                             startActivity(intent);
                             finish();
                             break;
                         case "STORE":
+                            mStore.child(currentUser).child("device_token").setValue(deviceToken);
                             intent = new Intent(LoginActivity.this, MainActivityMerchant.class);
                             startActivity(intent);
                             finish();

@@ -80,7 +80,6 @@ public class MenuListAdapter extends ArrayAdapter<Product> {
         
         //Set seller Text
         String id = product.getTokoId();
-        String name = null;
         storeDatabase = FirebaseDatabase.getInstance().getReference();
         storeDatabase.child("store").child(id).child("storeName").addValueEventListener(new ValueEventListener() {
             @Override
