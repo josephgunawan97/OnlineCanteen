@@ -138,51 +138,24 @@ public class MainActivityMerchant extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_signout:
-                logout();
-                return true;
-            case R.id.action_add:
-                Intent intent = new Intent(this, RegisterProductActivity.class);
+            case R.id.action_profile:
+                Intent intent = new Intent(this, MerchantProfileActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.action_delete:
-                Intent intent2 = new Intent(this, DeleteProductActivity.class);
+            case R.id.action_add:
+                Intent intent2 = new Intent(this, RegisterProductActivity.class);
                 startActivity(intent2);
                 return true;
-            case R.id.action_edit:
-                Intent intent3 = new Intent(this, EditProductActivity.class);
+            case R.id.action_delete:
+                Intent intent3 = new Intent(this, DeleteProductActivity.class);
                 startActivity(intent3);
+                return true;
+            case R.id.action_edit:
+                Intent intent4 = new Intent(this, EditProductActivity.class);
+                startActivity(intent4);
                 return true;
         }
         return false;
-    }
-
-    //User Logout
-    public void logout() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.signOut_confirmation)
-                .setCancelable(false)
-                .setPositiveButton(R.string.signOut_confirm, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        firebaseAuth = FirebaseAuth.getInstance();
-                        merchant = firebaseAuth.getCurrentUser();
-                        firebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(MainActivityMerchant.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .setNegativeButton(R.string.signOut_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert = builder.create();
-        alert.setTitle(R.string.signOut_title);
-        alert.show();
-
-
     }
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {

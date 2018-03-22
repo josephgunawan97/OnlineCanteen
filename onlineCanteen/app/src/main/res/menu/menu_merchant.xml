@@ -10,7 +10,7 @@
         app:showAsAction="always" />
 
     <item android:id="@+id/action_edit"
-        android:icon="@drawable/ic_edit_black_24dp"
+        android:icon="@drawable/ic_edit_black"
         android:title="Edit"
         app:showAsAction="always"/>
 
@@ -21,8 +21,10 @@
         app:showAsAction="always" />
 
     <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_signout"
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/ic_account_circle_black"
         android:title="@string/sign_out"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
 
 </menu>
