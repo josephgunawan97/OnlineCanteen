@@ -230,13 +230,17 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
                 }
             });
         }
+        else
+            submitDatawithoutImage();
     }
     //To submit data
     private void submitData() {
 
+        Log.i(TAG,"TEXT2 MASUK" );
         if(validateRegisterInfo())
         {
 
+            Log.i(TAG,"TEXT2 MASUK LAGI" );
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             final DatabaseReference reference = firebaseDatabase.getReference();
             Query query = reference.child("products").orderByChild("tokoId").equalTo(merchant.getUid());
@@ -246,7 +250,7 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
 
                     DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
                     Product product = nodeDataSnapshot.getValue(Product.class);
-                    //Log.i(TAG,"TEXT2 "+nodeDataSnapshot.getValue().toString() +"test "+ dataSnapshot.getValue().toString() );
+                    Log.i(TAG,"TEXT2 test "+ nodeDataSnapshot.getValue().toString() );
                     String key = nodeDataSnapshot.getKey();
                     String path = "/" + dataSnapshot.getKey() + "/" + key;
                     HashMap<String, Object> result = new HashMap<>();
@@ -271,6 +275,48 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
                             Log.d(TAG, "onFailure: did not delete file");
                         }
                     });
+
+                    //if(!product.getImageUrl().equals())
+
+                    reference.child(path).updateChildren(result);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //Logger.error(TAG, ">>> Error:" + "find onCancelled:" + databaseError);
+
+                }
+            });
+            backToScreen();
+        }
+
+    }
+
+    private void submitDatawithoutImage() {
+
+        Log.i(TAG,"TEXT2 MASUK" );
+        if(validateRegisterInfo())
+        {
+
+            Log.i(TAG,"TEXT2 MASUK LAGI" );
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            final DatabaseReference reference = firebaseDatabase.getReference();
+            Query query = reference.child("products").orderByChild("tokoId").equalTo(merchant.getUid());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+                    Product product = nodeDataSnapshot.getValue(Product.class);
+                    Log.i(TAG,"TEXT2 test "+ nodeDataSnapshot.getValue().toString() );
+                    String key = nodeDataSnapshot.getKey();
+                    String path = "/" + dataSnapshot.getKey() + "/" + key;
+                    HashMap<String, Object> result = new HashMap<>();
+                    //result.put("imageUrl", );
+                    result.put("name", productName.getText().toString());
+                    // HashMap<Integer, Object> result2 = new HashMap<>();
+                    result.put("price", Integer.parseInt(productPrice.getText().toString()));
+                    result.put("stock", Integer.parseInt(productQty.getText().toString()));
 
                     //if(!product.getImageUrl().equals())
 

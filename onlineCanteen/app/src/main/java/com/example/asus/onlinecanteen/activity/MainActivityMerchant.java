@@ -98,7 +98,7 @@ public class MainActivityMerchant extends AppCompatActivity {
         databaseWallet.child(merchant.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                wallet.setText(""+dataSnapshot.getValue().toString());
+                wallet.setText("Rp."+dataSnapshot.getValue().toString()+",-");
             }
 
             @Override
