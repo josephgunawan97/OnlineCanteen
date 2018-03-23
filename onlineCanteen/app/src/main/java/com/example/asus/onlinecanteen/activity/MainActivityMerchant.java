@@ -1,10 +1,7 @@
 package com.example.asus.onlinecanteen.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -18,11 +15,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MerchantOrderListFragment;
 import com.example.asus.onlinecanteen.fragment.MerchantProductListFragment;
-import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.Store;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -139,7 +134,7 @@ public class MainActivityMerchant extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_profile:
-                Intent intent = new Intent(this, MerchantProfileActivity.class);
+                Intent intent = new Intent(this, MerchantSettingsActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.action_add:

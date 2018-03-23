@@ -12,7 +12,7 @@ import com.example.asus.onlinecanteen.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MerchantProfileActivity extends AppCompatActivity {
+public class MerchantSettingsActivity extends AppCompatActivity {
 
     Button logoutButton, editProfileBtn, deliveryFeeBtn, withdrawButton, salesReportBtn;
 
@@ -23,7 +23,7 @@ public class MerchantProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_merchant_profile);
+        setContentView(R.layout.activity_merchant_settings);
 
         //Click listener for logging out
         logoutButton = findViewById(R.id.signOutButton);
@@ -45,7 +45,7 @@ public class MerchantProfileActivity extends AppCompatActivity {
                         firebaseAuth = FirebaseAuth.getInstance();
                         merchant = firebaseAuth.getCurrentUser();
                         firebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent(MerchantProfileActivity.this, LoginActivity.class);
+                        Intent intent = new Intent(MerchantSettingsActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }

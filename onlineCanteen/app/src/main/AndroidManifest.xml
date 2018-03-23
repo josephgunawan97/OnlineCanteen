@@ -55,7 +55,7 @@
         <activity
             android:name=".activity.UserStoreProductActivity"
             android:parentActivityName=".activity.MainUserActivity" />
-        <activity android:name=".activity.MerchantProfileActivity"></activity>
+        <activity android:name=".activity.MerchantSettingsActivity"></activity>
     </application>
 
 </manifest>
