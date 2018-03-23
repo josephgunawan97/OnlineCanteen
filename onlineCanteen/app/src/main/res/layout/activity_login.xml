@@ -1,81 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout android:id="@+id/login_root_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.asus.onlinecanteen.activity.LoginActivity">
+    tools:context="com.example.asus.onlinecanteen.activity.LoginActivity"
+    android:focusableInTouchMode="true"
+    android:clickable="true" >
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
 
         <ImageView
             android:id="@+id/logo"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo" />
+            android:src="@drawable/logo" />
 
-        <EditText
-            android:id="@+id/loginUsername"
-            android:layout_width="348dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="7dp"
-            android:background="@drawable/username"
-            android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="60dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/logo" />
+        <LinearLayout android:id="@+id/user_login_email_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp" >
 
-        <EditText
-            android:id="@+id/loginPass"
-            android:layout_width="347dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="7dp"
-            android:background="@drawable/password"
-            android:ems="10"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:paddingLeft="60dp"
-            app:layout_constraintLeft_toLeftOf="@id/loginUsername"
-            app:layout_constraintRight_toRightOf="@id/loginUsername"
-            app:layout_constraintTop_toBottomOf="@id/loginUsername" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="8dp"
+                android:src="@drawable/ic_person_black"
+                android:tint="@color/white"
+                android:background="@drawable/circle_primary_color"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:layout_gravity="center_vertical">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/loginUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/user_login_password_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="8dp"
+                android:src="@drawable/ic_lock_black"
+                android:tint="@color/white"
+                android:background="@drawable/circle_primary_color"
+                />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:layout_gravity="center_vertical">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/loginPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:inputType="textPassword"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/RegisterStore"
-            android:layout_width="344dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:background="@color/colorPrimary"
             android:text="Sign in"
-            android:textColor="@color/white"
-            app:layout_constraintLeft_toLeftOf="@id/loginPass"
-            app:layout_constraintRight_toRightOf="@id/loginPass"
-            app:layout_constraintTop_toBottomOf="@id/loginPass" />
+            android:textColor="@color/white" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintLeft_toLeftOf="@id/RegisterStore"
-            app:layout_constraintRight_toRightOf="@id/RegisterStore"
-            app:layout_constraintTop_toBottomOf="@id/RegisterStore">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp" >
 
             <TextView
                 android:id="@+id/question"
@@ -95,7 +136,7 @@
                 android:text="@string/signUpText" />
         </LinearLayout>
         <!--Loading Screen Layout-->
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
     <!--Oppacity Option
       100% — FF
       95% — F2
@@ -118,16 +159,18 @@
       10% — 1A
       5% — 0D
       0% — 00-->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/loadingPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#8C000000"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="gone">
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:indeterminate="true" />
-    </RelativeLayout>
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

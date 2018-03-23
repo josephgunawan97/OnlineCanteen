@@ -1,11 +1,15 @@
 package com.example.asus.onlinecanteen.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.User;
+import com.example.asus.onlinecanteen.utils.ActivityUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String TAG = LoginActivity.class.getSimpleName();
 
     // Views
+    private ConstraintLayout loginRootLayout;
     private EditText loginUsernameEditText;
     private EditText loginPasswordEditText;
     private TextView signUp;
@@ -53,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        loginRootLayout = findViewById(R.id.login_root_layout);
 
         getSupportActionBar().hide();
 
@@ -115,6 +123,38 @@ public class LoginActivity extends AppCompatActivity {
         });
         mUser = FirebaseDatabase.getInstance().getReference().child("users");
         mStore = FirebaseDatabase.getInstance().getReference().child("store");
+
+        loginPasswordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    hideKeyboard(v);
+                } else {
+                    openKeyboard(v);
+                }
+            }
+        });
+
+        loginUsernameEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    hideKeyboard(v);
+                } else {
+                    openKeyboard(v);
+                }
+            }
+        });
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public void openKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void login() {

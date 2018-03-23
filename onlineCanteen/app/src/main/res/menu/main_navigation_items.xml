@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group>
+    <group android:checkableBehavior="none">
+        <item android:id="@+id/menu_order_item"
+            android:icon="@drawable/ic_schedule_black"
+            android:title="Current order"/>
         <item android:id="@+id/menu_history_item"
-            android:icon="@drawable/ic_archive_black_24dp"
+            android:icon="@drawable/ic_history_black"
             android:title="@string/history_title_item"/>
-
     </group>
-
     <item android:title="Account">
         <menu>
-            <item android:id="@+id/navigation_menu_logout"
-                android:title="@string/sign_out"
-                android:icon="@drawable/logout"/>
+            <group android:checkableBehavior="none">
+                <item android:id="@+id/navigation_menu_edit_profile"
+                    android:title="Edit profile"
+                    android:icon="@drawable/ic_person_black"/>
+                <item android:id="@+id/navigation_menu_qr"
+                    android:title="Show QR"
+                    android:icon="@drawable/ic_qrcode_black_24dp"/>
+                <item android:id="@+id/navigation_menu_logout"
+                    android:title="@string/sign_out"
+                    android:icon="@drawable/logout"/>
+            </group>
         </menu>
     </item>
-    <item android:title="QR">
-        <menu>
-            <item android:id="@+id/navigation_menu_qr"
-                android:title="Show QR"
-                android:icon="@drawable/ic_qrcode_black_24dp"/>
-        </menu>
-    </item>
-
-
 </menu>

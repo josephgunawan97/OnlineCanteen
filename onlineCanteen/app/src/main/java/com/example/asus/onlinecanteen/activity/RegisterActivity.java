@@ -66,6 +66,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        setTitle("Registration");
+
         mAuth = FirebaseAuth.getInstance();
 
         imageView = findViewById(R.id.imageinput);
