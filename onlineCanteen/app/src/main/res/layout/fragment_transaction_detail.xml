@@ -5,6 +5,8 @@
     tools:context="com.example.asus.onlinecanteen.fragment.TransactionDetailFragment"
     android:orientation="vertical">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,10 +41,18 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp" >
 
+        <ImageButton
+            android:id="@+id/qr_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:src="@drawable/ic_qrcode_black_24dp" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Purchased from : "
+            android:layout_gravity="center"
             android:textColor="@color/white"/>
 
         <TextView
@@ -50,7 +60,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
+            android:layout_gravity="center"
             android:text="@string/history_store_name_default" />
+
 
     </LinearLayout>
 
@@ -59,7 +71,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
     <TextView
         android:id="@+id/transaction_detail_amount"
         android:layout_width="match_parent"

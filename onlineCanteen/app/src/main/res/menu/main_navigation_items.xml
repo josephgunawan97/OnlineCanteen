@@ -15,4 +15,13 @@
                 android:icon="@drawable/logout"/>
         </menu>
     </item>
+    <item android:title="QR">
+        <menu>
+            <item android:id="@+id/navigation_menu_qr"
+                android:title="Show QR"
+                android:icon="@drawable/ic_qrcode_black_24dp"/>
+        </menu>
+    </item>
+
+
 </menu>

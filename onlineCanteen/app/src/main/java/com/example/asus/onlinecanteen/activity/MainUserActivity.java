@@ -2,6 +2,7 @@ package com.example.asus.onlinecanteen.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -15,10 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
@@ -33,6 +36,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class MainUserActivity extends AppCompatActivity implements MainUserFragment.StoreClickHandler {
 
@@ -85,8 +93,8 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         NavigationView navigationView = findViewById(R.id.main_user_navigation_view);
         View header = navigationView.getHeaderView(0);
         userWallet = header.findViewById(R.id.user_wallet);
-        TextView username =  header.findViewById(R.id.user_navigation_user_name) ;
-        TextView email =  header.findViewById(R.id.user_navigation_user_email) ;
+        TextView username = header.findViewById(R.id.user_navigation_user_name);
+        TextView email = header.findViewById(R.id.user_navigation_user_email);
         ImageView profilePicture = header.findViewById(R.id.user_navigation_user_picture);
 
         //Get wallet amount
@@ -94,8 +102,7 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         walletRef.child(user.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
-                {
+                if (dataSnapshot.exists()) {
                     userWallet.setText(dataSnapshot.getValue().toString());
                 }
             }
@@ -107,11 +114,10 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         });
 
 
-
         // Set username and email
         username.setText(user.getDisplayName());
         email.setText(user.getEmail());
-        if(user.getPhotoUrl() != null) {
+        if (user.getPhotoUrl() != null) {
             Glide.with(this)
                     .load(user.getPhotoUrl())
                     .into(profilePicture);
@@ -120,10 +126,9 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
 
     @Override
     public void onBackPressed() {
-        if(fragmentManager.getBackStackEntryCount() == 1) {
+        if (fragmentManager.getBackStackEntryCount() == 1) {
             finish();
-        }
-        else super.onBackPressed();
+        } else super.onBackPressed();
     }
 
     @Override
@@ -141,7 +146,7 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
     }
 
     //User Logout
-    public void logout(){
+    public void logout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.signOut_confirmation)
                 .setCancelable(false)
@@ -182,10 +187,48 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
                 case R.id.navigation_menu_logout:
                     logout();
                     break;
+                case R.id.navigation_menu_qr:
+                    showQR();
+                    break;
                 default:
                     break;
             }
             return true;
         }
     }
-}
+
+    private void showQR() {
+        Bitmap bitmap;
+        // TODO Auto-generated method stub
+        AlertDialog.Builder alertadd = new AlertDialog.Builder(
+                this);
+        alertadd.setTitle("QR Code");
+
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View view = factory.inflate(R.layout.qr_layout, null);
+
+        String text2Qr = user.getUid().toString();
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(text2Qr, BarcodeFormat.QR_CODE,300,300);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            ImageView image= (ImageView) view.findViewById(R.id.imageView);
+            image.setImageBitmap(bitmap);
+        }  catch (WriterException e) {
+            e.printStackTrace();
+        }
+
+        alertadd.setView(view);
+        alertadd.setNeutralButton("Close", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dlg, int sumthin) {
+
+            }
+        });
+
+        alertadd.show();
+
+    }
+
+    }
+
