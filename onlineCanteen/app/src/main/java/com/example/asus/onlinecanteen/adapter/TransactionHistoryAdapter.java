@@ -1,6 +1,7 @@
 package com.example.asus.onlinecanteen.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,10 @@ import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Transaction;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -58,11 +63,25 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
      * @param position position of items in the adapter
      */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // Get Transaction Item
-        Transaction transaction = transactionHistory.get(position);
+        final Transaction transaction = transactionHistory.get(position);
         // Set Information on View
-        holder.storeNameTextView.setText(transaction.getSid());
+        FirebaseDatabase.getInstance().getReference().child("store").child(transaction.getSid()).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                holder.storeNameTextView.setText(dataSnapshot.child("storeName").getValue().toString());
+                // Log.i(MerchantOrderListFragment.class.getSimpleName(),"IF+ "+merchant.getDisplayName() +" "+ trans.getSid());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         holder.transactionDateTextView.setText(Transaction.getPurchasedDateString(transaction.getPurchaseDate()));
         holder.paymentAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
     }
