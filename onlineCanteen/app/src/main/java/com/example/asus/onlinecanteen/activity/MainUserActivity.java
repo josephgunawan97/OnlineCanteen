@@ -21,12 +21,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MainUserFragment;
-import com.example.asus.onlinecanteen.fragment.UserProductListFragment;
 import com.example.asus.onlinecanteen.model.Store;
 import com.example.asus.onlinecanteen.utils.WalletUtil;
 import com.google.firebase.auth.FirebaseAuth;
@@ -193,6 +191,10 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
                     break;
                 case R.id.navigation_menu_qr:
                     showQR();
+                    break;
+                case R.id.navigation_menu_top_up:
+                    Intent topUpIntent = new Intent(MainUserActivity.this, RequestTopUpActivity.class);
+                    startActivity(topUpIntent);
                     break;
                 default:
                     break;

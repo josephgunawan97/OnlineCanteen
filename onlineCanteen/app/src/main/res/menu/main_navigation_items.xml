@@ -18,6 +18,9 @@
     <item android:title="Account">
         <menu>
             <group android:checkableBehavior="none">
+                <item android:id="@+id/navigation_menu_top_up"
+                    android:title="Top-Up"
+                    android:icon="@drawable/ic_attach_money_black_24dp"/>
                 <item android:id="@+id/navigation_menu_edit_profile"
                     android:title="Edit profile"
                     android:icon="@drawable/ic_person_black"/>
