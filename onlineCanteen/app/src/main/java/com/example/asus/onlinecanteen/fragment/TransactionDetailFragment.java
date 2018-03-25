@@ -70,7 +70,21 @@ public class TransactionDetailFragment extends Fragment {
         totalAmountTextView = view.findViewById(R.id.transaction_detail_amount);
 
         transactionDateTextView.setText(Transaction.getPurchasedDateString(transaction.getPurchaseDate()));
-        storeNameTextView.setText(transaction.getSid());
+        FirebaseDatabase.getInstance().getReference().child("store").child(transaction.getSid()).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                storeNameTextView.setText(dataSnapshot.child("storeName").getValue().toString());
+                // Log.i(MerchantOrderListFragment.class.getSimpleName(),"IF+ "+merchant.getDisplayName() +" "+ trans.getSid());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         totalAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
 
         TransactionDetailAdapter detailAdapter = new TransactionDetailAdapter(transaction.getItems());
@@ -97,7 +111,7 @@ public class TransactionDetailFragment extends Fragment {
                 Log.i(TransactionDetailFragment.class.getSimpleName() , " ADD12 "+ dataSnapshot.getValue() );
                 for(DataSnapshot productSnapshot : dataSnapshot.getChildren())
                 {
-                    if(productSnapshot.child("sid").getValue().equals(transaction.getSid()))
+                    if(productSnapshot.child("sid").getValue().equals(transaction.getSid()) && productSnapshot.child("purchaseDate").getValue().equals(transaction.getPurchaseDate()))
                     {
 
                         Bitmap bitmap;

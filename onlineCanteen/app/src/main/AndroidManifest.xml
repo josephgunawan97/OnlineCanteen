@@ -37,6 +37,9 @@
         <activity
             android:name=".activity.UserHistoryActivity"
             android:parentActivityName=".activity.MainUserActivity" />
+        <activity
+            android:name=".activity.UserCurrentOrderActivity"
+            android:parentActivityName=".activity.MainUserActivity" />
         <activity android:name=".activity.RegistrationMainActivity" />
         <activity android:name=".activity.RegisterProductActivity" />
         <activity android:name=".activity.DeleteProductActivity" />

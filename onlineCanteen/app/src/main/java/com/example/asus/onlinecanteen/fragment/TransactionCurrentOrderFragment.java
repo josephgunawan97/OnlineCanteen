@@ -11,20 +11,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.adapter.TransactionHistoryAdapter;
-import com.example.asus.onlinecanteen.model.Product;
-import com.example.asus.onlinecanteen.model.PurchasedItem;
 import com.example.asus.onlinecanteen.model.Transaction;
 import com.example.asus.onlinecanteen.utils.TransactionUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
@@ -33,7 +28,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TransactionHistoryFragment extends Fragment implements TransactionHistoryAdapter.TransactionHistoryClickHandler {
+public class TransactionCurrentOrderFragment extends Fragment implements TransactionHistoryAdapter.TransactionHistoryClickHandler {
 
     // Recycler View
     private RecyclerView recyclerView;
@@ -52,7 +47,7 @@ public class TransactionHistoryFragment extends Fragment implements TransactionH
         void transactionDetailHandler(Transaction transaction);
     }
 
-    public TransactionHistoryFragment() {
+    public TransactionCurrentOrderFragment() {
         transactionQuery = TransactionUtil.query("uid", FirebaseAuth.getInstance().getUid());
     }
 
@@ -64,20 +59,20 @@ public class TransactionHistoryFragment extends Fragment implements TransactionH
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_transaction_history, container, false);
+        return inflater.inflate(R.layout.fragment_transaction_current, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().setTitle(R.string.history_title_item);
+        getActivity().setTitle("On-Progress");
 
         ArrayList<Transaction> transactions = new ArrayList<>();
         adapter = new TransactionHistoryAdapter(this);
         adapter.setTransactionHistory(transactions);
 
-        recyclerView = view.findViewById(R.id.history_recycler_view);
+        recyclerView = view.findViewById(R.id.current_recycler_view);
         layoutManager = new LinearLayoutManager(getContext());
 
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
@@ -108,7 +103,7 @@ public class TransactionHistoryFragment extends Fragment implements TransactionH
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Transaction newTransaction = dataSnapshot.getValue(Transaction.class);
-                    if(newTransaction.getDeliveryStatus()==1)
+                    if(newTransaction.getDeliveryStatus()==0)
                     adapter.addTransactionHistory(newTransaction);
                 }
 

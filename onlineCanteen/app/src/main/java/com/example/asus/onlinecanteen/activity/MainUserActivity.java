@@ -180,6 +180,10 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
             drawerLayout.closeDrawer(GravityCompat.START);
 
             switch (item.getItemId()) {
+                case R.id.menu_order_item:
+                    Intent currentIntent = new Intent(MainUserActivity.this, UserCurrentOrderActivity.class);
+                    startActivity(currentIntent);
+                    break;
                 case R.id.menu_history_item:
                     Intent historyIntent = new Intent(MainUserActivity.this, UserHistoryActivity.class);
                     startActivity(historyIntent);

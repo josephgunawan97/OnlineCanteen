@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="none">
-        <item android:id="@+id/menu_order_item"
-            android:icon="@drawable/ic_schedule_black"
-            android:title="Current order"/>
-        <item android:id="@+id/menu_history_item"
-            android:icon="@drawable/ic_history_black"
-            android:title="@string/history_title_item"/>
-    </group>
+    <item android:title="Orders">
+        <menu>
+            <group android:checkableBehavior="none">
+                <item android:id="@+id/menu_order_item"
+                    android:icon="@drawable/ic_schedule_black"
+                    android:title="Current order"/>
+                <item android:id="@+id/menu_history_item"
+                    android:icon="@drawable/ic_history_black"
+                    android:title="@string/history_title_item"/>
+            </group>
+        </menu>
+    </item>
+
+
     <item android:title="Account">
         <menu>
             <group android:checkableBehavior="none">
