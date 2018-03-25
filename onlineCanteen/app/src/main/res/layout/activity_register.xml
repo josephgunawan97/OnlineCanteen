@@ -1,179 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.constraint.ConstraintLayout android:id="@+id/registration_content_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.asus.onlinecanteen.activity.RegisterActivity"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/register"
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_email_black"
+                    android:tint="@color/white"
+                    android:background="@drawable/circle_primary_color"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Please enter your email address"/>
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center_vertical">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/registration_email_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_lock_black"
+                    android:tint="@color/white"
+                    android:background="@drawable/circle_primary_color"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="16dp"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Please enter your password"/>
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center_vertical">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/registration_password_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:inputType="textPassword"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Personal information"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@color/colorPrimaryDark" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="16dp">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="@dimen/user_profile_picture_size"
+                    android:layout_height="@dimen/user_profile_picture_size"
+                    app:contentPadding="2dp"
+                    app:cardCornerRadius="@dimen/user_profile_picture_size_half" >
+
+                    <ImageView android:id="@+id/user_registration_detail_picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/logo3"
+                        android:scaleType="centerCrop" />
+                </android.support.v7.widget.CardView>
+
+                <Button android:id="@+id/user_registration_detail_picture_button"
+                    android:theme="@style/PrimaryColorButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="12sp"
+                    android:text="Change picture"/>
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center_vertical">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/user_registration_detail_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="textPersonName"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center_vertical">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/user_registration_detail_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Phone number"
+                    android:inputType="phone"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <Button android:id="@+id/registration_sign_up_button"
+                android:theme="@style/PrimaryColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_gravity="end"
+                android:padding="16dp"
+                android:text="Sign up" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout android:id="@+id/progress_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_overlay" >
+
+        <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Register Your Account"
-            android:textSize="32sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_centerInParent="true"
+            app:cardBackgroundColor="@color/white"
+            app:contentPadding="8dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="4dp">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center" >
 
-        <TextView
-            android:id="@+id/usrname"
-            android:layout_width="wrap_content"
-            android:layout_height="17dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:text="Name:"
-            app:layout_constraintBottom_toBottomOf="@+id/namefill"
-            app:layout_constraintStart_toStartOf="@+id/register"
-            app:layout_constraintTop_toTopOf="@+id/namefill" />
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminate="true" />
 
-        <EditText
-            android:id="@+id/namefill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:ems="10"
-            android:hint="Enter your name"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="@+id/register"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/register"
-            app:layout_constraintTop_toBottomOf="@+id/register" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Processing Registration"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Password:"
-            app:layout_constraintBottom_toBottomOf="@+id/passwordfill"
-            app:layout_constraintStart_toStartOf="@+id/usrname"
-            app:layout_constraintTop_toTopOf="@+id/passwordfill" />
+    </RelativeLayout>
 
-        <EditText
-            android:id="@+id/passwordfill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="Enter your password"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="@+id/namefill"
-            app:layout_constraintStart_toStartOf="@+id/namefill"
-            app:layout_constraintTop_toBottomOf="@+id/namefill" />
-
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Email:"
-            app:layout_constraintBottom_toBottomOf="@+id/emailfill"
-            app:layout_constraintStart_toStartOf="@+id/password"
-            app:layout_constraintTop_toTopOf="@+id/emailfill" />
-
-        <EditText
-            android:id="@+id/emailfill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="example@domain.com"
-            android:inputType="textEmailAddress"
-            app:layout_constraintEnd_toEndOf="@+id/passwordfill"
-            app:layout_constraintStart_toStartOf="@+id/passwordfill"
-            app:layout_constraintTop_toBottomOf="@+id/passwordfill" />
-
-        <TextView
-            android:id="@+id/nim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="NIM:"
-            app:layout_constraintBottom_toBottomOf="@+id/nimfill"
-            app:layout_constraintStart_toStartOf="@+id/email"
-            app:layout_constraintTop_toBottomOf="@+id/emailfill" />
-
-        <EditText
-            android:id="@+id/nimfill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter your NIM"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="@+id/emailfill"
-            app:layout_constraintStart_toStartOf="@+id/emailfill"
-            app:layout_constraintTop_toBottomOf="@+id/emailfill" />
-
-        <TextView
-            android:id="@+id/phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Phone:"
-            app:layout_constraintBottom_toBottomOf="@+id/phonefill"
-            app:layout_constraintStart_toStartOf="@+id/nim"
-            app:layout_constraintTop_toTopOf="@+id/phonefill" />
-
-        <EditText
-            android:id="@+id/phonefill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="Enter your phone number"
-            android:inputType="number"
-            app:layout_constraintEnd_toEndOf="@+id/nimfill"
-            app:layout_constraintStart_toStartOf="@+id/nimfill"
-            app:layout_constraintTop_toBottomOf="@+id/nimfill" />
-
-        <TextView
-            android:id="@+id/choosepicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Choose Your Profile Picture"
-            app:layout_constraintStart_toStartOf="@+id/phone"
-            app:layout_constraintTop_toBottomOf="@+id/phonefill" />
-
-        <Button
-            android:id="@+id/browse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Choose Photo"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@+id/imageinput"
-            app:layout_constraintTop_toBottomOf="@+id/imageinput" />
-
-        <ImageView
-            android:id="@+id/imageinput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/choosepicture"
-            app:layout_constraintTop_toBottomOf="@+id/choosepicture"
-            />
-
-        <Button
-            android:id="@+id/registerbtn"
-            android:layout_width="155dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/register"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/browse" />
-
-
-
-    </android.support.constraint.ConstraintLayout>
-
-</ScrollView>
+</android.support.constraint.ConstraintLayout>

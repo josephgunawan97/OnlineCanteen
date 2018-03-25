@@ -5,6 +5,10 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
 
+    <!-- Registration dimensions -->
+    <dimen name="user_profile_picture_size">80dp</dimen>
+    <dimen name="user_profile_picture_size_half">40dp</dimen>
+
     <!-- User navigation header dimensions -->
     <dimen name="user_navigation_header_height">176dp</dimen>
     <dimen name="user_navigation_header_photo_size">80dp</dimen>

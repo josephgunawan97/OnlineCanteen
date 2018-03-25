@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.RegisterActivity"
+            android:parentActivityName=".activity.RegistrationMainActivity" />
         <activity
             android:name=".activity.MainActivityMerchant"
             android:theme="@style/AppTheme.NoActionBar" />

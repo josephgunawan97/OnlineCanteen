@@ -1,50 +1,52 @@
 package com.example.asus.onlinecanteen.model;
 
-import android.net.Uri;
-
 /**
  * Created by Jessica on 1/20/2018.
  */
 
 public class User {
 
-    String name;
-    String userNim;
-    String userPhone;
-    String img;
+    private String phone;
+    private String profilePictureUrl;
+    private String type;
+    private int wallet;
 
-
-    public User(String name, String userNim, String userPhone, String img) {
-        this.name = name;
-        this.userNim = userNim;
-        this.userPhone = userPhone;
-        this.img = img;
+    public User(String phone, String profilePictureUrl) {
+        this.phone = phone;
+        this.profilePictureUrl = profilePictureUrl;
+        this.type = "user";
+        this.wallet = 0;
     }
 
-
-    public void setUserNim(String userNim) {
-        this.userNim = userNim;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getUserNim() {
-        return userNim;
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public void setWallet(int wallet) {
+        this.wallet = wallet;
     }
 
-    public String getimg() { return img; }
-    public String getName() {
-        return name;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getType() {
+        return type;
     }
 
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public int getWallet() {
+        return wallet;
+    }
 }

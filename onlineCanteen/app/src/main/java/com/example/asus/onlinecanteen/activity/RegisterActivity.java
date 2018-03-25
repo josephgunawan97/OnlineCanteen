@@ -1,258 +1,170 @@
 package com.example.asus.onlinecanteen.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.example.asus.onlinecanteen.R;
-import com.example.asus.onlinecanteen.model.Product;
-import com.example.asus.onlinecanteen.model.User;
+import com.example.asus.onlinecanteen.fragment.RegistrationCancellationDialogFragment;
+import com.example.asus.onlinecanteen.utils.UserUtil;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
-import java.util.regex.Pattern;
+public class RegisterActivity extends AppCompatActivity
+        implements RegistrationCancellationDialogFragment.CancellationHandler {
 
-public class RegisterActivity extends AppCompatActivity {
-
+    // TAG
     private static final String TAG = RegisterActivity.class.getSimpleName();
-    private static final int REQUEST_READ_EXTERNAL_STORAGE = 999;
 
-    ImageView imageView;
-    Button button, submitbtn;
-    private static final int PICK_IMAGE = 100;
-    Uri imageUri;
-    String profPicUrl;
-    FirebaseAuth mAuth;
-    FirebaseUser user;
-    DatabaseReference userReferences, walletReferences, roleReferences, emailRef, emailReferences;
-    private DatabaseReference databaseUsers;
+    // Request permission code
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 100;
 
-    //EditText
-    EditText usernameET, passwordET, emailET, nimET, phoneET;
+    // Choose image code
+    private static final int CHOOSE_PICTURE_FROM_GALLERY_CODE = 101;
 
-    //String
-    String username, password, email, nim, phone;
+    // REGISTRATION STATUS
+    public static final int REGISTER_SUCCESSFUL = 1;
+    public static final int REGISTER_CANCELLED = -1;
+
+    // Views
+    private ViewGroup progressBarLayout;
+    // Core views
+    private TextInputEditText emailEditText;
+    private TextInputEditText passwordEditText;
+    // Personal information views
+    private ImageView profilePictureImageView;
+    private TextInputEditText nameEditText;
+    private TextInputEditText phoneNumberEditText;
+    private Button changePictureButton;
+    private Button signUpButton;
+
+    // Profile Picture Uri
+    private Uri profilePictureUri;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        setTheme(com.example.asus.onlinecanteen.R.style.AppTheme);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Registration");
 
-        mAuth = FirebaseAuth.getInstance();
+        // Initialize views
+        progressBarLayout = findViewById(R.id.progress_bar_layout);
+        emailEditText = findViewById(R.id.registration_email_edit_text);
+        passwordEditText = findViewById(R.id.registration_password_edit_text);
+        profilePictureImageView = findViewById(R.id.user_registration_detail_picture);
+        nameEditText = findViewById(R.id.user_registration_detail_name);
+        phoneNumberEditText = findViewById(R.id.user_registration_detail_phone_number);
+        changePictureButton = findViewById(R.id.user_registration_detail_picture_button);
+        signUpButton = findViewById(R.id.registration_sign_up_button);
 
-        imageView = findViewById(R.id.imageinput);
-        button =  findViewById(R.id.browse);
-        submitbtn = findViewById(R.id.registerbtn);
-        usernameET = findViewById(R.id.namefill);
-        passwordET = findViewById(R.id.passwordfill);
-        emailET = findViewById(R.id.emailfill);
-        nimET = findViewById(R.id.nimfill);
-        phoneET = findViewById(R.id.phonefill);
-
-
-
-        //Browse Image in Gallery & set as Profile Picture
-        button.setOnClickListener(new View.OnClickListener() {
+        // Add listener
+        changePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             openGallery();
+                choosePictureFromGallery();
             }
         });
 
-        //Submit data for Sign Up & Upload to Storage
-        submitbtn.setOnClickListener(new View.OnClickListener() {
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                username = usernameET.getText().toString();
-                password = passwordET.getText().toString();
-                email = emailET.getText().toString();
-                nim = nimET.getText().toString();
-                phone = phoneET.getText().toString();
-                submitData();
+            public void onClick(View v) {
+                if(validateForm()) {
+                    progressBarLayout.setVisibility(View.VISIBLE);
+
+                    String email = emailEditText.getText().toString();
+                    String password = passwordEditText.getText().toString();
+                    String name = nameEditText.getText().toString();
+                    String phoneNumber = phoneNumberEditText.getText().toString();
+
+                    registerNewUser(email, password, name, phoneNumber, profilePictureUri);
+                }
             }
         });
-
-        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
     }
 
-    private void openGallery(){
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, PICK_IMAGE);
+    private void requestReadExternalStoragePermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                REQUEST_READ_EXTERNAL_STORAGE);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
-            imageUri = data.getData();
-            imageView.setImageURI(imageUri);
+    private boolean checkReadExternalStoragePermission() {
+        return ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void choosePictureFromGallery(){
+        if(checkReadExternalStoragePermission()) {
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+            startActivityForResult(galleryIntent, CHOOSE_PICTURE_FROM_GALLERY_CODE);
+        }
+        else {
+            requestReadExternalStoragePermission();
         }
     }
 
-    //To submit data
-    private void submitData() {
-
-        if(!validateRegisterInfo()) {
-            // Field is not filled
-            return;
+    private void changeProfilePicture() {
+        if(profilePictureUri == null) {
+            profilePictureImageView.setImageResource(R.drawable.logo3);
         }
-
-        mAuth.createUserWithEmailAndPassword(email,password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            if(imageUri != null) {
-                                if(ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                                    requestReadStoragePermission();
-                                }
-                            }
-                            addAdditionalUserInformation();
-                        } else {
-                            emailET.setText("");
-                            emailET.setError("Email is registered");
-                            passwordET.setText("");
-                        }
-                    }
-                });
-    }
-
-    private void addAdditionalUserInformation() {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            user = mAuth.getCurrentUser();
-
-                            String uid = user.getUid();
-                            String img = uploadImage();
-                            User userInfo = new User(username, nim, phone, img);
-
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(username).build();
-                            user.updateProfile(profileUpdates);
-
-                            userReferences = FirebaseDatabase.getInstance().getReference("users").child(uid);
-                            userReferences.setValue(userInfo);
-
-                            walletReferences = FirebaseDatabase.getInstance().getReference("wallet").child(uid);
-                            walletReferences.setValue(0);
-
-                            roleReferences = FirebaseDatabase.getInstance().getReference("role").child(uid);
-                            roleReferences.setValue("USER");
-
-                            emailRef = FirebaseDatabase.getInstance().getReference("emailtouid").child(email.replaceAll(Pattern.quote("."),","));
-                            emailRef.setValue(uid);
-
-                            String passemail = email.replaceAll(Pattern.quote("."),",");
-                            emailReferences = FirebaseDatabase.getInstance().getReference("emailtouid").child(passemail);
-                            emailReferences.setValue(uid);
-
-                            backToLoginScreen();
-                        }
-                    }
-                });
-    }
-
-    //To upload image
-    private String uploadImage() {
-
-        Log.d(TAG, "Uploading...");
-        final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/"+System.currentTimeMillis()+".jpg");
-        if (imageUri!=null){
-            profileImageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    @SuppressWarnings("VisibleForTests") Uri downloadUrl =taskSnapshot.getDownloadUrl();
-                    profPicUrl = downloadUrl.toString();
-                    Log.d(TAG, "Success in uploading");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(),"Image failed to upload",Toast.LENGTH_LONG).show();
-                }
-            });
+        else {
+            profilePictureImageView.setImageURI(profilePictureUri);
         }
-        return profPicUrl;
     }
 
-    private boolean validateRegisterInfo() {
+    public boolean validateForm() {
+        String email = new String(emailEditText.getText().toString());
+        String password = new String(passwordEditText.getText().toString());
+        String name = new String(nameEditText.getText().toString());
+        String phoneNumber = new String(phoneNumberEditText.getText().toString());
+
         boolean valid = true;
 
-        if(TextUtils.isEmpty(username)) {
-            usernameET.setError("Username required");
+        if(TextUtils.isEmpty(email)) {
+            emailEditText.setError("Email is required");
             valid = false;
-        } else {
-            usernameET.setError(null);
         }
 
         if(TextUtils.isEmpty(password)) {
-            passwordET.setError("Password required");
+            passwordEditText.setError("Password is required");
             valid = false;
-        } else {
-            passwordET.setError(null);
         }
 
-        if(TextUtils.isEmpty(email)) {
-            emailET.setError("Email required");
+        if(TextUtils.isEmpty(name)) {
+            nameEditText.setError("Name is required");
             valid = false;
-        } else {
-            emailET.setError(null);
         }
 
-        if(TextUtils.isEmpty(nim)) {
-            nimET.setError("Email required");
+        if(TextUtils.isEmpty(phoneNumber)) {
+            phoneNumberEditText.setError("Phone number is required");
             valid = false;
-        } else {
-            nimET.setError(null);
-        }
-
-        if(TextUtils.isEmpty(phone)) {
-            phoneET.setError("Email required");
-            valid = false;
-        } else {
-            phoneET.setError(null);
         }
 
         return valid;
-    }
-
-    private void requestReadStoragePermission() {
-        ActivityCompat.requestPermissions(RegisterActivity.this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                REQUEST_READ_EXTERNAL_STORAGE);
     }
 
     @Override
@@ -260,18 +172,96 @@ public class RegisterActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
             if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                addAdditionalUserInformation();
+                // Do something
+                choosePictureFromGallery();
             }
         }
     }
 
-    private void backToLoginScreen() {
-        if(mAuth != null) {
-            mAuth.signOut();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Activity.RESULT_OK) {
+            if(requestCode == CHOOSE_PICTURE_FROM_GALLERY_CODE) {
+                profilePictureUri = data.getData();
+                changeProfilePicture();
+            }
         }
-        // GO TO LOGIN PAGE - after success
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
+    }
+
+    private void showCancellationConfirmation() {
+        DialogFragment dialogFragment = new RegistrationCancellationDialogFragment();
+        dialogFragment.show(getSupportFragmentManager(), null);
+    }
+
+    private void finishRegistration() {
+        progressBarLayout.setVisibility(View.GONE);
+        setResult(REGISTER_SUCCESSFUL);
         finish();
     }
+
+    private void registerNewUser(final String email, final String password, final String name, final String phoneNumber, final Uri profilePictureUri) {
+        UserUtil.registerNewAccount(email, password)
+                .continueWithTask(new Continuation<AuthResult, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(@NonNull Task<AuthResult> task) throws Exception {
+                        if(task.isSuccessful()) {
+                            return UserUtil.updateBaseInformation(name);
+                        }
+                        else {
+                            Exception e = task.getException();
+                            if(e instanceof FirebaseAuthInvalidCredentialsException) {
+                                emailEditText.setError("Email is malformed");
+                            }
+                            else if(e instanceof FirebaseAuthUserCollisionException){
+                                emailEditText.setError("Email is already used");
+                            }
+                            return null;
+                        }
+                    }
+                })
+                .continueWithTask(new Continuation<Void, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                        return UserUtil.updateOtherInformation(UserUtil.UserType.USER, phoneNumber, profilePictureUri);
+                    }
+                })
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            finishRegistration();
+                        }
+                        else {
+
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onBackPressed() {
+        showCancellationConfirmation();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // Cancel register
+                showCancellationConfirmation();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void cancelRegistration() {
+        setResult(REGISTER_CANCELLED);
+        finish();
+    }
+
+    @Override
+    public void resumeRegistration() {}
 }

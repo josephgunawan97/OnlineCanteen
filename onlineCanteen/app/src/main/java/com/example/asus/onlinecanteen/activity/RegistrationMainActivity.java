@@ -10,6 +10,8 @@ import com.example.asus.onlinecanteen.R;
 
 public class RegistrationMainActivity extends AppCompatActivity {
 
+    private static final int REGISTRATION_CODE = 100;
+
         private Button storeSignUp, userSignUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,19 @@ public class RegistrationMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RegistrationMainActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REGISTRATION_CODE);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REGISTRATION_CODE) {
+            if(resultCode == RegisterActivity.REGISTER_SUCCESSFUL) {
+
+            }
+        }
     }
 }
