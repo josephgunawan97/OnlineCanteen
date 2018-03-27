@@ -28,6 +28,13 @@
     <string name="signOut_confirm">Yes</string>
     <string name="signOut_cancel">No</string>
 
+    <!--Generating Sales Report Confirmation Message -->
+    <string name="salesReport_title">Last Month Sales Report</string>
+    <string name="salesReport_confirmation">You will be sending a request for last month sales report. Click "Yes" to confirm.</string>
+    <string name="salesReport_confirm">Yes</string>
+    <string name="salesReport_cancel">No</string>
+    <string name="salesReport_reply">Request has been sent. Your sales report will be sent to you in 24 hours.</string>
+
     <!-- Transaction -->
     <string name="transaction_item_unit_price_key">unit_price</string>
     <string name="transaction_item_quantity">quantity</string>
@@ -39,6 +46,11 @@
     <string name="transaction_adapter_item_name_title">Item name</string>
     <string name="transaction_adapter_quantity_title">Qty x item price</string>
     <string name="transaction_adapter_total_price">Price</string>
+
+    <!-- Generating Sales Report -->
+    <string name="report_request_date">Request date</string>
+    <string name="store_name_default">Store name</string>
+    <string name="request_status">Request Status</string>
 
     <!-- Order Details Default Values -->
     <string name="user_name_default">Username</string>

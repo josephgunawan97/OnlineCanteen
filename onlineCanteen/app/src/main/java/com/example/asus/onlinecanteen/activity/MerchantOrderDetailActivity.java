@@ -85,7 +85,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
         username.setText(transaction.getName());
         location.setText(transaction.getLocation());
         grandTotal.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
-        orderStatus.setText("Pending"); //TO BE CHANGED LATER
+        orderStatus.setText("Pending"); //to be changed later
 
         //Adapter for order items list
         OrderDetailAdapter detailAdapter = new OrderDetailAdapter(transaction.getItems());
