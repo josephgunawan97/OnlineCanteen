@@ -20,11 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.constant.RegistrationConstant;
 import com.example.asus.onlinecanteen.fragment.RegistrationCancellationDialogFragment;
-import com.example.asus.onlinecanteen.utils.UserUtil;
+import com.example.asus.onlinecanteen.utils.AccountUtil;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,10 +43,6 @@ public class RegisterActivity extends AppCompatActivity
 
     // Choose image code
     private static final int CHOOSE_PICTURE_FROM_GALLERY_CODE = 101;
-
-    // REGISTRATION STATUS
-    public static final int REGISTER_SUCCESSFUL = 1;
-    public static final int REGISTER_CANCELLED = -1;
 
     // Views
     private ViewGroup progressBarLayout;
@@ -69,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity
         setContentView(R.layout.activity_register);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Registration");
+        setTitle("User Registration");
 
         // Initialize views
         progressBarLayout = findViewById(R.id.progress_bar_layout);
@@ -80,6 +76,8 @@ public class RegisterActivity extends AppCompatActivity
         phoneNumberEditText = findViewById(R.id.user_registration_detail_phone_number);
         changePictureButton = findViewById(R.id.user_registration_detail_picture_button);
         signUpButton = findViewById(R.id.registration_sign_up_button);
+
+        progressBarLayout.setVisibility(View.GONE);
 
         // Add listener
         changePictureButton.setOnClickListener(new View.OnClickListener() {
@@ -196,17 +194,17 @@ public class RegisterActivity extends AppCompatActivity
 
     private void finishRegistration() {
         progressBarLayout.setVisibility(View.GONE);
-        setResult(REGISTER_SUCCESSFUL);
+        setResult(RegistrationConstant.REGISTER_SUCCESSFUL);
         finish();
     }
 
     private void registerNewUser(final String email, final String password, final String name, final String phoneNumber, final Uri profilePictureUri) {
-        UserUtil.registerNewAccount(email, password)
+        AccountUtil.registerNewAccount(email, password)
                 .continueWithTask(new Continuation<AuthResult, Task<Void>>() {
                     @Override
                     public Task<Void> then(@NonNull Task<AuthResult> task) throws Exception {
                         if(task.isSuccessful()) {
-                            return UserUtil.updateBaseInformation(name);
+                            return AccountUtil.updateBaseInformation(name);
                         }
                         else {
                             Exception e = task.getException();
@@ -223,7 +221,7 @@ public class RegisterActivity extends AppCompatActivity
                 .continueWithTask(new Continuation<Void, Task<Void>>() {
                     @Override
                     public Task<Void> then(@NonNull Task<Void> task) throws Exception {
-                        return UserUtil.updateOtherInformation(UserUtil.UserType.USER, phoneNumber, profilePictureUri);
+                        return AccountUtil.updateUserOtherInformation(phoneNumber, profilePictureUri);
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -231,9 +229,6 @@ public class RegisterActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()) {
                             finishRegistration();
-                        }
-                        else {
-
                         }
                     }
                 });
@@ -258,7 +253,7 @@ public class RegisterActivity extends AppCompatActivity
 
     @Override
     public void cancelRegistration() {
-        setResult(REGISTER_CANCELLED);
+        setResult(RegistrationConstant.REGISTER_CANCELLED);
         finish();
     }
 

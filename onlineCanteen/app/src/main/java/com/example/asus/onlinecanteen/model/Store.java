@@ -12,11 +12,13 @@ import java.sql.Time;
 public class Store implements Parcelable {
     private String storeName;
     private String storeId;
+    private String phoneNumber;
     private String openHour;
     private String closeHour;
     private String location;
     private String img;
     private String email;
+    private String bio;
 
     public Store() {}
 
@@ -29,16 +31,28 @@ public class Store implements Parcelable {
         this.img = img;
     }
 
+    public Store(String storeName, String phoneNumber, String email, String img, String openHour, String closeHour, String location, String bio) {
+        this.storeName = storeName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.img = img;
+        this.openHour = openHour;
+        this.closeHour = closeHour;
+        this.location = location;
+        this.bio = bio;
+    }
+
     protected Store(Parcel in) {
         storeName = in.readString();
         storeId = in.readString();
+        phoneNumber = in.readString();
         openHour = in.readString();
         closeHour = in.readString();
         location = in.readString();
         img = in.readString();
         email = in.readString();
+        bio = in.readString();
     }
-
 
     public static final Creator<Store> CREATOR = new Creator<Store>() {
         @Override
@@ -109,12 +123,14 @@ public class Store implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getStoreName());
-        dest.writeString(getStoreId());
-        dest.writeString(getOpenHour());
-        dest.writeString(getCloseHour());
-        dest.writeString(getLocation());
-        dest.writeString(getImg());
-        dest.writeString(getEmail());
+        dest.writeString(storeName);
+        dest.writeString(storeId);
+        dest.writeString(phoneNumber);
+        dest.writeString(openHour);
+        dest.writeString(closeHour);
+        dest.writeString(location);
+        dest.writeString(img);
+        dest.writeString(email);
+        dest.writeString(bio);
     }
 }

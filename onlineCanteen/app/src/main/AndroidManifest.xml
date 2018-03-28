@@ -43,7 +43,8 @@
         <activity android:name=".activity.RegistrationMainActivity" />
         <activity android:name=".activity.RegisterProductActivity" />
         <activity android:name=".activity.DeleteProductActivity" />
-        <activity android:name=".activity.RegisterStoreActivity" />
+        <activity android:name=".activity.RegisterStoreActivity"
+            android:parentActivityName=".activity.RegistrationMainActivity"/>
         <activity android:name=".activity.EditProductActivity" />
         <activity android:name=".activity.MerchantOrderDetailActivity" />
         <activity android:name=".activity.QrActivity" />

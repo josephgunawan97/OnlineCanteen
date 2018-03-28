@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.constant.RegistrationConstant;
 
 public class RegistrationMainActivity extends AppCompatActivity {
 
@@ -44,7 +45,7 @@ public class RegistrationMainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == REGISTRATION_CODE) {
-            if(resultCode == RegisterActivity.REGISTER_SUCCESSFUL) {
+            if(resultCode == RegistrationConstant.REGISTER_SUCCESSFUL) {
 
             }
         }

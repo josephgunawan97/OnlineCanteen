@@ -1,201 +1,355 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout android:id="@+id/registration_content_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.asus.onlinecanteen.activity.RegisterActivity"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/storeregister"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/circle_primary_color"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_email_black"
+                    android:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="Please enter your email address"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/registration_email_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/circle_primary_color"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_lock_black"
+                    android:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="Please enter your password"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/registration_password_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Password"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:text="Store information"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:background="@color/colorPrimaryDark" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="@dimen/user_profile_picture_size"
+                    android:layout_height="@dimen/user_profile_picture_size"
+                    app:cardCornerRadius="@dimen/user_profile_picture_size_half"
+                    app:contentPadding="2dp">
+
+                    <ImageView
+                        android:id="@+id/store_registration_detail_picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/logo3" />
+                </android.support.v7.widget.CardView>
+
+                <Button
+                    android:id="@+id/store_registration_detail_picture_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:text="Change picture"
+                    android:textSize="12sp"
+                    android:theme="@style/PrimaryColorButton" />
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/store_registration_detail_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="textPersonName" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/store_registration_detail_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Phone number"
+                    android:inputType="phone" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:text="Open hour:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:orientation="horizontal">
+
+                <TextView android:id="@+id/store_registration_detail_open_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="00:00"
+                    android:textSize="18sp" />
+
+                <Button android:id="@+id/store_registration_detail_open_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:padding="8dp"
+                    android:text="Set"
+                    android:theme="@style/PrimaryColorButton" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:text="Close hour:"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:orientation="horizontal">
+
+                <TextView android:id="@+id/store_registration_detail_close_hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="00:00"
+                    android:textSize="18sp" />
+
+                <Button android:id="@+id/store_registration_detail_close_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:padding="8dp"
+                    android:text="Set"
+                    android:theme="@style/PrimaryColorButton" />
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/store_registration_detail_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Location"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/store_registration_detail_bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Bio"
+                    android:inputType="textMultiLine" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/registration_sign_up_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp"
+                android:text="Sign up"
+                android:theme="@style/PrimaryColorButton" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout android:id="@+id/progress_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="@color/black_overlay" >
+
+        <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Register Your Store"
-            android:textSize="32sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_centerInParent="true"
+            app:cardBackgroundColor="@color/white"
+            app:contentPadding="8dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="4dp">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center" >
 
-        <TextView
-            android:id="@+id/usrname"
-            android:layout_width="wrap_content"
-            android:layout_height="17dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="8dp"
-            android:text="Store Name:"
-            app:layout_constraintBottom_toBottomOf="@+id/storenamefill"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/storenamefill"
-            app:layout_constraintVertical_bias="0.45" />
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminate="true" />
 
-        <EditText
-            android:id="@+id/storenamefill"
-            android:layout_width="wrap_content"
-            android:layout_height="53dp"
-            android:layout_marginStart="68dp"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="Enter your store name"
-            android:inputType="textPersonName"
-            app:layout_constraintStart_toStartOf="@+id/storeregister"
-            app:layout_constraintTop_toBottomOf="@+id/storeregister" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Processing Registration"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/storepassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Password:"
-            app:layout_constraintBottom_toBottomOf="@+id/storepasswordfill"
-            app:layout_constraintStart_toStartOf="@+id/usrname"
-            app:layout_constraintTop_toTopOf="@+id/storepasswordfill" />
+    </RelativeLayout>
 
-        <EditText
-            android:id="@+id/storepasswordfill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="Enter your password"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="@+id/storenamefill"
-            app:layout_constraintStart_toStartOf="@+id/storenamefill"
-            app:layout_constraintTop_toBottomOf="@+id/storenamefill" />
-
-        <TextView
-            android:id="@+id/storeemail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Email:"
-            app:layout_constraintBottom_toBottomOf="@+id/storeemailfill"
-            app:layout_constraintStart_toStartOf="@+id/storepassword"
-            app:layout_constraintTop_toTopOf="@+id/storeemailfill" />
-
-        <EditText
-            android:id="@+id/storeemailfill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="example@domain.com"
-            android:inputType="textEmailAddress"
-            app:layout_constraintEnd_toEndOf="@+id/storepasswordfill"
-            app:layout_constraintStart_toStartOf="@+id/storepasswordfill"
-            app:layout_constraintTop_toBottomOf="@+id/storepasswordfill" />
-
-        <TextView
-            android:id="@+id/storenim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Open Hour:"
-            app:layout_constraintBottom_toBottomOf="@+id/storeopenhour"
-            app:layout_constraintStart_toStartOf="@+id/storeemail"
-            app:layout_constraintTop_toBottomOf="@+id/storeemailfill" />
-
-        <EditText
-            android:id="@+id/storeopenhour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Enter opening hour"
-            android:inputType="numberSigned|numberDecimal"
-            app:layout_constraintEnd_toEndOf="@+id/storeemailfill"
-            app:layout_constraintStart_toStartOf="@+id/storeemailfill"
-            app:layout_constraintTop_toBottomOf="@+id/storeemailfill" />
-
-        <TextView
-            android:id="@+id/storephone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Close Hour:"
-            app:layout_constraintBottom_toBottomOf="@+id/storeclosehour"
-            app:layout_constraintStart_toStartOf="@+id/storenim"
-            app:layout_constraintTop_toTopOf="@+id/storeclosehour" />
-
-        <EditText
-            android:id="@+id/storeclosehour"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="Enter close hour"
-            android:inputType="numberSigned|numberDecimal"
-            app:layout_constraintEnd_toEndOf="@+id/storeopenhour"
-            app:layout_constraintStart_toStartOf="@+id/storeopenhour"
-            app:layout_constraintTop_toBottomOf="@+id/storeopenhour" />
-
-        <TextView
-            android:id="@+id/storelocation"
-            android:layout_width="wrap_content"
-            android:layout_height="22dp"
-            android:layout_marginBottom="8dp"
-            android:text="Location:"
-            app:layout_constraintBottom_toBottomOf="@+id/storelocationfill"
-            app:layout_constraintStart_toStartOf="@+id/storephone"
-            app:layout_constraintTop_toTopOf="@+id/storelocationfill"
-            app:layout_constraintVertical_bias="0.625" />
-
-        <EditText
-            android:id="@+id/storelocationfill"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:ems="10"
-            android:hint="Enter location"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="@+id/storeclosehour"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/storeclosehour"
-            app:layout_constraintTop_toBottomOf="@+id/storeclosehour" />
-
-        <TextView
-            android:id="@+id/storechoosepicture"
-            android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_marginTop="12dp"
-            android:text="Choose Store's Profile Picture"
-            app:layout_constraintStart_toStartOf="@+id/storephone"
-            app:layout_constraintTop_toBottomOf="@+id/storelocationfill" />
-
-        <Button
-            android:id="@+id/storebrowse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Choose Photo"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@+id/storeimageinput"
-            app:layout_constraintTop_toBottomOf="@+id/storeimageinput" />
-
-        <ImageView
-            android:id="@+id/storeimageinput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/storechoosepicture"
-            app:layout_constraintTop_toBottomOf="@+id/storechoosepicture"
-            />
-
-        <Button
-            android:id="@+id/storeregisterbtn"
-            android:layout_width="155dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/register"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/storebrowse" />
-
-    </android.support.constraint.ConstraintLayout>
-</ScrollView>
+</FrameLayout>

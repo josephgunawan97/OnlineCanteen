@@ -8,22 +8,16 @@ public class User {
 
     private String phone;
     private String profilePictureUrl;
-    private String type;
     private int wallet;
 
     public User(String phone, String profilePictureUrl) {
         this.phone = phone;
         this.profilePictureUrl = profilePictureUrl;
-        this.type = "user";
         this.wallet = 0;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public void setProfilePictureUrl(String profilePictureUrl) {
@@ -36,10 +30,6 @@ public class User {
 
     public String getPhone() {
         return phone;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public String getProfilePictureUrl() {
