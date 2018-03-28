@@ -2,6 +2,8 @@ package com.example.asus.onlinecanteen.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +22,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -53,6 +61,7 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 holder.storeName.setText(dataSnapshot.child("storeName").getValue().toString());
+                holder.storeEmail = dataSnapshot.child("email").getValue().toString();
             }
 
             @Override
@@ -62,9 +71,9 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
         });
 
         holder.dateReq.setText(salesReport.getRequestDateString(salesReport.getRequestdate()));
-        if(salesReport.getRequeststatus().equals(0)) {
+        if (salesReport.getRequeststatus().equals(0)) {
             holder.status.setText("Pending");
-        }else{
+        } else {
             holder.status.setText("Completed");
             holder.sendButton.setVisibility(View.INVISIBLE);
         }
@@ -80,7 +89,7 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
     }
 
     public void addSalesReport(SalesReport salesReport) {
-        if(salesReport == null) return;
+        if (salesReport == null) return;
         this.salesReportHistory.add(salesReport);
         notifyDataSetChanged();
     }
@@ -90,9 +99,11 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
         //Initialize views
         public TextView storeName, dateReq, status;
         public Button sendButton;
+        public String storeEmail;
 
         public ViewHolder(View view) {
             super(view);
+            final Context context = itemView.getContext();
 
             // Set the holder attributes
             storeName = view.findViewById(R.id.storename);
@@ -103,9 +114,50 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AdminSendsSalesReportActivity sendReport = new AdminSendsSalesReportActivity();
-                    sendReport.send();
-                    notifyDataSetChanged();
+                    String columnString = "\"Store Name\"";
+                    String dataString = "\"" + storeName.getText().toString() + "\"";
+                    String combinedString = columnString + "\n" + dataString;
+
+                    SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy");
+                    Calendar c = Calendar.getInstance();
+                    c.add(Calendar.MONTH, -1);
+                    String monthYear = format.format(c.getTime());
+
+                    File file = null;
+                    File root = Environment.getExternalStorageDirectory();
+                    if (root.canWrite()) {
+                        File dir = new File(root.getAbsolutePath() + "/SalesReport");
+                        dir.mkdirs();
+                        file = new File(dir, "Sales Report (" + monthYear + ").csv");
+                        FileOutputStream out = null;
+                        try {
+                            out = new FileOutputStream(file);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            out.write(combinedString.getBytes());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            out.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Uri u1 = null;
+                    u1 = Uri.fromFile(file);
+                    String [] to = {storeEmail};
+
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Sit 'n Shop Sales Report : " + monthYear);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello, "+ storeName.getText().toString() + "!\nThis is your sales report for " + monthYear +
+                            ".\nThank you for using Sit 'n Shop!\n\n\nBest regards,\nSit 'n Shop\nsitnshop@gmail.com");
+                    sendIntent.putExtra(Intent.EXTRA_EMAIL, to);
+                    sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+                    sendIntent.setType("text/html");
+                    context.startActivity(sendIntent);
                 }
             });
         }

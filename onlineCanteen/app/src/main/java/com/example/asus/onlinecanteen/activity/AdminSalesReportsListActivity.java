@@ -3,6 +3,7 @@ package com.example.asus.onlinecanteen.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -39,6 +40,7 @@ public class AdminSalesReportsListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.list);
         layoutManager = new LinearLayoutManager(this);
 
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
