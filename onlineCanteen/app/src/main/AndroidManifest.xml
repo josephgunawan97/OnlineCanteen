@@ -6,6 +6,7 @@
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="22" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -25,7 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.RegisterActivity"
+        <activity
+            android:name=".activity.RegisterActivity"
             android:parentActivityName=".activity.RegistrationMainActivity" />
         <activity
             android:name=".activity.MainActivityMerchant"
@@ -40,6 +42,7 @@
         <activity
             android:name=".activity.UserCurrentOrderActivity"
             android:parentActivityName=".activity.MainUserActivity" />
+        <activity android:name=".activity.RequestTopUpActivity" />
         <activity android:name=".activity.RegistrationMainActivity" />
         <activity android:name=".activity.RegisterProductActivity" />
         <activity android:name=".activity.DeleteProductActivity" />
@@ -48,6 +51,7 @@
         <activity android:name=".activity.EditProductActivity" />
         <activity android:name=".activity.MerchantOrderDetailActivity" />
         <activity android:name=".activity.QrActivity" />
+        <activity android:name=".activity.AdminConfirmTopUpActivity" />
         <activity
             android:name=".activity.MainUserActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -60,7 +64,9 @@
         <activity
             android:name=".activity.UserStoreProductActivity"
             android:parentActivityName=".activity.MainUserActivity" />
-        <activity android:name=".activity.MerchantSettingsActivity"></activity>
+        <activity android:name=".activity.MerchantSettingsActivity" />
+        <activity android:name=".activity.AdminSalesReportsListActivity" />
+        <activity android:name=".activity.AdminSendsSalesReportActivity"></activity>
     </application>
 
 </manifest>

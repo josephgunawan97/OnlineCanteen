@@ -103,7 +103,6 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()) {
                                         signIn.setClickable(true);
-                                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                                         firebaseAuth = FirebaseAuth.getInstance();
                                         user = firebaseAuth.getCurrentUser();
                                         login();

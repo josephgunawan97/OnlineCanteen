@@ -27,13 +27,13 @@ import java.io.FileNotFoundException;
 
 public class MainActivityAdmin extends AppCompatActivity {
 
-    int[] images = {R.drawable.logo, R.drawable.logo, R.drawable.logo};
+    int[] images = {R.drawable.logo, R.drawable.logo, R.drawable.logo, R.drawable.logo, R.drawable.logo};
 
-    String[] name = {"User Top Up", "Store Withdrawal","Log Out"};
+    String[] name = {"User Top Up","Confirm Top Up", "Store Withdrawal", "Send Store's Sales Report", "Log Out"};
 
-    String[] description = {"Untuk menambahkan saldo user", "Untuk membuat request store untuk menarik uang", "Log out sebagai admin"};
+    String[] description = {"Untuk menambahkan saldo user","Melakukan konfirmasi Top Up request user", "Untuk membuat request store untuk menarik uang", "Mengirimkan laporan penjualan toko bulan lalu", "Log out sebagai admin"};
 
-    String[] TAG = {"TOP_UP","WITHDRAW", "LOGOUT"};
+    String[] TAG = {"TOP_UP","C_TOP_UP","WITHDRAW", "SALES_REPORT", "LOGOUT"};
 
     ListView lView;
     ListAdapter lAdapter;
@@ -73,6 +73,16 @@ public class MainActivityAdmin extends AppCompatActivity {
                         break;
                     case "WITHDRAW":
                         intent = new Intent(MainActivityAdmin.this, AdminStoreWithdrawal.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case "C_TOP_UP":
+                        intent = new Intent(MainActivityAdmin.this, AdminConfirmTopUpActivity.class);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    case "SALES_REPORT":
+                        intent = new Intent(MainActivityAdmin.this, AdminSalesReportsListActivity.class);
                         startActivity(intent);
                         finish();
                         break;
