@@ -6,14 +6,18 @@ package com.example.asus.onlinecanteen.model;
 
 public class User {
 
+    private String name;
     private String phone;
     private String profilePictureUrl;
-    private int wallet;
 
-    public User(String phone, String profilePictureUrl) {
+    public User(String name, String phone, String profilePictureUrl) {
+        this.name = name;
         this.phone = phone;
         this.profilePictureUrl = profilePictureUrl;
-        this.wallet = 0;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPhone(String phone) {
@@ -24,8 +28,8 @@ public class User {
         this.profilePictureUrl = profilePictureUrl;
     }
 
-    public void setWallet(int wallet) {
-        this.wallet = wallet;
+    public String getName() {
+        return name;
     }
 
     public String getPhone() {
@@ -34,9 +38,5 @@ public class User {
 
     public String getProfilePictureUrl() {
         return profilePictureUrl;
-    }
-
-    public int getWallet() {
-        return wallet;
     }
 }

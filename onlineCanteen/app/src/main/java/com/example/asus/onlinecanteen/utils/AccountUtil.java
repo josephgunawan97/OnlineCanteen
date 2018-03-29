@@ -17,6 +17,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.regex.Pattern;
+
 public class AccountUtil {
 
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -39,16 +41,71 @@ public class AccountUtil {
         return firebaseUser.updateProfile(requestBuilder.build());
     }
 
-    public static Task<Void> updateUserOtherInformation(final String phoneNumber, Uri profilePictureUri) {
+    public static Task<Void> createUserOtherInformation(String name, String phoneNumber, Uri profilePictureUri) {
+        return updateUserOtherInformation(name, phoneNumber, profilePictureUri).continueWithTask(new Continuation<Void, Task<Void>>() {
+            @Override
+            public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                return createRole("USER");
+            }
+        }).continueWithTask(new Continuation<Void, Task<Void>>() {
+            @Override
+            public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                return createEmptyWallet();
+            }
+        }).continueWithTask(new Continuation<Void, Task<Void>>() {
+            @Override
+            public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                return createMappingEmailToUid();
+            }
+        });
+    }
+
+    public static Task<Void> createStoreOtherInformation(final String name, final String phoneNumber, Uri profilePictureUri,
+                                                         final String email, final String openHour, final String closeHour,
+                                                         final String location, final String bio) {
+        return updateStoreOtherInformation(name, phoneNumber, profilePictureUri, email, openHour, closeHour, location, bio)
+                .continueWithTask(new Continuation<Void, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                        return createRole("STORE");
+                    }
+                }).continueWithTask(new Continuation<Void, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                        return createEmptyWallet();
+                    }
+                }).continueWithTask(new Continuation<Void, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                        return createMappingEmailToUid();
+                    }
+                });
+    }
+
+    public static Task<Void> updateUserOtherInformation(final String name, final String phoneNumber, Uri profilePictureUri) {
         if(profilePictureUri == null) {
-            return updateUserInformationOnDatabase(phoneNumber, null);
+            return updateUserInformationOnDatabase(name, phoneNumber, null);
         }
         else return uploadProfilePicture(profilePictureUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Void>>() {
             @Override
             public Task<Void> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 String url = task.getResult().getDownloadUrl().toString();
 
-                return updateUserInformationOnDatabase(phoneNumber, url);
+                return updateUserInformationOnDatabase(name, phoneNumber, url);
+            }
+        });
+    }
+
+    public static Task<Void> updateUserOtherInformation(final User user, Uri profilePictureUri) {
+        if(profilePictureUri == null) {
+            return updateUserInformationOnDatabase(user);
+        }
+        else return uploadProfilePicture(profilePictureUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Void>>() {
+            @Override
+            public Task<Void> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                String url = task.getResult().getDownloadUrl().toString();
+                user.setProfilePictureUrl(url);
+                return updateUserInformationOnDatabase(user);
             }
         });
     }
@@ -68,24 +125,45 @@ public class AccountUtil {
             }
         });
     }
+    public static Task<Void> updateStoreOtherInformation(final Store store, Uri profilePictureUri) {
+        if(profilePictureUri == null) {
+            return updateStoreInformationOnDatabase(store);
+        }
+        else return uploadProfilePicture(profilePictureUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Void>>() {
+            @Override
+            public Task<Void> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                String url = task.getResult().getDownloadUrl().toString();
+                store.setImg(url);
+                return updateStoreInformationOnDatabase(store);
+            }
+        });
+    }
 
-    private static Task<Void> updateUserInformationOnDatabase(String phoneNumber, String profilePictureUrl) {
+
+    private static Task<Void> updateUserInformationOnDatabase(String name, String phoneNumber, String profilePictureUrl) {
+        return updateUserInformationOnDatabase(new User(name, phoneNumber, profilePictureUrl));
+    }
+
+    private static Task<Void> updateUserInformationOnDatabase(User user) {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference reference = firebaseDatabase.getReference("users");
 
-        return reference.child(firebaseUser.getUid()).setValue(new User(phoneNumber, profilePictureUrl));
+        return reference.child(firebaseUser.getUid()).setValue(user);
     }
 
     private static Task<Void> updateStoreInformationOnDatabase(String name, String phoneNumber, String email,
                                                                String profilePictureUrl, String openHour,
                                                                String closeHour, String location, String bio) {
+        return updateStoreInformationOnDatabase(new Store(name, phoneNumber, email, profilePictureUrl, openHour, closeHour, location, bio));
+    }
+
+    private static Task<Void> updateStoreInformationOnDatabase(Store store) {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference reference = firebaseDatabase.getReference("stores");
+        DatabaseReference reference = firebaseDatabase.getReference("store");
 
-        return reference.child(firebaseUser.getUid())
-                .setValue(new Store(name, phoneNumber, email, profilePictureUrl, openHour, closeHour, location, bio));
+        return reference.child(firebaseUser.getUid()).setValue(store);
     }
 
     private static UploadTask uploadProfilePicture(Uri profilePictureUri) {
@@ -99,5 +177,29 @@ public class AccountUtil {
             return profilePictureReference.putFile(profilePictureUri);
         }
         else return null;
+    }
+
+    private static Task<Void> createRole(String role) {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference reference = firebaseDatabase.getReference("role");
+
+        return reference.child(firebaseUser.getUid()).setValue(role);
+    }
+
+    private static Task<Void> createEmptyWallet() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference reference = firebaseDatabase.getReference("wallet");
+
+        return reference.child(firebaseUser.getUid()).setValue(0);
+    }
+
+    private static Task<Void> createMappingEmailToUid() {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference reference = firebaseDatabase.getReference("emailtouid");
+
+        return reference.child(firebaseUser.getEmail().replaceAll(Pattern.quote("."), ",")).setValue(firebaseUser.getUid());
     }
 }

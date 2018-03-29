@@ -1,6 +1,5 @@
 package com.example.asus.onlinecanteen.activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,9 +8,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.constant.RegistrationConstant;
+import com.example.asus.onlinecanteen.fragment.EditCancellationDialogFragment;
 import com.example.asus.onlinecanteen.fragment.RegistrationCancellationDialogFragment;
 import com.example.asus.onlinecanteen.fragment.TimePickerFragment;
 import com.example.asus.onlinecanteen.utils.AccountUtil;
@@ -33,6 +31,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+
+import static com.example.asus.onlinecanteen.utils.ExternalStoragePermissionUtil.checkReadExternalStoragePermission;
+import static com.example.asus.onlinecanteen.utils.ExternalStoragePermissionUtil.requestReadExternalStoragePermission;
 
 public class RegisterStoreActivity extends AppCompatActivity
         implements RegistrationCancellationDialogFragment.CancellationHandler {
@@ -67,15 +68,20 @@ public class RegisterStoreActivity extends AppCompatActivity
         @Override
         public void onTimeSet(int hourOfDay, int minute) {
             openHourTextView.setText(String.format("%02d:%02d", hourOfDay, minute));
+            isOpenHourSet = true;
         }
     };
     TimePickerFragment.TimeResultHandler closeHourHandler = new TimePickerFragment.TimeResultHandler() {
         @Override
         public void onTimeSet(int hourOfDay, int minute) {
             closeHourTextView.setText(String.format("%02d:%02d", hourOfDay, minute));
+            isCloseHourSet = true;
         }
     };
 
+    // isSet
+    private boolean isOpenHourSet;
+    private boolean isCloseHourSet;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,6 +90,9 @@ public class RegisterStoreActivity extends AppCompatActivity
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Store Registration");
+
+        isOpenHourSet = false;
+        isCloseHourSet = false;
 
         // Initialize views
         progressBarLayout = findViewById(R.id.progress_bar_layout);
@@ -170,7 +179,7 @@ public class RegisterStoreActivity extends AppCompatActivity
                 .continueWithTask(new Continuation<Void, Task<Void>>() {
                     @Override
                     public Task<Void> then(@NonNull Task<Void> task) throws Exception {
-                        return AccountUtil.updateStoreOtherInformation(name, phoneNumber, storePictureUri, email, openHour, closeHour, location, bio);
+                        return AccountUtil.createStoreOtherInformation(name, phoneNumber, storePictureUri, email, openHour, closeHour, location, bio);
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -189,24 +198,13 @@ public class RegisterStoreActivity extends AppCompatActivity
         timePickerFragment.show(getSupportFragmentManager(), null);
     }
 
-    private void requestReadExternalStoragePermission() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                REQUEST_READ_EXTERNAL_STORAGE);
-    }
-
-    private boolean checkReadExternalStoragePermission() {
-        return ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
-    }
-
     private void choosePictureFromGallery(){
-        if(checkReadExternalStoragePermission()) {
+        if(checkReadExternalStoragePermission(this)) {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, CHOOSE_PICTURE_FROM_GALLERY_CODE);
         }
         else {
-            requestReadExternalStoragePermission();
+            requestReadExternalStoragePermission(this, REQUEST_READ_EXTERNAL_STORAGE);
         }
     }
 
@@ -224,6 +222,7 @@ public class RegisterStoreActivity extends AppCompatActivity
         String password = new String(passwordEditText.getText().toString());
         String name = new String(nameEditText.getText().toString());
         String phoneNumber = new String(phoneNumberEditText.getText().toString());
+        String location = new String(locationEditText.getText().toString());
 
         boolean valid = true;
 
@@ -247,12 +246,27 @@ public class RegisterStoreActivity extends AppCompatActivity
             valid = false;
         }
 
+        if(TextUtils.isEmpty(location)) {
+            locationEditText.setError("Phone number is required");
+            valid = false;
+        }
+
+        if(!isOpenHourSet) {
+            setOpenHourButton.setError("Open hour is required");
+            valid = false;
+        }
+
+        if(!isCloseHourSet) {
+            setCloseHourButton.setError("Open hour is required");
+            valid = false;
+        }
+
         return valid;
     }
 
     @Override
     public void onBackPressed() {
-        showCancellationConfirmation();
+        if(progressBarLayout.getVisibility() == View.GONE) showCancellationConfirmation();
     }
 
     @Override
@@ -293,7 +307,7 @@ public class RegisterStoreActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 // Cancel register
-                showCancellationConfirmation();
+                if(progressBarLayout.getVisibility() == View.GONE) showCancellationConfirmation();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

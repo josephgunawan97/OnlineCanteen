@@ -90,7 +90,15 @@ public class Store implements Parcelable {
         this.openHour = openHour;
     }
 
-    public void setImage(String img) { this.img = img; }
+    public void setImg(String img) { this.img = img; }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getEmail() {
         return email;
@@ -115,6 +123,14 @@ public class Store implements Parcelable {
     }
 
     public String getImg() {return img;}
+
+    public String getBio() {
+        return bio;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
     @Override
     public int describeContents() {

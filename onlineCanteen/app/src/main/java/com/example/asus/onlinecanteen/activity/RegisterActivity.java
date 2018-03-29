@@ -32,6 +32,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
+import static com.example.asus.onlinecanteen.utils.ExternalStoragePermissionUtil.checkReadExternalStoragePermission;
+import static com.example.asus.onlinecanteen.utils.ExternalStoragePermissionUtil.requestReadExternalStoragePermission;
+
 public class RegisterActivity extends AppCompatActivity
         implements RegistrationCancellationDialogFragment.CancellationHandler {
 
@@ -104,24 +107,13 @@ public class RegisterActivity extends AppCompatActivity
         });
     }
 
-    private void requestReadExternalStoragePermission() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                REQUEST_READ_EXTERNAL_STORAGE);
-    }
-
-    private boolean checkReadExternalStoragePermission() {
-        return ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED;
-    }
-
     private void choosePictureFromGallery(){
-        if(checkReadExternalStoragePermission()) {
+        if(checkReadExternalStoragePermission(this)) {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, CHOOSE_PICTURE_FROM_GALLERY_CODE);
         }
         else {
-            requestReadExternalStoragePermission();
+            requestReadExternalStoragePermission(this, REQUEST_READ_EXTERNAL_STORAGE);
         }
     }
 
@@ -221,7 +213,7 @@ public class RegisterActivity extends AppCompatActivity
                 .continueWithTask(new Continuation<Void, Task<Void>>() {
                     @Override
                     public Task<Void> then(@NonNull Task<Void> task) throws Exception {
-                        return AccountUtil.updateUserOtherInformation(phoneNumber, profilePictureUri);
+                        return AccountUtil.createUserOtherInformation(name, phoneNumber, profilePictureUri);
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -236,7 +228,7 @@ public class RegisterActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        showCancellationConfirmation();
+        if(progressBarLayout.getVisibility() == View.GONE) showCancellationConfirmation();
     }
 
     @Override
@@ -244,7 +236,7 @@ public class RegisterActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 // Cancel register
-                showCancellationConfirmation();
+                if(progressBarLayout.getVisibility() == View.GONE) showCancellationConfirmation();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
