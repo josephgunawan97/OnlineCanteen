@@ -26,9 +26,12 @@ import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MainUserFragment;
 import com.example.asus.onlinecanteen.model.Store;
+import com.example.asus.onlinecanteen.model.User;
+import com.example.asus.onlinecanteen.utils.AccountUtil;
 import com.example.asus.onlinecanteen.utils.WalletUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,7 +54,12 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
     private DatabaseReference walletRef;
+    private DatabaseReference userReference;
+    private ChildEventListener userEventListener;
 
+    private TextView username;
+    private TextView email;
+    private ImageView profilePicture;
     private TextView userWallet;
 
     private WalletUtil walletUtil;
@@ -91,9 +99,9 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         NavigationView navigationView = findViewById(R.id.main_user_navigation_view);
         View header = navigationView.getHeaderView(0);
         userWallet = header.findViewById(R.id.user_wallet);
-        TextView username = header.findViewById(R.id.user_navigation_user_name);
-        TextView email = header.findViewById(R.id.user_navigation_user_email);
-        ImageView profilePicture = header.findViewById(R.id.user_navigation_user_picture);
+        username = header.findViewById(R.id.user_navigation_user_name);
+        email = header.findViewById(R.id.user_navigation_user_email);
+        profilePicture = header.findViewById(R.id.user_navigation_user_picture);
 
         //Get wallet amount
         walletRef = FirebaseDatabase.getInstance().getReference().child("wallet");
@@ -111,14 +119,23 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
             }
         });
 
+        userReference = FirebaseDatabase.getInstance().getReference("users");
 
+
+        populateUserInfo();
+    }
+
+    private void populateUserInfo() {
         // Set username and email
-        username.setText(user.getDisplayName());
+        User currentUser = AccountUtil.getCurrentUser();
         email.setText(user.getEmail());
-        if (user.getPhotoUrl() != null) {
-            Glide.with(this)
-                    .load(user.getPhotoUrl())
-                    .into(profilePicture);
+        if(currentUser != null) {
+            username.setText(currentUser.getName());
+            if (currentUser.getProfilePictureUrl() != null) {
+                Glide.with(this)
+                        .load(currentUser.getProfilePictureUrl())
+                        .into(profilePicture);
+            }
         }
     }
 
@@ -167,6 +184,40 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         alert.show();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(dataSnapshot.getKey().equals(user.getUid())) {
+                    User currentUser = dataSnapshot.getValue(User.class);
+                    AccountUtil.setCurrentAccount(currentUser);
+                    populateUserInfo();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        if(userReference != null) userReference.addChildEventListener(userEventListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(userReference != null) userReference.removeEventListener(userEventListener);
+    }
+
     private class MainNavigationListener implements NavigationView.OnNavigationItemSelectedListener {
 
         @Override
@@ -195,6 +246,10 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
                 case R.id.navigation_menu_top_up:
                     Intent topUpIntent = new Intent(MainUserActivity.this, RequestTopUpActivity.class);
                     startActivity(topUpIntent);
+                    break;
+                case R.id.navigation_menu_edit_profile:
+                    Intent editProfileIntent = new Intent(MainUserActivity.this, EditUserProfileActivity.class);
+                    startActivity(editProfileIntent);
                     break;
                 default:
                     break;

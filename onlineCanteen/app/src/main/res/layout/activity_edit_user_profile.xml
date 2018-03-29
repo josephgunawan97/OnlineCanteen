@@ -1,118 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.asus.onlinecanteen.activity.EditUserProfileActivity"
-    android:orientation="vertical" >
+    tools:context="com.example.asus.onlinecanteen.activity.EditUserProfileActivity" >
 
-    <android.support.v7.widget.CardView
-        android:layout_width="@dimen/user_profile_picture_size"
-        android:layout_height="@dimen/user_profile_picture_size"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        app:contentPadding="2dp"
-        app:cardCornerRadius="@dimen/user_profile_picture_size_half" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView android:id="@+id/profile_picture"
+
+        <android.support.v7.widget.CardView
+            android:layout_width="@dimen/user_profile_picture_size"
+            android:layout_height="@dimen/user_profile_picture_size"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            app:contentPadding="2dp"
+            app:cardCornerRadius="@dimen/user_profile_picture_size_half" >
+
+            <ImageView android:id="@+id/profile_picture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/logo3"
+                android:scaleType="centerCrop" />
+
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/logo3"
-            android:scaleType="centerCrop" />
-
-    </android.support.v7.widget.CardView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/circle_primary_color"
-            android:padding="8dp"
-            android:src="@drawable/ic_person_black"
-            android:tint="@color/white"/>
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="16dp">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/edit_name"
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Name"
-                android:inputType="textPersonName"/>
-        </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/circle_primary_color"
+                android:padding="8dp"
+                android:src="@drawable/ic_person_black"
+                android:tint="@color/white"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/circle_primary_color"
-            android:padding="8dp"
-            android:src="@drawable/ic_phone_black"
-            android:tint="@color/white"/>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="16dp">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/edit_phone_number"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Phone number"
-                android:inputType="phone"/>
-        </android.support.design.widget.TextInputLayout>
-    </LinearLayout>
+                android:layout_weight="1"
+                android:layout_marginStart="16dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_gravity="end"
-        android:orientation="horizontal">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Name"
+                    android:inputType="textPersonName"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
-        <Button android:id="@+id/edit_cancel_button"
-            android:theme="@style/PrimaryColorButton"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/circle_primary_color"
+                android:padding="8dp"
+                android:src="@drawable/ic_phone_black"
+                android:tint="@color/white"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Phone number"
+                    android:inputType="phone"/>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:text="Cancel" />
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
 
-        <Button android:id="@+id/edit_save_button"
-            android:theme="@style/PrimaryColorButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:padding="16dp"
-            android:text="Save" />
+            <Button android:id="@+id/edit_cancel_button"
+                android:theme="@style/PrimaryColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Cancel" />
 
+            <Button android:id="@+id/edit_save_button"
+                android:theme="@style/PrimaryColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:padding="16dp"
+                android:text="Save" />
+
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+    <RelativeLayout android:id="@+id/progress_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="@color/black_overlay">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:cardBackgroundColor="@color/white"
+            app:contentPadding="8dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="4dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center" >
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminate="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Saving profile"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+</FrameLayout>

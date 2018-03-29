@@ -10,11 +10,15 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.EditCancellationDialogFragment;
 import com.example.asus.onlinecanteen.model.User;
@@ -29,6 +33,8 @@ import static com.example.asus.onlinecanteen.utils.ExternalStoragePermissionUtil
 public class EditUserProfileActivity extends AppCompatActivity
         implements EditCancellationDialogFragment.CancellationHandler{
 
+    private static final String TAG = EditUserProfileActivity.class.getSimpleName();
+
     // Request permission code
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 100;
 
@@ -39,6 +45,7 @@ public class EditUserProfileActivity extends AppCompatActivity
     private Uri profilePictureUri;
 
     // Views
+    private ViewGroup progressBarLayout;
     private TextInputEditText nameEditText;
     private TextInputEditText phoneNumberEditText;
     private ImageView profilePictureImageView;
@@ -47,11 +54,6 @@ public class EditUserProfileActivity extends AppCompatActivity
 
     // Boolean for edited
     private boolean isProfilePictureEdited;
-    private boolean isEdited;
-
-    // Current existing values
-    private String existingName;
-    private String existingPhoneNumber;
 
     // Current User
     private User currentUser;
@@ -64,14 +66,23 @@ public class EditUserProfileActivity extends AppCompatActivity
         setTitle("Edit Account");
 
         isProfilePictureEdited = false;
-        isEdited = false;
 
         // Initialize views
+        progressBarLayout = findViewById(R.id.progress_bar_layout);
         nameEditText = findViewById(R.id.edit_name);
         phoneNumberEditText = findViewById(R.id.edit_phone_number);
         profilePictureImageView = findViewById(R.id.profile_picture);
         cancelButton = findViewById(R.id.edit_cancel_button);
         saveButton = findViewById(R.id.edit_save_button);
+
+        progressBarLayout.setVisibility(View.GONE);
+
+        profilePictureImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosePictureFromGallery();
+            }
+        });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,16 +97,45 @@ public class EditUserProfileActivity extends AppCompatActivity
                 saveChanges();
             }
         });
+
+        currentUser = AccountUtil.getCurrentUser();
+        populateFields();
+    }
+
+    private void populateFields() {
+        if(currentUser != null) {
+            nameEditText.setText(currentUser.getName());
+            phoneNumberEditText.setText(currentUser.getUserPhone());
+
+            if(currentUser.getProfilePictureUrl() != null) {
+                Glide.with(this)
+                        .load(currentUser.getProfilePictureUrl())
+                        .into(profilePictureImageView);
+            }
+        }
+    }
+
+    private boolean isEdited() {
+        String name = nameEditText.getText().toString();
+        String phoneNumber = phoneNumberEditText.getText().toString();
+        return !(name.equals(currentUser.getName()) && phoneNumber.equals(currentUser.getUserPhone()) && !isProfilePictureEdited);
     }
 
     private void saveChanges() {
-        // Set up all loading screen here //
-
         // Update information //
         String name = nameEditText.getText().toString();
         String phoneNumber = phoneNumberEditText.getText().toString();
+
+        if(!isEdited()) {
+            Toast.makeText(this, "Nothing changed", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Set up all loading screen here //
+        progressBarLayout.setVisibility(View.VISIBLE);
+
         currentUser.setName(name);
-        currentUser.setPhone(phoneNumber);
+        currentUser.setUserPhone(phoneNumber);
         AccountUtil.updateBaseInformation(name).continueWithTask(new Continuation<Void, Task<Void>>() {
             @Override
             public Task<Void> then(@NonNull Task<Void> task) throws Exception {
@@ -110,13 +150,15 @@ public class EditUserProfileActivity extends AppCompatActivity
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 // Clear all loading screen here //
+                progressBarLayout.setVisibility(View.GONE);
 
                 // Check status
                 if(task.isSuccessful()) {
-
+                    Toast.makeText(getApplicationContext(), "Profile saved", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
                 else {
-
+                    Toast.makeText(getApplicationContext(), "Failed to saved", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -142,6 +184,11 @@ public class EditUserProfileActivity extends AppCompatActivity
     }
 
     private void showCancellationConfirmation() {
+        if(progressBarLayout.getVisibility() == View.VISIBLE) return;
+        if(!isEdited()) {
+            finish();
+            return;
+        }
         DialogFragment dialogFragment = new EditCancellationDialogFragment();
         dialogFragment.show(getSupportFragmentManager(), null);
     }

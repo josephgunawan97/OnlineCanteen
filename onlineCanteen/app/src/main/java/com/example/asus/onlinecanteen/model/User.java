@@ -7,12 +7,14 @@ package com.example.asus.onlinecanteen.model;
 public class User {
 
     private String name;
-    private String phone;
+    private String userPhone;
     private String profilePictureUrl;
+
+    public User() {}
 
     public User(String name, String phone, String profilePictureUrl) {
         this.name = name;
-        this.phone = phone;
+        this.userPhone = phone;
         this.profilePictureUrl = profilePictureUrl;
     }
 
@@ -20,8 +22,8 @@ public class User {
         this.name = name;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
     }
 
     public void setProfilePictureUrl(String profilePictureUrl) {
@@ -32,8 +34,8 @@ public class User {
         return name;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getUserPhone() {
+        return userPhone;
     }
 
     public String getProfilePictureUrl() {

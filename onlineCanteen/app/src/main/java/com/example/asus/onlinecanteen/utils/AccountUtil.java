@@ -23,6 +23,27 @@ public class AccountUtil {
 
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+    private static User currentUser;
+    private static Store currentStore;
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static Store getCurrentStore() {
+        return currentStore;
+    }
+
+    public static void setCurrentAccount(User currentUser) {
+        AccountUtil.currentUser = currentUser;
+        AccountUtil.currentStore = null;
+    }
+
+    public static void setCurrentAccount(Store currentStore) {
+        AccountUtil.currentStore = currentStore;
+        AccountUtil.currentUser = null;
+    }
+
     @NonNull
     public static Task<AuthResult> registerNewAccount(String email, String password) {
         return firebaseAuth.createUserWithEmailAndPassword(email, password);
