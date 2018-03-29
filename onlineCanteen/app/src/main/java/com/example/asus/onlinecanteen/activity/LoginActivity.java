@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String TAG = LoginActivity.class.getSimpleName();
 
     // Views
-    private ConstraintLayout loginRootLayout;
+    private ViewGroup loadingPanel;
     private EditText loginUsernameEditText;
     private EditText loginPasswordEditText;
     private TextView signUp;
@@ -51,23 +52,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        loginRootLayout = findViewById(R.id.login_root_layout);
+        loadingPanel = findViewById(R.id.loadingPanel);
 
         getSupportActionBar().hide();
-
-        //Check if user signed-in
-        if (user != null) {
-            login();
-        }
-        else {
-            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-        }
 
         // Initialize views
         loginUsernameEditText = findViewById(R.id.loginUsername);
@@ -87,31 +78,27 @@ public class LoginActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn.setClickable(false);
-                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE); //For loading screen purposes
+//                signIn.setClickable(false);
+                loadingPanel.setVisibility(View.VISIBLE); //For loading screen purposes
+                loadingPanel.setClickable(true);
                 if(!validateLoginInfo()) {
-                    findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-                    signIn.setClickable(true);
-                    Toast.makeText(view.getContext(), "User not Found", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(view.getContext(), "User not Found", Toast.LENGTH_SHORT).show();
                     //Requirements are not fulfilled
                     return;
                 }
 
-                firebaseAuth.signInWithEmailAndPassword(loginUsernameEditText.getText().toString(), loginPasswordEditText.getText().toString())
+                firebaseAuth.signInWithEmailAndPassword(loginUsernameEditText.getText().toString(),
+                                                        loginPasswordEditText.getText().toString())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()) {
-                                        signIn.setClickable(true);
-                                        firebaseAuth = FirebaseAuth.getInstance();
-                                        user = firebaseAuth.getCurrentUser();
                                         login();
-
                                     } else {
-                                        signIn.setClickable(true);
-                                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+//                                        signIn.setClickable(true);
                                         Toast.makeText(LoginActivity.this, R.string.authentication_failed, Toast.LENGTH_SHORT).show();
                                     }
+                                    loadingPanel.setVisibility(View.GONE);
                                 }
                             });
 
@@ -141,6 +128,20 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        //Check if user signed-in
+        if (user != null) {
+            login();
+        }
+        else {
+            loadingPanel.setVisibility(View.GONE);
+        }
     }
 
     public void hideKeyboard(View view) {

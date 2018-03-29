@@ -46,7 +46,7 @@ public class RegistrationMainActivity extends AppCompatActivity {
 
         if(requestCode == REGISTRATION_CODE) {
             if(resultCode == RegistrationConstant.REGISTER_SUCCESSFUL) {
-
+                finish();
             }
         }
     }
