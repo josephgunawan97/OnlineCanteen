@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -82,29 +85,69 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
         declineButton = findViewById(R.id.declineOrder);
         scanQR = findViewById(R.id.scan_qr);
 
-        acceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WalletUtil walletUtil = new WalletUtil();
-                walletUtil.debitAmount(mAuth.getCurrentUser().getUid(),transaction.getTotalPrice());
-                Toast.makeText(getApplicationContext(),"Order accepted",Toast.LENGTH_LONG).show();
 
-                Intent intent = new Intent(MerchantOrderDetailActivity.this, MainActivityMerchant.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        if(transaction.getDeliveryStatus()==0){
+            acceptButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WalletUtil walletUtil = new WalletUtil();
+                    walletUtil.debitAmount(mAuth.getCurrentUser().getUid(),transaction.getTotalPrice());
+                    Toast.makeText(getApplicationContext(),"Order accepted",Toast.LENGTH_LONG).show();
 
-        declineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Order declined",Toast.LENGTH_LONG).show();
 
-                Intent intent = new Intent(MerchantOrderDetailActivity.this, MainActivityMerchant.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+                    Query query = reference.orderByChild("purchaseDate").equalTo(transaction.getPurchaseDate());
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            for (DataSnapshot child : snapshot.getChildren()) {
+                                child.getRef().child("deliveryStatus").setValue(1);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    Intent intent = new Intent(MerchantOrderDetailActivity.this, MainActivityMerchant.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
+            declineButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(),"Order declined",Toast.LENGTH_LONG).show();
+
+                    Query query = reference.orderByChild("purchaseDate").equalTo(transaction.getPurchaseDate());
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            for (DataSnapshot child : snapshot.getChildren()) {
+                                child.getRef().child("deliveryStatus").setValue(4);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    Intent intent = new Intent(MerchantOrderDetailActivity.this, MainActivityMerchant.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
+        else {
+            acceptButton.setClickable(false);
+            acceptButton.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+            declineButton.setClickable(false);
+            declineButton.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+        }
 
         scanQR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +166,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
         username.setText(transaction.getName());
         location.setText(transaction.getLocation());
         grandTotal.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
-        orderStatus.setText(String.valueOf(transaction.getDeliveryStatus())); //TO BE CHANGED LATER
+        orderStatus.setText(statusString(transaction.getDeliveryStatus())); //TO BE CHANGED LATER
 
         //Adapter for order items list
         detailAdapter = new OrderDetailAdapter(transaction.getItems());
@@ -131,6 +174,19 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(getApplicationContext());
         itemsRecyclerView.setLayoutManager(layoutManager);
         itemsRecyclerView.setAdapter(detailAdapter);
+
+    }
+
+    private String statusString(int deliveryStatus) {
+
+        switch(deliveryStatus){
+            case 0 : return "Waiting order to be accepted!";
+            case 1 : return "Order accepted!";
+            case 2 : return "Your order is on the way!";
+            case 3 : return "Ordered sent!";
+            case 4 : return "Order declined!";
+            default : return "Status not found!";
+        }
 
     }
 

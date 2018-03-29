@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionHistoryAdapter.ViewHolder> {
@@ -84,7 +86,26 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         });
         holder.transactionDateTextView.setText(Transaction.getPurchasedDateString(transaction.getPurchaseDate()));
         holder.paymentAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
+        holder.statusTextView.setText(statusString(transaction.getDeliveryStatus()));
     }
+
+    /**
+     * Change status from integer to string
+     * @return status in String
+     */
+    private String statusString(int deliveryStatus) {
+
+        switch(deliveryStatus){
+            case 0 : return "Waiting order to be accepted";
+            case 1 : return "Order accepted";
+            case 2 : return "Your order is on the way!";
+            case 3 : return "Ordered sent!";
+            case 4 : return "Order declined";
+            default : return "Status not found!";
+        }
+
+    }
+
     /**
      * Retrieved the amount of items in adapter
      * @return amount of items in adapter
@@ -125,6 +146,8 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
         public TextView transactionDateTextView;
         // TextView of payment amount
         public TextView paymentAmountTextView;
+        // TextView of delivery status
+        public TextView statusTextView;
 
         /**
          * Construct {@link ViewHolder} instance
@@ -136,6 +159,7 @@ public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionH
             storeNameTextView = view.findViewById(R.id.history_item_store_name);
             transactionDateTextView = view.findViewById(R.id.history_item_transaction_date);
             paymentAmountTextView = view.findViewById(R.id.history_item_payment_amount);
+            statusTextView = view.findViewById(R.id.statustext);
 
             itemView.setOnClickListener(this);
         }
