@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.utils.WalletUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -56,7 +57,6 @@ public class AdminTopUpActivity extends AppCompatActivity {
                 email = email.replaceAll(Pattern.quote("."),",");
                 password = passwordET.getText().toString();
                 amount = Integer.parseInt(amountET.getText().toString());
-
 
 
                 emailDatabase = FirebaseDatabase.getInstance().getReference();

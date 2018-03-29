@@ -51,8 +51,10 @@
             android:parentActivityName=".activity.RegistrationMainActivity" />
         <activity android:name=".activity.EditProductActivity" />
         <activity android:name=".activity.MerchantOrderDetailActivity" />
-        <activity android:name=".activity.QrActivity" />
+        <activity android:name=".activity.QrActivity"
+            android:noHistory="true"/>
         <activity android:name=".activity.AdminConfirmTopUpActivity" />
+        <activity android:name=".activity.TopUpDetailActivity" />
         <activity
             android:name=".activity.MainUserActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

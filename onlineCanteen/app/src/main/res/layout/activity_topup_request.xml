@@ -159,14 +159,14 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="@dimen/user_profile_picture_size"
                     android:layout_height="@dimen/user_profile_picture_size"
-                    app:contentPadding="2dp"
-                    app:cardCornerRadius="@dimen/user_profile_picture_size_half" >
+                    app:contentPadding="2dp">
 
-                    <ImageView android:id="@+id/payment_proof"
+                    <ImageView
+                        android:id="@+id/payment_proof"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/logo3"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/logo3" />
                 </android.support.v7.widget.CardView>
 
                 <Button android:id="@+id/picture_button"

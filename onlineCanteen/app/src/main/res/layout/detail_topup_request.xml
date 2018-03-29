@@ -1,9 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.asus.onlinecanteen.activity.MerchantOrderDetailActivity"
+    tools:context="com.example.asus.onlinecanteen.fragment.topupDetailFragment"
     android:orientation="vertical">
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,8 +14,8 @@
         android:orientation="horizontal"
         android:background="@color/colorPrimary"
         android:paddingStart="16dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" >
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,12 +24,12 @@
             android:textColor="@color/white"/>
 
         <TextView
-            android:id="@+id/transaction_date"
+            android:id="@+id/topup_detail_topup_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:textColor="@color/white"
-            android:text="@string/history_transaction_date_default" />
+            android:text="date" />
 
     </LinearLayout>
 
@@ -36,21 +39,25 @@
         android:orientation="horizontal"
         android:background="@color/colorPrimary"
         android:paddingStart="16dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" >
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" >
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Purchased by : "
+            android:text="Request by : "
+            android:layout_gravity="center"
             android:textColor="@color/white"/>
 
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/request_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@string/user_name_default" />
+            android:text="Name" />
+
+
 
     </LinearLayout>
 
@@ -60,96 +67,60 @@
         android:orientation="horizontal"
         android:background="@color/colorPrimary"
         android:paddingStart="16dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" >
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" >
+
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location : "
+            android:text="Bank : "
+            android:layout_gravity="center"
             android:textColor="@color/white"/>
 
         <TextView
-            android:id="@+id/user_location"
+            android:id="@+id/bank_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             android:textColor="@color/white"
-            android:text="@string/user_location" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp"
-        android:paddingStart="16dp"
-        android:paddingTop="5dp">
-
-        <ImageButton
-            android:id="@+id/scan_qr"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:layout_weight="0"
-            android:padding="5dp"
-            android:src="@drawable/ic_qrcode_black_24dp" />
+            android:text="Name" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status: "
+            android:text=" Transfer name : "
+            android:paddingStart="50dp"
             android:layout_gravity="center"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"/>
 
         <TextView
-            android:id="@+id/order_status"
+            android:id="@+id/trans_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
             android:layout_gravity="center"
-            android:text="@string/order_status"
-            android:textColor="@color/white" />
-
+            android:text="Name" />
     </LinearLayout>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/transaction_detail_items"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <TextView
-        android:id="@+id/transaction_detail_amount"
+        <TextView
+        android:id="@+id/topup_detail_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:gravity="center"
+        android:padding="16dp"
         android:background="@color/colorPrimary"
         android:textColor="@color/white"
-        android:text="@string/history_payment_amount_default" />
+        android:text="Request amount"/>
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/proofdetail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 
-        <Button
-            android:id="@+id/acceptOrder"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="Accept" />
-
-        <Button
-            android:id="@+id/declineOrder"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="Decline" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/accept_request"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Accept Request" />
 
 </LinearLayout>
