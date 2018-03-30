@@ -51,8 +51,9 @@
             android:parentActivityName=".activity.RegistrationMainActivity" />
         <activity android:name=".activity.EditProductActivity" />
         <activity android:name=".activity.MerchantOrderDetailActivity" />
-        <activity android:name=".activity.QrActivity"
-            android:noHistory="true"/>
+        <activity
+            android:name=".activity.QrActivity"
+            android:noHistory="true" />
         <activity android:name=".activity.AdminConfirmTopUpActivity" />
         <activity android:name=".activity.TopUpDetailActivity" />
         <activity
@@ -69,12 +70,12 @@
             android:parentActivityName=".activity.MainUserActivity" />
         <activity android:name=".activity.MerchantSettingsActivity" />
         <activity android:name=".activity.AdminSalesReportsListActivity" />
-        <activity android:name=".activity.AdminSendsSalesReportActivity" />
         <activity
             android:name=".activity.EditUserProfileActivity"
             android:parentActivityName=".activity.MainUserActivity" />
-        <activity android:name=".activity.EditStoreProfileActivity"
-            android:parentActivityName=".activity.MerchantSettingsActivity"/>
+        <activity
+            android:name=".activity.EditStoreProfileActivity"
+            android:parentActivityName=".activity.MerchantSettingsActivity" />
     </application>
 
 </manifest>

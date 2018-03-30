@@ -183,7 +183,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
             case 0 : return "Waiting order to be accepted!";
             case 1 : return "Order accepted!";
             case 2 : return "Your order is on the way!";
-            case 3 : return "Ordered sent!";
+            case 3 : return "Order sent!";
             case 4 : return "Order declined!";
             default : return "Status not found!";
         }
