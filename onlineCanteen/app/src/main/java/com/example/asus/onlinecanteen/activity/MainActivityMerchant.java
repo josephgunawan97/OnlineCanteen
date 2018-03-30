@@ -19,6 +19,7 @@ import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MerchantOrderListFragment;
 import com.example.asus.onlinecanteen.fragment.MerchantProductListFragment;
 import com.example.asus.onlinecanteen.model.Store;
+import com.example.asus.onlinecanteen.utils.AccountUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -106,6 +107,7 @@ public class MainActivityMerchant extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 store = dataSnapshot.getValue(Store.class);
+                AccountUtil.setCurrentAccount(store);
                 title.setText(store.getStoreName());
                 locate.setText(store.getLocation() +" | " + store.getOpenHour() +" - "+ store.getCloseHour());
             }

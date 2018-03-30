@@ -22,7 +22,7 @@ import java.util.TimeZone;
 
 public class MerchantSettingsActivity extends AppCompatActivity {
 
-    Button logoutButton, editProfileBtn, deliveryFeeBtn, withdrawButton, salesReportBtn;
+    private Button logoutButton, editProfileBtn, deliveryFeeBtn, withdrawButton, salesReportBtn;
 
     private DatabaseReference database;
 
@@ -50,6 +50,16 @@ public class MerchantSettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 generateReport();
+            }
+        });
+
+        // Click listener to edit profile
+        editProfileBtn = findViewById(R.id.editProfileButton);
+        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MerchantSettingsActivity.this, EditStoreProfileActivity.class);
+                startActivity(intent);
             }
         });
 

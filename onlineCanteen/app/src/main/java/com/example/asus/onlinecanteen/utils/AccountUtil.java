@@ -49,19 +49,6 @@ public class AccountUtil {
         return firebaseAuth.createUserWithEmailAndPassword(email, password);
     }
 
-    @NonNull
-    public static Task<Void> updateBaseInformation(String name) {
-        // Check current user
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if(firebaseUser == null) return null;
-
-        // Add update information
-        UserProfileChangeRequest.Builder requestBuilder = new UserProfileChangeRequest.Builder();
-        requestBuilder.setDisplayName(name);
-
-        return firebaseUser.updateProfile(requestBuilder.build());
-    }
-
     public static Task<Void> createUserOtherInformation(String name, String phoneNumber, Uri profilePictureUri) {
         return updateUserOtherInformation(name, phoneNumber, profilePictureUri).continueWithTask(new Continuation<Void, Task<Void>>() {
             @Override

@@ -10,30 +10,30 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.EditCancellationDialogFragment;
-import com.example.asus.onlinecanteen.model.User;
+import com.example.asus.onlinecanteen.fragment.TimePickerFragment;
+import com.example.asus.onlinecanteen.model.Store;
 import com.example.asus.onlinecanteen.utils.AccountUtil;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import static com.example.asus.onlinecanteen.utils.ExternalStoragePermissionUtil.checkReadExternalStoragePermission;
 import static com.example.asus.onlinecanteen.utils.ExternalStoragePermissionUtil.requestReadExternalStoragePermission;
 
-public class EditUserProfileActivity extends AppCompatActivity
-        implements EditCancellationDialogFragment.CancellationHandler{
+public class EditStoreProfileActivity extends AppCompatActivity
+        implements EditCancellationDialogFragment.CancellationHandler {
 
-    private static final String TAG = EditUserProfileActivity.class.getSimpleName();
+    private static final String TAG = EditStoreProfileActivity.class.getSimpleName();
 
     // Request permission code
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 100;
@@ -49,19 +49,39 @@ public class EditUserProfileActivity extends AppCompatActivity
     private TextInputEditText nameEditText;
     private TextInputEditText phoneNumberEditText;
     private ImageView profilePictureImageView;
+    private TextInputEditText locationEditText;
+    private TextInputEditText bioEditText;
+    private TextView openHourTextView;
+    private TextView closeHourTextView;
+    private Button setOpenHourButton;
+    private Button setCloseHourButton;
     private Button cancelButton;
     private Button saveButton;
 
     // Boolean for edited
     private boolean isProfilePictureEdited;
 
-    // Current User
-    private User currentUser;
+    // Current Store
+    private Store currentStore;
+
+    // Time Picker Handler
+    TimePickerFragment.TimeResultHandler openHourHandler = new TimePickerFragment.TimeResultHandler() {
+        @Override
+        public void onTimeSet(int hourOfDay, int minute) {
+            openHourTextView.setText(String.format("%02d:%02d", hourOfDay, minute));
+        }
+    };
+    TimePickerFragment.TimeResultHandler closeHourHandler = new TimePickerFragment.TimeResultHandler() {
+        @Override
+        public void onTimeSet(int hourOfDay, int minute) {
+            closeHourTextView.setText(String.format("%02d:%02d", hourOfDay, minute));
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_user_profile);
+        setContentView(R.layout.activity_edit_store_profile);
 
         setTitle("Edit Account");
 
@@ -69,9 +89,15 @@ public class EditUserProfileActivity extends AppCompatActivity
 
         // Initialize views
         progressBarLayout = findViewById(R.id.progress_bar_layout);
-        nameEditText = findViewById(R.id.edit_name);
-        phoneNumberEditText = findViewById(R.id.edit_phone_number);
+        nameEditText = findViewById(R.id.edit_store_name);
+        phoneNumberEditText = findViewById(R.id.edit_store_phone_number);
         profilePictureImageView = findViewById(R.id.profile_picture);
+        locationEditText = findViewById(R.id.edit_store_location);
+        bioEditText = findViewById(R.id.edit_store_bio);
+        openHourTextView = findViewById(R.id.edit_store_open_hour);
+        closeHourTextView = findViewById(R.id.edit_store_close_hour);
+        setOpenHourButton = findViewById(R.id.edit_store_open_button);
+        setCloseHourButton = findViewById(R.id.edit_store_close_button);
         cancelButton = findViewById(R.id.edit_cancel_button);
         saveButton = findViewById(R.id.edit_save_button);
 
@@ -81,6 +107,20 @@ public class EditUserProfileActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 choosePictureFromGallery();
+            }
+        });
+
+        setOpenHourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createTimePicker(openHourHandler);
+            }
+        });
+
+        setCloseHourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createTimePicker(closeHourHandler);
             }
         });
 
@@ -98,52 +138,61 @@ public class EditUserProfileActivity extends AppCompatActivity
             }
         });
 
-        currentUser = AccountUtil.getCurrentUser();
+        currentStore = AccountUtil.getCurrentStore();
         populateFields();
     }
 
-    private void populateFields() {
-        if(currentUser != null) {
-            nameEditText.setText(currentUser.getName());
-            phoneNumberEditText.setText(currentUser.getUserPhone());
+    private void createTimePicker(TimePickerFragment.TimeResultHandler handler) {
+        TimePickerFragment timePickerFragment = new TimePickerFragment();
+        timePickerFragment.setHandler(handler);
+        timePickerFragment.show(getSupportFragmentManager(), null);
+    }
 
-            if(currentUser.getProfilePictureUrl() != null) {
+    private void populateFields() {
+        if(currentStore != null) {
+            nameEditText.setText(currentStore.getStoreName());
+            phoneNumberEditText.setText(currentStore.getPhoneNumber());
+            locationEditText.setText(currentStore.getLocation());
+            bioEditText.setText(currentStore.getBio());
+            openHourTextView.setText(currentStore.getOpenHour());
+            closeHourTextView.setText(currentStore.getCloseHour());
+
+            if(currentStore.getImg() != null) {
                 Glide.with(this)
-                        .load(currentUser.getProfilePictureUrl())
+                        .load(currentStore.getImg())
                         .into(profilePictureImageView);
             }
         }
-    }
-
-    private boolean isEdited() {
-        String name = nameEditText.getText().toString();
-        String phoneNumber = phoneNumberEditText.getText().toString();
-        return !(name.equals(currentUser.getName()) && phoneNumber.equals(currentUser.getUserPhone()) && !isProfilePictureEdited);
     }
 
     private void saveChanges() {
         // Set up all loading screen here //
         progressBarLayout.setVisibility(View.VISIBLE);
 
-        // Update information //
-        String name = nameEditText.getText().toString();
-        String phoneNumber = phoneNumberEditText.getText().toString();
-
         if(!isEdited()) {
             Toast.makeText(this, "Nothing changed", Toast.LENGTH_SHORT).show();
             return;
         }
+        // Update information //
+        String name = nameEditText.getText().toString();
+        String phoneNumber = phoneNumberEditText.getText().toString();
+        String openHour = openHourTextView.getText().toString();
+        String closeHour = closeHourTextView.getText().toString();
+        String location = locationEditText.getText().toString();
+        String bio = bioEditText.getText().toString();
 
-
-        currentUser.setName(name);
-        currentUser.setUserPhone(phoneNumber);
+        currentStore.setStoreName(name);
+        currentStore.setPhoneNumber(phoneNumber);
+        currentStore.setOpenHour(openHour);
+        currentStore.setCloseHour(closeHour);
+        currentStore.setLocation(location);
+        currentStore.setBio(bio);
 
         Task<Void> updateTask;
         if(isProfilePictureEdited) {
-            updateTask = AccountUtil.updateUserOtherInformation(currentUser, profilePictureUri);
-        }
-        else {
-            updateTask = AccountUtil.updateUserOtherInformation(currentUser, null);
+            updateTask = AccountUtil.updateStoreOtherInformation(currentStore, profilePictureUri);
+        } else {
+            updateTask = AccountUtil.updateStoreOtherInformation(currentStore, null);
         }
 
         updateTask.addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -181,6 +230,19 @@ public class EditUserProfileActivity extends AppCompatActivity
         else {
             profilePictureImageView.setImageURI(profilePictureUri);
         }
+    }
+
+    private boolean isEdited() {
+        String name = nameEditText.getText().toString();
+        String phoneNumber = phoneNumberEditText.getText().toString();
+        String openHour = openHourTextView.getText().toString();
+        String closeHour = closeHourTextView.getText().toString();
+        String location = locationEditText.getText().toString();
+        String bio = bioEditText.getText().toString();
+        return !(name.equals(currentStore.getStoreName()) && phoneNumber.equals(currentStore.getPhoneNumber())
+                && openHour.equals(currentStore.getOpenHour()) && closeHour.equals(currentStore.getCloseHour())
+                && location.equals(currentStore.getLocation()) && bio.equals(currentStore.getBio())
+                && !isProfilePictureEdited);
     }
 
     private void showCancellationConfirmation() {

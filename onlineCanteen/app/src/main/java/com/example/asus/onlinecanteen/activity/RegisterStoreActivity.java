@@ -137,7 +137,7 @@ public class RegisterStoreActivity extends AppCompatActivity
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateForm()) {
+                if (validateForm()) {
                     progressBarLayout.setVisibility(View.VISIBLE);
 
                     String email = emailEditText.getText().toString();
@@ -161,31 +161,23 @@ public class RegisterStoreActivity extends AppCompatActivity
                 .continueWithTask(new Continuation<AuthResult, Task<Void>>() {
                     @Override
                     public Task<Void> then(@NonNull Task<AuthResult> task) throws Exception {
-                        if(task.isSuccessful()) {
-                            return AccountUtil.updateBaseInformation(name);
-                        }
-                        else {
+                        if (task.isSuccessful()) {
+                            return AccountUtil.createStoreOtherInformation(name, phoneNumber, storePictureUri, email, openHour, closeHour, location, bio);
+                        } else {
                             Exception e = task.getException();
-                            if(e instanceof FirebaseAuthInvalidCredentialsException) {
+                            if (e instanceof FirebaseAuthInvalidCredentialsException) {
                                 emailEditText.setError("Email is malformed");
-                            }
-                            else if(e instanceof FirebaseAuthUserCollisionException){
+                            } else if (e instanceof FirebaseAuthUserCollisionException) {
                                 emailEditText.setError("Email is already used");
                             }
                             return null;
                         }
                     }
                 })
-                .continueWithTask(new Continuation<Void, Task<Void>>() {
-                    @Override
-                    public Task<Void> then(@NonNull Task<Void> task) throws Exception {
-                        return AccountUtil.createStoreOtherInformation(name, phoneNumber, storePictureUri, email, openHour, closeHour, location, bio);
-                    }
-                })
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             finishRegistration();
                         }
                     }
@@ -198,21 +190,19 @@ public class RegisterStoreActivity extends AppCompatActivity
         timePickerFragment.show(getSupportFragmentManager(), null);
     }
 
-    private void choosePictureFromGallery(){
-        if(checkReadExternalStoragePermission(this)) {
+    private void choosePictureFromGallery() {
+        if (checkReadExternalStoragePermission(this)) {
             Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
             startActivityForResult(galleryIntent, CHOOSE_PICTURE_FROM_GALLERY_CODE);
-        }
-        else {
+        } else {
             requestReadExternalStoragePermission(this, REQUEST_READ_EXTERNAL_STORAGE);
         }
     }
 
     private void changeStorePicture() {
-        if(storePictureUri == null) {
+        if (storePictureUri == null) {
             storePictureImageView.setImageResource(R.drawable.logo3);
-        }
-        else {
+        } else {
             storePictureImageView.setImageURI(storePictureUri);
         }
     }
@@ -226,37 +216,37 @@ public class RegisterStoreActivity extends AppCompatActivity
 
         boolean valid = true;
 
-        if(TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(email)) {
             emailEditText.setError("Email is required");
             valid = false;
         }
 
-        if(TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("Password is required");
             valid = false;
         }
 
-        if(TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(name)) {
             nameEditText.setError("Name is required");
             valid = false;
         }
 
-        if(TextUtils.isEmpty(phoneNumber)) {
+        if (TextUtils.isEmpty(phoneNumber)) {
             phoneNumberEditText.setError("Phone number is required");
             valid = false;
         }
 
-        if(TextUtils.isEmpty(location)) {
+        if (TextUtils.isEmpty(location)) {
             locationEditText.setError("Phone number is required");
             valid = false;
         }
 
-        if(!isOpenHourSet) {
+        if (!isOpenHourSet) {
             setOpenHourButton.setError("Open hour is required");
             valid = false;
         }
 
-        if(!isCloseHourSet) {
+        if (!isCloseHourSet) {
             setCloseHourButton.setError("Open hour is required");
             valid = false;
         }
@@ -266,14 +256,14 @@ public class RegisterStoreActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if(progressBarLayout.getVisibility() == View.GONE) showCancellationConfirmation();
+        if (progressBarLayout.getVisibility() == View.GONE) showCancellationConfirmation();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
-            if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Do something
                 choosePictureFromGallery();
             }
@@ -283,8 +273,8 @@ public class RegisterStoreActivity extends AppCompatActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK) {
-            if(requestCode == CHOOSE_PICTURE_FROM_GALLERY_CODE) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CHOOSE_PICTURE_FROM_GALLERY_CODE) {
                 storePictureUri = data.getData();
                 changeStorePicture();
             }
@@ -307,7 +297,7 @@ public class RegisterStoreActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case android.R.id.home:
                 // Cancel register
-                if(progressBarLayout.getVisibility() == View.GONE) showCancellationConfirmation();
+                if (progressBarLayout.getVisibility() == View.GONE) showCancellationConfirmation();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -322,250 +312,4 @@ public class RegisterStoreActivity extends AppCompatActivity
 
     @Override
     public void resumeRegistration() {}
-
-    /*    private static final int REQUEST_READ_EXTERNAL_STORAGE = 999;
-
-    ImageView imageView;
-    Button button, submitbtn;
-    private static final int PICK_IMAGE = 100;
-    Uri imageUri;
-    String profPicUrl;
-    FirebaseAuth mAuth;
-    FirebaseUser user;
-    DatabaseReference StoreReferences, walletReferences, roleReferences, emailReferences;
-    private DatabaseReference databaseStore;
-
-    //EditText
-    EditText usernameET, passwordET, emailET, openhourET, closehourET, locationET;
-
-    //String
-    String username, password, email, openh, closeh, location;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        setTheme(com.example.asus.onlinecanteen.R.style.AppTheme);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_store);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        imageView = findViewById(R.id.storeimageinput);
-        button =  findViewById(R.id.storebrowse);
-        submitbtn = findViewById(R.id.storeregisterbtn);
-        usernameET = findViewById(R.id.storenamefill);
-        passwordET = findViewById(R.id.storepasswordfill);
-        emailET = findViewById(R.id.storeemailfill);
-        openhourET = findViewById(R.id.storeopenhour);
-        closehourET = findViewById(R.id.storeclosehour);
-        locationET = findViewById(R.id.storelocationfill);
-
-
-        //Browse Image in Gallery & set as Profile Picture
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openGallery();
-            }
-        });
-
-        //Submit data for Sign Up & Upload to Storage
-        submitbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                username = usernameET.getText().toString();
-                password = passwordET.getText().toString();
-                email = emailET.getText().toString();
-                openh = openhourET.getText().toString();
-                closeh = closehourET.getText().toString();
-                location= locationET.getText().toString();
-                submitData();
-            }
-        });
-
-        databaseStore = FirebaseDatabase.getInstance().getReference("store");
-    }
-
-    private void openGallery(){
-        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, PICK_IMAGE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && requestCode == PICK_IMAGE){
-            imageUri = data.getData();
-            imageView.setImageURI(imageUri);
-        }
-    }
-
-    //To submit data
-    private void submitData() {
-
-        if(!validateRegisterInfo()) {
-            // Field is not filled
-            return;
-        }
-
-        mAuth.createUserWithEmailAndPassword(emailET.getText().toString(),passwordET.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            if(imageUri != null) {
-                                if(ContextCompat.checkSelfPermission(RegisterStoreActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                                    requestReadStoragePermission();
-                                }
-                            }
-                            addAdditionalUserInformation();
-                        } else {
-                            emailET.setText("");
-                            emailET.setError("Email is registered");
-                            passwordET.setText("");
-                        }
-                    }
-                });
-    }
-
-    private String uid;
-
-    private void addAdditionalUserInformation() {
-        mAuth.signInWithEmailAndPassword(emailET.getText().toString(), passwordET.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            user = mAuth.getCurrentUser();
-
-                            uid = user.getUid();
-                            String img = uploadImage();
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(username).build();
-                            user.updateProfile(profileUpdates);
-
-                            Store storeInfo = new Store(username, openh, closeh, location, img, email);
-                            StoreReferences = FirebaseDatabase.getInstance().getReference("store").child(uid);
-                            StoreReferences.setValue(storeInfo);
-
-
-                            walletReferences = FirebaseDatabase.getInstance().getReference("wallet").child(uid);
-                            walletReferences.setValue(0);
-
-                            roleReferences = FirebaseDatabase.getInstance().getReference("role").child(uid);
-                            roleReferences.setValue("STORE");
-
-                            String passemail = email.replaceAll(Pattern.quote("."),",");
-                            emailReferences = FirebaseDatabase.getInstance().getReference("emailtouid").child(passemail);
-                            emailReferences.setValue(uid);
-
-                            backToLoginScreen();
-
-                        }
-                    }
-                });
-
-
-
-
-
-    }
-
-    //To upload image
-    private String uploadImage() {
-
-        Log.d(TAG, "Uploading...");
-        final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("profilepics/"+System.currentTimeMillis()+".jpg");
-        if (imageUri!=null){
-            profileImageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    @SuppressWarnings("VisibleForTests") Uri downloadUrl =taskSnapshot.getDownloadUrl();
-                    profPicUrl = downloadUrl.toString();
-                    Log.d(TAG, "Success in uploading");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(),"Image failed to upload",Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-        return profPicUrl;
-    }
-
-    private boolean validateRegisterInfo() {
-        boolean valid = true;
-
-        if(TextUtils.isEmpty(username)) {
-            usernameET.setError("Username required");
-            valid = false;
-        } else {
-            usernameET.setError(null);
-        }
-
-        if(TextUtils.isEmpty(password)) {
-            passwordET.setError("Password required");
-            valid = false;
-        } else {
-            passwordET.setError(null);
-        }
-
-        if(TextUtils.isEmpty(email)) {
-            emailET.setError("Email required");
-            valid = false;
-        } else {
-            emailET.setError(null);
-        }
-
-        if(TextUtils.isEmpty(openh)) {
-            openhourET.setError("Open Hour required");
-            valid = false;
-        } else {
-            openhourET.setError(null);
-        }
-
-        if(TextUtils.isEmpty(closeh)) {
-            closehourET.setError("Close Hour required");
-            valid = false;
-        } else {
-            closehourET.setError(null);
-        }
-
-        if(TextUtils.isEmpty(location)) {
-            locationET.setError("Location required");
-            valid = false;
-        } else {
-            locationET.setError(null);
-        }
-
-        return valid;
-    }
-
-
-    private void requestReadStoragePermission() {
-        ActivityCompat.requestPermissions(RegisterStoreActivity.this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                REQUEST_READ_EXTERNAL_STORAGE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
-            if(grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                addAdditionalUserInformation();
-            }
-        }
-    }
-
-    private void backToLoginScreen() {
-        if(mAuth != null) {
-            mAuth.signOut();
-        }
-        // GO TO LOGIN PAGE - after success
-        Intent intent = new Intent(RegisterStoreActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }*/
 }

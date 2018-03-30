@@ -196,7 +196,7 @@ public class RegisterActivity extends AppCompatActivity
                     @Override
                     public Task<Void> then(@NonNull Task<AuthResult> task) throws Exception {
                         if(task.isSuccessful()) {
-                            return AccountUtil.updateBaseInformation(name);
+                            return AccountUtil.createUserOtherInformation(name, phoneNumber, profilePictureUri);
                         }
                         else {
                             Exception e = task.getException();
@@ -208,12 +208,6 @@ public class RegisterActivity extends AppCompatActivity
                             }
                             return null;
                         }
-                    }
-                })
-                .continueWithTask(new Continuation<Void, Task<Void>>() {
-                    @Override
-                    public Task<Void> then(@NonNull Task<Void> task) throws Exception {
-                        return AccountUtil.createUserOtherInformation(name, phoneNumber, profilePictureUri);
                     }
                 })
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
