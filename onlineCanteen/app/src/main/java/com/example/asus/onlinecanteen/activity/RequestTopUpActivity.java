@@ -112,7 +112,7 @@ public class RequestTopUpActivity extends AppCompatActivity {
     private void uploadImage() {
         final Map topUp = new HashMap();
         database = FirebaseDatabase.getInstance().getReference("topuprequest");
-        final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("product/"+System.currentTimeMillis()+".jpg");
+        final StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("topuprequest/"+System.currentTimeMillis()+".jpg");
         if (imageUri!=null){
             profileImageRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override

@@ -2,16 +2,20 @@ package com.example.asus.onlinecanteen.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.activity.MerchantOrderDetailActivity;
+import com.example.asus.onlinecanteen.activity.TopUpDetailActivity;
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.TopUp;
 import com.google.firebase.database.DataSnapshot;
@@ -81,6 +85,13 @@ public class TopUpAdapter extends RecyclerView.Adapter<TopUpAdapter.ViewHolder> 
         holder.topupDateTextView.setText(topup.getRequestDateString(topup.getRequestdate()));
         holder.AmountTextView.setText("Rp " + String.valueOf(topup.getAmount()));
 
+        if(topup.getRequeststatus()==1)
+        {
+            holder.bg.setBackgroundColor(Color.LTGRAY);
+        }
+        else
+            holder.bg.setBackgroundColor(Color.WHITE);
+
     }
     /**
      * Retrieved the amount of items in adapter
@@ -113,6 +124,8 @@ public class TopUpAdapter extends RecyclerView.Adapter<TopUpAdapter.ViewHolder> 
         public TextView AmountTextView;
         // TextView of LocationTextView
 
+        LinearLayout bg;
+
         /**
          * Construct {@link ViewHolder} instance
          * @param view layout view of topup items
@@ -124,12 +137,13 @@ public class TopUpAdapter extends RecyclerView.Adapter<TopUpAdapter.ViewHolder> 
             NameTextView = view.findViewById(R.id.username);
             topupDateTextView = view.findViewById(R.id.date);
             AmountTextView = view.findViewById(R.id.amount);
+            bg = view.findViewById(R.id.bg_topup);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                   /* Intent intent = new Intent(context, TopUpDetailActivity.class);
+                    Intent intent = new Intent(context, TopUpDetailActivity.class);
                     intent.putExtra("topup",topUpHistory);
                     intent.putExtra("Position", getAdapterPosition());
-                    context.startActivity(intent);*/
+                    context.startActivity(intent);
                 }
             });
         }

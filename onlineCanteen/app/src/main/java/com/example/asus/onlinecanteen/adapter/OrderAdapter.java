@@ -2,7 +2,9 @@ package com.example.asus.onlinecanteen.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,13 +64,25 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.transactionDateTextView.setText(Transaction.getPurchasedDateString(transaction.getPurchaseDate()));
         holder.paymentAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
         holder.locationTextView.setText("Location: "+transaction.getLocation());
+
+        if(transaction.getDeliveryStatus()==1)
+        {
+            holder.bg.setBackgroundColor(Color.LTGRAY);
+        }
+        else
+            holder.bg.setBackgroundColor(Color.WHITE);
     }
 
     @Override public int getItemCount() {
         return transactionHistory.size();
     }
 
-    public void setTransactionHistory(ArrayList<Transaction> transactionHistory) {
+    public void add(Transaction transaction) {
+        if(transaction == null) return;
+        this.transactionHistory.add(transaction);
+        notifyDataSetChanged();
+    }
+    public void setHistory(ArrayList<Transaction> transactionHistory) {
         this.transactionHistory = transactionHistory;
     }
 
@@ -83,6 +97,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         // TextView of LocationTextView
         public TextView locationTextView;
 
+        public ConstraintLayout bg;
+
         public ViewHolder(View view) {
             super(view);
             final Context context = itemView.getContext();
@@ -91,6 +107,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
             transactionDateTextView = view.findViewById(R.id.order_item_transaction_date);
             paymentAmountTextView = view.findViewById(R.id.order_item_payment_amount);
             locationTextView = view.findViewById(R.id.order_location);
+            bg = view.findViewById(R.id.bg);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     Intent intent = new Intent(context, MerchantOrderDetailActivity.class);

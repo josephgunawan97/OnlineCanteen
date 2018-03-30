@@ -27,10 +27,14 @@ public class Transaction implements Serializable{
     // CONSTANTS
     // Transaction is pending, Items is not processed
     public static final int PENDING = 0;
+    // Transaction is accepted by store
+    public static final int ACCEPTED = 1;
     // Delivery is in process
-    public static final int ON_DELIVERY = 1;
+    public static final int ON_DELIVERY = 2;
     // Transaction is finished, Items are delivered
-    public static final int DELIVERED = 2;
+    public static final int DELIVERED = 3;
+    // Transaction is declined by store
+    public static final int DECLINED = 4;
 
     private String name;
     // Store Identity Variable
@@ -83,8 +87,33 @@ public class Transaction implements Serializable{
         this.uid = uid;
     }
 
-    public void setDeliveryStatus(int deliveryStatus) {
+    public void setDeliveryStatus(final int deliveryStatus) {
+
         this.deliveryStatus = deliveryStatus;
+        //transactionDatabase = FirebaseDatabase.getInstance().getReference().child("transactions");
+
+       /* transactionDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    Transaction newTransaction = dataSnapshot.getValue(Transaction.class);
+                    if(newTransaction.getUid() == getUid() && newTransaction.getSid() == getSid()
+                            && newTransaction.getPurchaseDate() == getPurchaseDate()){
+                        transactionDatabase.child(dataSnapshot.getKey()).child("deliveryStatus").setValue(deliveryStatus);
+                    }
+
+                };
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        */
+
+
     }
 
     public void setItems(HashMap<String, HashMap<String, Integer>> items) {

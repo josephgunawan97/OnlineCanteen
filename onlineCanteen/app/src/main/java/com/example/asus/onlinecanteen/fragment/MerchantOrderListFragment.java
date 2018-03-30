@@ -27,6 +27,7 @@ import com.example.asus.onlinecanteen.adapter.TransactionHistoryAdapter;
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.PurchasedItem;
 import com.example.asus.onlinecanteen.model.Transaction;
+import com.example.asus.onlinecanteen.utils.TransactionUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -34,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -59,8 +61,11 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    public MerchantOrderListFragment(){}
-
+    private ChildEventListener eventListener;
+    public MerchantOrderListFragment(){
+    }
+    
+   
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,12 +81,13 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
                 R.color.colorPrimaryLight);
 
         // Initialize References
-        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+        databaseTransaction = FirebaseDatabase.getInstance().getReference("transactions");
         databaseProducts = FirebaseDatabase.getInstance().getReference("products");
         databaseStore = FirebaseDatabase.getInstance().getReference("store");
 
 
-
+        transactions = new ArrayList<Transaction>();
+        adapter = new OrderAdapter(transactions);
 
         firebaseAuth = FirebaseAuth.getInstance();
         merchant = firebaseAuth.getCurrentUser();
@@ -90,7 +96,7 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
         layoutManager = new LinearLayoutManager(view.getContext());
 
         recyclerView.setLayoutManager(layoutManager);
-
+        recyclerView.setAdapter(adapter);
         return view;
     }
 
@@ -108,44 +114,52 @@ public class MerchantOrderListFragment extends Fragment implements SwipeRefreshL
     }
 
     private void attachDatabaseReadListener() {
-        transactions = new ArrayList<Transaction>();
-        adapter = new OrderAdapter(transactions);
-        Log.i(MerchantOrderListFragment.class.getSimpleName(),"Add3");
-        databaseTransaction = FirebaseDatabase.getInstance().getReference();
-        databaseTransaction.child("transactions").orderByChild("sid").equalTo(merchant.getUid()).addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
-                    Transaction trans = productSnapshot.getValue(Transaction.class);
-                    Log.i(MerchantOrderListFragment.class.getSimpleName(),"IF+ "+merchant.getUid() +" "+ trans.getSid());
-
-                        transactions.add(trans);
-                        Log.i(MerchantOrderListFragment.class.getSimpleName(),"Add2");
-
+        if(eventListener == null) {
+            eventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Transaction newTransaction = dataSnapshot.getValue(Transaction.class);
+                    if(merchant.getUid().equals(newTransaction.getSid()))
+                        adapter.add(newTransaction);
                 }
-                adapter.setTransactionHistory(transactions);
-                if(adapter!=null)
-                recyclerView.setAdapter(adapter);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Transaction newTransaction = dataSnapshot.getValue(Transaction.class);
+                    if(merchant.getUid().equals(newTransaction.getSid()))
+                    adapter.add(newTransaction);}
 
-            }
-        });
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+
+            databaseTransaction.addChildEventListener(eventListener);
+        }
     }
 
     private void detachDatabaseReadListener() {
-        if(transactions != null) {
-            transactions = null;
+        if(eventListener != null) {
+            adapter.notifyDataSetChanged();
+            transactions = new ArrayList<Transaction>();
+            adapter = new OrderAdapter(transactions);
+            databaseProducts.removeEventListener(eventListener);
+            eventListener = null;
         }
         }
 
 
     @Override
     public void onRefresh() {
+        recyclerView.removeAllViews();
+        detachDatabaseReadListener();
+        attachDatabaseReadListener();
         swipeLayout.setRefreshing(false);
     }
 }

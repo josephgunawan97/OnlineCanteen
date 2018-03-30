@@ -103,7 +103,7 @@ public class TransactionCurrentOrderFragment extends Fragment implements Transac
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Transaction newTransaction = dataSnapshot.getValue(Transaction.class);
-                    if(newTransaction.getDeliveryStatus()==0)
+                    if(newTransaction.getDeliveryStatus()<3)
                     adapter.addTransactionHistory(newTransaction);
                 }
 

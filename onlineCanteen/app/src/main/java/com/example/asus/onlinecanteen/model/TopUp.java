@@ -1,12 +1,15 @@
 package com.example.asus.onlinecanteen.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class TopUp {
+public class TopUp implements Serializable {
 
     private String transfername,uid,bank, proofpic;
     private int amount;
@@ -85,4 +88,6 @@ public class TopUp {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
         return sdf.format(x);
     }
+
+
 }
