@@ -3,6 +3,7 @@ package com.example.asus.onlinecanteen.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +40,6 @@ public class AdminStoreWithdrawal extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         emailET = (EditText) findViewById(R.id.withdrawEmail);
-        passwordET = (EditText) findViewById(R.id.withdrawPassword);
         amountET = (EditText) findViewById(R.id.withdrawAmount);
         withdrawButton = (Button) findViewById(R.id.withdrawButton);
 
@@ -47,34 +47,62 @@ public class AdminStoreWithdrawal extends AppCompatActivity {
         withdrawButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email = emailET.getText().toString();
-                email = email.replaceAll(Pattern.quote("."),",");
-                password = passwordET.getText().toString();
-                amount = Integer.parseInt(amountET.getText().toString());
+                if(validateForm())
+                {
+                    email = emailET.getText().toString();
+                    email = email.replaceAll(Pattern.quote("."),",");
+                    amount = Integer.parseInt(amountET.getText().toString());
 
+                    emailDatabase = FirebaseDatabase.getInstance().getReference();
 
-                emailDatabase = FirebaseDatabase.getInstance().getReference();
-
-                emailDatabase.child("emailtouid").child(email).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
-                            WalletUtil walletUtil = new WalletUtil();
-                            String id = dataSnapshot.getValue().toString();
-                            walletUtil.creditAmount(id,amount);
-                            Intent intent = new Intent(AdminStoreWithdrawal.this, MainActivityAdmin.class);
-                            startActivity(intent);
-                            finish();
+                    emailDatabase.child("emailtouid").child(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()){
+                                WalletUtil walletUtil = new WalletUtil();
+                                String id = dataSnapshot.getValue().toString();
+                                walletUtil.creditAmount(id,amount);
+                                Intent intent = new Intent(AdminStoreWithdrawal.this, MainActivityAdmin.class);
+                                startActivity(intent);
+                                finish();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
+
 
             }
         });
+    }
+
+    public boolean validateForm() {
+        String email = new String(emailET.getText().toString());
+        String amount = new String(amountET.getText().toString());
+
+        boolean valid = true;
+
+        if (TextUtils.isEmpty(email)) {
+            emailET.setError("Email is required");
+            valid = false;
+        }
+
+        if (TextUtils.isEmpty(amount)) {
+            amountET.setError("Amount is required");
+            valid = false;
+        }
+
+        return valid;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this,MainActivityAdmin.class);
+        startActivity(intent);
+        finish();
     }
 }

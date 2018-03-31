@@ -75,7 +75,7 @@ public class AccountUtil {
                 .continueWithTask(new Continuation<Void, Task<Void>>() {
                     @Override
                     public Task<Void> then(@NonNull Task<Void> task) throws Exception {
-                        return createRole("STORE");
+                        return createRole("UNVERIFIED_STORE");
                     }
                 }).continueWithTask(new Continuation<Void, Task<Void>>() {
                     @Override
@@ -146,6 +146,7 @@ public class AccountUtil {
             }
         });
     }
+
 
 
     private static Task<Void> updateUserInformationOnDatabase(String name, String phoneNumber, String profilePictureUrl) {

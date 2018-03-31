@@ -76,6 +76,7 @@
         <activity
             android:name=".activity.EditStoreProfileActivity"
             android:parentActivityName=".activity.MerchantSettingsActivity" />
+        <activity android:name=".activity.AdminVerifyStoreActivity"></activity>
     </application>
 
 </manifest>

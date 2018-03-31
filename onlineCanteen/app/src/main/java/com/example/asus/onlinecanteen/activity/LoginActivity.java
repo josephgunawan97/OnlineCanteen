@@ -1,6 +1,8 @@
 package com.example.asus.onlinecanteen.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -182,6 +184,20 @@ public class LoginActivity extends AppCompatActivity {
                             intent = new Intent(LoginActivity.this, MainActivityMerchant.class);
                             startActivity(intent);
                             finish();
+                            break;
+                        case "UNVERIFIED_STORE":
+                            AlertDialog alertDialog = new AlertDialog.Builder(
+                                    LoginActivity.this).create();
+                            alertDialog.setTitle("Store not verified!");
+                            alertDialog.setMessage("Please wait for our admin to verify your store.");
+                            alertDialog.setIcon(R.drawable.logo);
+                            alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    }
+                            });
+                            alertDialog.show();
+                            FirebaseAuth.getInstance().signOut();
+                            loadingPanel.setVisibility(View.INVISIBLE);
                             break;
                         case "ADMIN":
                             intent = new Intent(LoginActivity.this, MainActivityAdmin.class);

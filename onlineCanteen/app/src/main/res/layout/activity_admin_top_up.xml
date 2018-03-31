@@ -1,70 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical"
     tools:context="com.example.asus.onlinecanteen.activity.AdminTopUpActivity">
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="17dp"
         android:layout_marginTop="20dp"
+        android:layout_weight="1"
         android:text="E-mail" />
 
     <EditText
         android:id="@+id/topUpEmail"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView"
         android:layout_below="@+id/textView"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="14dp"
+        android:layout_weight="1"
         android:ems="10"
         android:hint="Enter your e-mail"
         android:inputType="textPersonName" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/topUpEmail"
-        android:layout_below="@+id/topUpEmail"
-        android:layout_marginTop="39dp"
-        android:text="Password" />
-
-    <EditText
-        android:id="@+id/topUpPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView2"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="14dp"
-        android:ems="10"
-        android:hint="Password "
-        android:inputType="textPassword" />
-
-    <TextView
         android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/topUpPassword"
         android:layout_below="@+id/topUpPassword"
-        android:layout_marginTop="14dp"
-        android:ems="10"
         android:layout_centerVertical="true"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:ems="10"
         android:text="Top-Up Amount" />
 
     <EditText
         android:id="@+id/topUpAmount"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView3"
         android:layout_below="@+id/textView3"
         android:layout_marginTop="14dp"
+        android:layout_weight="1"
         android:ems="10"
         android:hint="Amount"
         android:inputType="numberSigned" />
@@ -75,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/topUpAmount"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp"
+        android:layout_marginTop="20dp"
         android:text="Top-Up" />
 
-</RelativeLayout>
+</LinearLayout>
