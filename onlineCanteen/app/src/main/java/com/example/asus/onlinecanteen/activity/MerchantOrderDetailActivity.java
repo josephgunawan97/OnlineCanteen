@@ -152,7 +152,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
         scanQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),QrActivity.class);
+                Intent i = new Intent(getApplicationContext(),QrTransactionActivity.class);
                 i.putExtra("Location", "order");
                 i.putExtra("Transaction", transactionHistory);
                 i.putExtra("Position", pos);

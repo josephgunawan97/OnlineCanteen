@@ -80,6 +80,7 @@
             android:name=".activity.EditStoreProfileActivity"
             android:parentActivityName=".activity.MerchantSettingsActivity" />
         <activity android:name=".activity.AdminVerifyStoreActivity"></activity>
+        <activity android:name=".activity.QrTransactionActivity"></activity>
     </application>
 
 </manifest>

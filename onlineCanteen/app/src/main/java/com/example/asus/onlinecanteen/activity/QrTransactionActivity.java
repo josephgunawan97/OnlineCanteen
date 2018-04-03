@@ -1,5 +1,9 @@
 package com.example.asus.onlinecanteen.activity;
 
+/**
+ * Created by Rickhen Hermawan on 03/04/2018.
+ */
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -10,15 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.example.asus.onlinecanteen.model.Store;
 import com.example.asus.onlinecanteen.model.Transaction;
-import com.example.asus.onlinecanteen.utils.AccountUtil;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.Result;
 
 import java.util.ArrayList;
@@ -29,14 +25,13 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  * Created by Rickhen Hermawan on 15/03/2018.
  */
 
-public class QrActivity extends Activity implements ZXingScannerView.ResultHandler {
+public class QrTransactionActivity extends Activity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
     private String result, value;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
     ArrayList<Transaction> transactionHistory;
     int pos;
-    String id;
-    private Store store;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +54,6 @@ public class QrActivity extends Activity implements ZXingScannerView.ResultHandl
             }
 
         }
-
     }
 
     @Override
@@ -85,36 +79,19 @@ public class QrActivity extends Activity implements ZXingScannerView.ResultHandl
         result = rawResult.getText();
         //AlertDialog alert1 = builder.create();
         //alert1.show();
-        id = rawResult.getText();
-        DatabaseReference databaseStore = FirebaseDatabase.getInstance().getReference("store").child(id);
-        databaseStore.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                store = dataSnapshot.getValue(Store.class);
-                Log.d("QrActivity", "Store is " + store.getStoreId());
-                store.setStoreId(id);
-                AccountUtil.setCurrentAccount(store);
-                Intent intent = new Intent(QrActivity.this, UserStoreProductActivity.class);
-                intent.putExtra(UserStoreProductActivity.CURRENT_STORE_KEY, store);
-                startActivity(intent);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        if (value.equals("order")) {
+            Intent i = new Intent();
+            i.putExtra("result", result);
+            i.putExtra("Transaction", transactionHistory);
+            i.putExtra("Position", pos);
+        //    setResult(RESULT_OK);
+            setResult(RESULT_OK, i);
+            finish();
 
-            }
-        });
-//        if (value.equals("order")) {
-//            Intent i = new Intent();
-//            i.putExtra("result", result);
-//            i.putExtra("Transaction", transactionHistory);
-//            i.putExtra("Position", pos);
-//            setResult(RESULT_OK, i);
-//            finish();
-//
-//
-//            //mScannerView.resumeCameraPreview(this);
-//        }
+
+            //mScannerView.resumeCameraPreview(this);
+        }
 
     }
 }
