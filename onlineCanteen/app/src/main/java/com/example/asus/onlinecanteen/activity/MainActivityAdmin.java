@@ -74,7 +74,7 @@ public class MainActivityAdmin extends AppCompatActivity {
                         finish();
                         break;
                     case "WITHDRAW":
-                        intent = new Intent(MainActivityAdmin.this, AdminStoreWithdrawal.class);
+                        intent = new Intent(MainActivityAdmin.this, AdminConfirmWithdrawActivity.class);
                         startActivity(intent);
                         finish();
                         break;

@@ -40,11 +40,15 @@ public class QrActivity extends Activity implements ZXingScannerView.ResultHandl
 
 
         Intent intent = getIntent();
-        value = intent.getStringExtra("Location");
-        if(value.equals("order"))
+        if(intent.hasExtra("Location"))
         {
-            pos = intent.getIntExtra("Position", 0);
-            transactionHistory =(ArrayList<Transaction>) intent.getSerializableExtra("Transaction");
+            value = intent.getStringExtra("Location");
+            if(value.equals("order"))
+            {
+                pos = intent.getIntExtra("Position", 0);
+                transactionHistory =(ArrayList<Transaction>) intent.getSerializableExtra("Transaction");
+            }
+
         }
     }
 
