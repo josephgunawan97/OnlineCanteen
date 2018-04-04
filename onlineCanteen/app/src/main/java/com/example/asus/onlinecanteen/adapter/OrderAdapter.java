@@ -65,7 +65,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.paymentAmountTextView.setText("Rp " + String.valueOf(transaction.getTotalPrice()));
         holder.locationTextView.setText("Location: "+transaction.getLocation());
 
-        if(transaction.getDeliveryStatus()==1)
+        if(transaction.getDeliveryStatus()>=3)
         {
             holder.bg.setBackgroundColor(Color.LTGRAY);
         }

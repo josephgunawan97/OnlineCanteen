@@ -112,6 +112,7 @@ public class CartActivity extends AppCompatActivity {
                                     Intent intent = getIntent();
                                     Transaction transaction = new Transaction(intent.getStringExtra("Seller"), FirebaseAuth.getInstance().getUid(), items, locationEditText.getText().toString());
                                     TransactionUtil.insert(transaction);
+
                                     Toast.makeText(getApplicationContext(), "Transcation done", Toast.LENGTH_SHORT).show();
                                     setResult(RESULT_OK);
 

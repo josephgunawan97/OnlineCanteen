@@ -68,6 +68,8 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
         reference = firebaseDatabase.getReference("transactions");
         intent = getIntent();
         pos = intent.getIntExtra("Position", 0);
+
+        //need to be check!
         transactionHistory =(ArrayList<Transaction>) intent.getSerializableExtra("Transaction");
 
 
@@ -91,9 +93,12 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     WalletUtil walletUtil = new WalletUtil();
-                    walletUtil.debitAmount(mAuth.getCurrentUser().getUid(),transaction.getTotalPrice());
+                    walletUtil.debitAmount(transaction.getSid(),transaction.getTotalPrice());
+                    Log.d("TEST", String.valueOf(transaction.getSid()));
+                    Log.d("TEST", String.valueOf(transaction.getTotalPrice()));
+                    WalletUtil walletUtilUser = new WalletUtil();
+                    walletUtilUser.creditAmount(transaction.getUid(),transaction.getTotalPrice());
                     Toast.makeText(getApplicationContext(),"Order accepted",Toast.LENGTH_LONG).show();
-
 
                     Query query = reference.orderByChild("purchaseDate").equalTo(transaction.getPurchaseDate());
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -228,7 +233,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
                     if(data.hasExtra("result")){
 
                         value = data.getStringExtra("result");
-                        if(transaction.getDeliveryStatus()==1)
+                        if(transaction.getDeliveryStatus()==3)
                         {
                             new AlertDialog.Builder(this)
                                     .setTitle("Transaction")
