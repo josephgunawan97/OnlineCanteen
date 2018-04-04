@@ -71,27 +71,22 @@ public class MainActivityAdmin extends AppCompatActivity {
                     case "TOP_UP":
                         intent = new Intent(MainActivityAdmin.this, AdminTopUpActivity.class);
                         startActivity(intent);
-                        finish();
                         break;
                     case "WITHDRAW":
                         intent = new Intent(MainActivityAdmin.this, AdminConfirmWithdrawActivity.class);
                         startActivity(intent);
-                        finish();
                         break;
                     case "C_TOP_UP":
                         intent = new Intent(MainActivityAdmin.this, AdminConfirmTopUpActivity.class);
                         startActivity(intent);
-                        finish();
                         break;
                     case "SALES_REPORT":
                         intent = new Intent(MainActivityAdmin.this, AdminSalesReportsListActivity.class);
                         startActivity(intent);
-                        finish();
                         break;
                     case "STORE_VERIFICATION":
                         intent = new Intent(MainActivityAdmin.this, AdminVerifyStoreActivity.class);
                         startActivity(intent);
-                        finish();
                         break;
                     case "LOGOUT":
                         logout();

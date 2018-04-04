@@ -1,5 +1,6 @@
 package com.example.asus.onlinecanteen.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.SalesReport;
+import com.example.asus.onlinecanteen.model.Transaction;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,8 +29,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.security.auth.callback.Callback;
@@ -40,6 +44,13 @@ import javax.security.auth.callback.Callback;
 public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.ViewHolder> {
     // Sales Report History Items
     private ArrayList<SalesReport> salesReportHistory;
+    ArrayList<Transaction> transactions = new ArrayList<>();
+    String previousMonth;
+    int earnings = 0;
+    HashMap<String, HashMap<String, Integer>> items = new HashMap<>();
+    HashMap<String, HashMap<String, Integer>> totalItems = new HashMap<>();
+    String listItems = "";
+    int totalQuantity;
 
     public SalesReportAdapter(@NonNull List<SalesReport> salesReport) {
         this.salesReportHistory = new ArrayList<>(salesReport);
@@ -117,62 +128,21 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
             sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    updateStatus(date);
+
                     //Get month
                     SimpleDateFormat format = new SimpleDateFormat("MMMM yyyy");
                     Calendar c = Calendar.getInstance();
                     c.add(Calendar.MONTH, -1);
                     String monthYear = format.format(c.getTime());
 
-                    //Construct the csv
-                    String sitnshop =   "\"Sit 'n Shop\"";
-                    String store   =   "\"Store Name : \",\"" + storeName.getText().toString() +"\"";
-                    String month = "\"Sales report for : \",\"" + monthYear +"\"";
-                    String successfulTransaction = "\"Successful transaction : \"";
-                    String soldItems = "\"Sold item(s) and quantity : \"";
-                    String totalEarnings = "\"Total earnings : \"";
-                    String thankyou = "\"Thank you for using Sit 'n Shop!\"";
-                    String combinedString = sitnshop + "\n" + store + "\n" + month + "\n" + successfulTransaction + "\n" + soldItems + "\n" + totalEarnings + "\n\n\n" + thankyou;
+                    //Get previous month
+                    SimpleDateFormat format2 = new SimpleDateFormat("MM");
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.MONTH, -1);
+                    previousMonth = format2.format(cal.getTime());
 
-                    //Make the csv file
-                    File file = null;
-                    File root = Environment.getExternalStorageDirectory();
-                    if (root.canWrite()) {
-                        File dir = new File(root.getAbsolutePath() + "/SalesReport");
-                        dir.mkdirs();
-                        file = new File(dir, "Sales Report (" + monthYear + ").csv");
-                        FileOutputStream out = null;
-                        try {
-                            out = new FileOutputStream(file);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            out.write(combinedString.getBytes());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            out.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    Uri u1 = null;
-                    u1 = Uri.fromFile(file);
-                    //String [] to = {storeEmail};
-                    String [] to = {"cveronicakusuma@yahoo.com"};
-
-                    //Bring admin to Gmail/Yahoo to send the email
-                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Sit 'n Shop Sales Report : " + monthYear);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello, "+ storeName.getText().toString() + "!\nThis is your sales report for " + monthYear +
-                            ".\nThank you for using Sit 'n Shop!\n\n\nBest regards,\nSit 'n Shop\nsitnshop@gmail.com");
-                    sendIntent.putExtra(Intent.EXTRA_EMAIL, to);
-                    sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
-                    sendIntent.setType("text/html");
-                    context.startActivity(sendIntent);
-                    updateStatus(date);
-                    notifyDataSetChanged();
+                    makeCSV(context, uid, monthYear, storeName.getText().toString(), storeEmail);
                 }
             });
         }
@@ -188,6 +158,114 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     child.getRef().child("requeststatus").setValue(1);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void makeCSV(final Context context, String sid, final String monthYear, final String storeName, final String storeEmail){
+        //Get data
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("transactions");
+
+        Query query = ref.orderByChild("sid").equalTo(sid);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    Transaction newTransaction = child.getValue(Transaction.class);
+                    if (newTransaction.getDeliveryStatus() == 3) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("MM");
+                        String monthTransaction = sdf.format(newTransaction.getPurchaseDate());
+                        if (monthTransaction.equals(previousMonth)) {
+                            transactions.add(newTransaction);
+                            earnings += newTransaction.getTotalPrice();
+
+                            //Get items
+                            HashMap<String, Integer> desc;
+                            items = newTransaction.getItems();
+                            Object[] keys = items.keySet().toArray();
+                            for(Object key : keys) {
+                                desc = items.get(key);
+                                if(totalItems.containsKey(key)){
+                                    desc.put("quantity", desc.get("quantity") + totalItems.get(key).get("quantity"));
+                                    totalItems.put(key.toString(), desc);
+                                }else{
+                                    totalItems.put(key.toString(), desc);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Get items' description
+                Object[] keys = totalItems.keySet().toArray();
+                for(Object key : keys){
+                    String itemName = key.toString();
+                    int quantity = totalItems.get(key).get("quantity");
+                    int unitPrice = totalItems.get(key).get("unit_price");
+                    int totalPrice = quantity*unitPrice;
+                    listItems = listItems.concat(itemName).concat(",").concat(String.valueOf(quantity)).concat(",").concat("Rp ")
+                            .concat(String.valueOf(unitPrice)).concat(",").concat("Rp ").concat(String.valueOf(totalPrice)).concat("\n");
+                    totalQuantity += quantity;
+                }
+
+                //Construct the csv
+                String sitnshop =   "\"Sit 'n Shop\"";
+                String store   =   "\"Store Name : \",\"" + storeName +"\"";
+                String month = "\"Sales report for : \",\"" + monthYear +"\"";
+                String successfulTransaction = "\"Successful transactions : \",\"" + transactions.size() + " transaction(s)" +"\"";
+                String totalTypeItems = "\"Total type of items sold : \",\"" + totalItems.size() + " type of item(s)" +"\"";
+                String totalSoldItems = "\"Total items sold : \",\"" + totalQuantity + " item(s)" +"\"";
+                String soldItems = "\"Sold item(s) and quantity : \"";
+                String itemsTitles = "\"Item Name\",\"Quantity Sold\",\"Unit Price\",\"Quantity Sold x Unit Price\"";
+                String totalEarnings = "\"Total earnings : \",\"" + "Rp " + earnings +",-"+"\"";
+                String thankyou = "\"Thank you for using Sit 'n Shop!\"";
+                String combinedString = sitnshop + "\n" + store + "\n" + month + "\n" + successfulTransaction + "\n"+ totalTypeItems + "\n"+ totalSoldItems + "\n\n" + soldItems
+                        + "\n" + itemsTitles  + "\n" + listItems  + "\n" + totalEarnings + "\n\n\n" + thankyou;
+
+                //Make the csv file
+                File file = null;
+                File root = Environment.getExternalStorageDirectory();
+                if (root.canWrite()) {
+                    File dir = new File(root.getAbsolutePath() + "/SalesReport");
+                    dir.mkdirs();
+                    file = new File(dir, "Sales Report (" + monthYear + ").csv");
+                    FileOutputStream out = null;
+                    try {
+                        out = new FileOutputStream(file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        out.write(combinedString.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Uri u1 = null;
+                    u1 = Uri.fromFile(file);
+                    String [] to = {storeEmail};
+
+                    //Bring admin to Gmail/Yahoo to send the email
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Sit 'n Shop Sales Report : " + monthYear);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello, "+ storeName + "!\nThis email is a response to your request for a sales report."+
+                            "\nIn this email, we have attached the sales report for " + monthYear
+                            + ".\nThank you for using Sit 'n Shop!\n\n\nBest regards,\nSit 'n Shop\nsitnshop@gmail.com");
+                    sendIntent.putExtra(Intent.EXTRA_EMAIL, to);
+                    sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
+                    sendIntent.setType("text/html");
+                    context.startActivity(sendIntent);
+                    ((Activity)context).finish();
                 }
             }
 
