@@ -22,7 +22,7 @@
             android:layout_weight="1">
 
             <ImageView
-                android:id="@+id/image"
+                android:id="@+id/imageMerchant"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
 
@@ -30,17 +30,17 @@
                 android:layout_alignParentStart="true"
                 android:layout_weight="1"
                 android:padding="0dp"
-                android:tint="@color/black_overlay"
-                android:src="@drawable/splash_background"
                 android:scaleType="centerCrop"
-                />
+                android:src="@drawable/splash_background"
+                android:tint="@color/black_overlay" />
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/locate"
-                android:layout_alignStart="@+id/locate"
+                android:layout_above="@+id/bio"
+                android:layout_alignStart="@+id/bio"
+                android:layout_marginBottom="24dp"
                 android:layout_weight="1"
                 android:shadowColor="#000000"
                 android:shadowDx="-1.0"
@@ -55,14 +55,27 @@
                 android:id="@+id/locate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/toolbar"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="12dp"
+                android:layout_above="@+id/bio"
+                android:layout_alignStart="@+id/bio"
                 android:layout_weight="1"
                 android:text="TextView"
                 android:textAllCaps="true"
                 android:textColor="@color/white"
                 android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/toolbar"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:maxLength="80"
+                android:text="BIO"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:maxWidth="200dp"/>
 
             <TextView
                 android:id="@+id/merchant_wallet"

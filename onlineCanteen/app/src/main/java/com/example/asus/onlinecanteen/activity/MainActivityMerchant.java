@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.MerchantOrderListFragment;
 import com.example.asus.onlinecanteen.fragment.MerchantProductListFragment;
@@ -37,7 +38,7 @@ public class MainActivityMerchant extends AppCompatActivity {
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager mViewPager;
-    TextView title,locate, wallet;
+    TextView title,locate, wallet,bio;
     ImageView image;
     private ChildEventListener eventListener;
     ViewPagerAdapter viewPagerAdapter;
@@ -64,6 +65,10 @@ public class MainActivityMerchant extends AppCompatActivity {
         title = (TextView) findViewById(R.id.title) ;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         wallet = (TextView) findViewById(R.id.merchant_wallet);
+        bio = (TextView) findViewById(R.id.bio);
+        image = findViewById(R.id.imageMerchant);
+
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -103,13 +108,22 @@ public class MainActivityMerchant extends AppCompatActivity {
             }
         });
 
-        databaseStore.child(merchant.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseStore.child(merchant.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 store = dataSnapshot.getValue(Store.class);
                 AccountUtil.setCurrentAccount(store);
                 title.setText(store.getStoreName());
                 locate.setText(store.getLocation() +" | " + store.getOpenHour() +" - "+ store.getCloseHour());
+                bio.setText("Bio: "+store.getBio());
+
+                if(store.getImg() != null) {
+                    Glide.with(image.getContext())
+                            .load(store.getImg())
+                            .into(image);
+
+                }
+
             }
 
             @Override
@@ -119,9 +133,7 @@ public class MainActivityMerchant extends AppCompatActivity {
         });
 
         //title.setText(merchant.getDisplayName());
-        if(merchant.getPhotoUrl() != null) {
-            //toolbar.setTitle(merchant.getPhotoUrl().toString());
-        }
+
     }
 
 
