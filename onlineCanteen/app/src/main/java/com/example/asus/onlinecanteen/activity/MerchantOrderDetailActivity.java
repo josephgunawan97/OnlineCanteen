@@ -207,7 +207,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
 
                 HashMap<String, Object> result = new HashMap<>();
                 //result.put("imageUrl", );
-                result.put("deliveryStatus", 1);
+                result.put("deliveryStatus", 3);
                 Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS1 "+ reference.child(value).getKey());
                 reference.child(value).updateChildren(result);
                 //Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS "+ reference.child(value).ge);
