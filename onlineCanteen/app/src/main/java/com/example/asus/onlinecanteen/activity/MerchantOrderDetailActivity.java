@@ -23,6 +23,7 @@ import com.example.asus.onlinecanteen.adapter.OrderDetailAdapter;
 import com.example.asus.onlinecanteen.adapter.TransactionDetailAdapter;
 import com.example.asus.onlinecanteen.fragment.MainUserFragment;
 import com.example.asus.onlinecanteen.model.Product;
+import com.example.asus.onlinecanteen.model.PurchasedItem;
 import com.example.asus.onlinecanteen.model.Transaction;
 import com.example.asus.onlinecanteen.utils.WalletUtil;
 import com.google.firebase.auth.FirebaseAuth;
@@ -55,6 +56,8 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
     OrderDetailAdapter detailAdapter;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference reference;
+
+    private ArrayList<PurchasedItem> transactionItems;
 
     private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
 
@@ -92,10 +95,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
             acceptButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    WalletUtil walletUtil = new WalletUtil();
-                    walletUtil.debitAmount(transaction.getSid(),transaction.getTotalPrice());
-                    Log.d("TEST", String.valueOf(transaction.getSid()));
-                    Log.d("TEST", String.valueOf(transaction.getTotalPrice()));
+
                     WalletUtil walletUtilUser = new WalletUtil();
                     walletUtilUser.creditAmount(transaction.getUid(),transaction.getTotalPrice());
                     Toast.makeText(getApplicationContext(),"Order accepted",Toast.LENGTH_LONG).show();
@@ -106,6 +106,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot snapshot) {
                             for (DataSnapshot child : snapshot.getChildren()) {
                                 child.getRef().child("deliveryStatus").setValue(1);
+                                decreaseStock(transaction.getItems());
                             }
                         }
 
@@ -182,6 +183,44 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
 
     }
 
+    private void decreaseStock(final HashMap<String, HashMap<String, Integer>> details) {
+        ArrayList<PurchasedItem> transactionItems = new ArrayList<>();
+
+        Object[] keys = details.keySet().toArray();
+
+        PurchasedItem item;
+        for(final Object key : keys) {
+
+           DatabaseReference referenceProduct = firebaseDatabase.getReference("products");
+            Query query = referenceProduct.orderByChild("tokoId").equalTo(transaction.getSid());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        Product product = child.getValue(Product.class);
+                        Log.d("TEST",details.get(key).toString());
+                        if (product.getName().equals((String)key)) {
+                            Log.d("TEST",product.getName());
+                            int currentStock = product.getStock();
+                            Log.d("TEST",product.getStock().toString());
+                            int buyquantity = details.get(key).get("quantity");
+                            Log.d("TEST",details.get(key).get("quantity").toString());
+                            child.getRef().child("stock").setValue(currentStock-buyquantity);
+                        }
+                    }
+
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+
     private String statusString(int deliveryStatus) {
 
         switch(deliveryStatus){
@@ -208,6 +247,11 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
                 HashMap<String, Object> result = new HashMap<>();
                 //result.put("imageUrl", );
                 result.put("deliveryStatus", 3);
+
+                //Merchant only get money when product successfully sent
+                WalletUtil walletUtil = new WalletUtil();
+                walletUtil.debitAmount(transaction.getSid(),transaction.getTotalPrice());
+
                 Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS1 "+ reference.child(value).getKey());
                 reference.child(value).updateChildren(result);
                 //Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS "+ reference.child(value).ge);
