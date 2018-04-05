@@ -140,6 +140,11 @@ public class RegisterProductActivity extends AppCompatActivity {
                 }
             });
         }
+        else{
+            Product productInfo = new Product(user.getUid(), productnameET.getText().toString(), Integer.parseInt(quantityET.getText().toString()) , Integer.parseInt(priceET.getText().toString()), null);
+            databaseProducts.push().setValue(productInfo);
+
+        }
     }
 
     private boolean validateRegisterInfo() {
@@ -188,8 +193,6 @@ public class RegisterProductActivity extends AppCompatActivity {
 
     private void backToScreen() {
         // GO TO LOGIN PAGE - after success
-        Intent intent = new Intent(this, MainActivityMerchant.class);
-        startActivity(intent);
         finish();
     }
 }

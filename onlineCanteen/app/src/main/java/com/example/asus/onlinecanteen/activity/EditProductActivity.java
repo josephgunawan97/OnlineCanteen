@@ -377,10 +377,6 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
     }
 
     private void backToScreen() {
-
-        // GO TO LOGIN PAGE - after success
-        Intent intent = new Intent(EditProductActivity.this, MainActivityMerchant.class);
-        startActivity(intent);
         finish();
     }
 

@@ -137,7 +137,7 @@ public class MerchantWithdrawal extends AppCompatActivity {
 
     private void backToScreen() {
         // GO TO LOGIN PAGE - after success
-        Intent intent = new Intent(this, MainUserActivity.class);
+        Intent intent = new Intent(this, MainActivityMerchant.class);
         startActivity(intent);
         finish();
     }

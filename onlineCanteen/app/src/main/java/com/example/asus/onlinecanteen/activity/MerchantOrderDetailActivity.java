@@ -250,7 +250,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
 
                 //Merchant only get money when product successfully sent
                 WalletUtil walletUtil = new WalletUtil();
-                walletUtil.debitAmount(transaction.getSid(),transaction.getTotalPrice());
+               // walletUtil.debitAmount(transaction.getSid(),transaction.getTotalPrice());
 
                 Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS1 "+ reference.child(value).getKey());
                 reference.child(value).updateChildren(result);
@@ -315,8 +315,6 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
         }
     private void backToScreen() {
         // GO TO LOGIN PAGE - after success
-        Intent intent = new Intent(this, MainActivityMerchant.class);
-        startActivity(intent);
         finish();
     }
 }

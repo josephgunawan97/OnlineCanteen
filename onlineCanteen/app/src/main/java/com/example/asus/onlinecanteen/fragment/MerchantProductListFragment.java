@@ -129,7 +129,6 @@ public class MerchantProductListFragment extends Fragment  implements SwipeRefre
     }
 
     public void onRefresh() {
-
         menuListAdapter.clear();
         detachDatabaseReadListener();
         attachDatabaseReadListener();

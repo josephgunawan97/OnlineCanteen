@@ -18,6 +18,7 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:padding="5dp"
+            android:src="@drawable/logo3"
             android:scaleType="centerCrop" />
 
         <TextView
