@@ -9,8 +9,9 @@
         android:layout_width="@dimen/product_image_size"
         android:layout_height="@dimen/product_image_size"
         android:layout_marginEnd="@dimen/product_info_margin"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/product_image_description" />
+        android:contentDescription="@string/product_image_description"
+        android:src="@drawable/logo3"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/product_name_text_view"

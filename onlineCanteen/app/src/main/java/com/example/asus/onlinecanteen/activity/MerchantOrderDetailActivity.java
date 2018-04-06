@@ -55,7 +55,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
     Intent intent;
     OrderDetailAdapter detailAdapter;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference reference;
+    DatabaseReference reference,notificationRef;
 
     private ArrayList<PurchasedItem> transactionItems;
 
@@ -69,6 +69,8 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         reference = firebaseDatabase.getReference("transactions");
+        notificationRef = firebaseDatabase.getReference("ordernotifications");
+
         intent = getIntent();
         pos = intent.getIntExtra("Position", 0);
 
@@ -105,8 +107,14 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             for (DataSnapshot child : snapshot.getChildren()) {
+                                Transaction newtrans = child.getValue(Transaction.class);
                                 child.getRef().child("deliveryStatus").setValue(1);
                                 decreaseStock(transaction.getItems());
+
+                                HashMap<String,String> notificationData = new HashMap<>();
+                                notificationData.put("from", newtrans.getSid());
+                                notificationData.put("type", "order accepted");
+                                notificationRef.child(newtrans.getUid()).push().setValue(notificationData);
                             }
                         }
 
