@@ -1,13 +1,28 @@
 package com.example.asus.onlinecanteen.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
+import com.example.asus.onlinecanteen.activity.QrActivity;
+import com.example.asus.onlinecanteen.activity.UserStoreProductActivity;
+import com.example.asus.onlinecanteen.model.Product;
+import com.example.asus.onlinecanteen.model.Store;
+import com.example.asus.onlinecanteen.utils.AccountUtil;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -17,7 +32,17 @@ import java.util.ArrayList;
 
 public class FeaturedProductAdapter extends RecyclerView.Adapter<FeaturedProductAdapter.ViewHolder> {
 
-    private ArrayList<String> featuredProducts;
+
+    public interface FeaturedProductClickHandler {
+        void onFeaturedClickHandler(Store store);
+    }
+
+    private ArrayList<Product> featuredProducts;
+    private FeaturedProductClickHandler featuredProductClickHandler;
+
+    public FeaturedProductAdapter(FeaturedProductClickHandler featuredProductClickHandler) {
+        this.featuredProductClickHandler = featuredProductClickHandler;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -26,11 +51,29 @@ public class FeaturedProductAdapter extends RecyclerView.Adapter<FeaturedProduct
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // Get Product Featured Item
-        String product = featuredProducts.get(position);
+        final Product product = featuredProducts.get(position);
+
+        FirebaseDatabase.getInstance().getReference("store").child(product.getTokoId()).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                holder.featuredProductSellerTextView.setText(dataSnapshot.child("storeName").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         // Set information
-        holder.featuredProductNameTextView.setText(product);
+        holder.featuredProductNameTextView.setText(product.getName());
+        if(product.getImageUrl() != null) {
+            Glide.with(holder.featuredProductImageView.getContext())
+                    .load(product.getImageUrl())
+                    .into(holder.featuredProductImageView);
+        }
     }
 
     @Override
@@ -39,21 +82,59 @@ public class FeaturedProductAdapter extends RecyclerView.Adapter<FeaturedProduct
         else return 0;
     }
 
-    public void setFeaturedProducts(ArrayList<String> featuredProducts) {
+    public void setFeaturedProducts(ArrayList<Product> featuredProducts) {
         this.featuredProducts = featuredProducts;
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public void addProduct(Product product) {
+        if(this.featuredProducts == null) {
+            this.featuredProducts = new ArrayList<>();
+        }
+        this.featuredProducts.add(product);
+        notifyDataSetChanged();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView featuredProductImageView;
         public TextView featuredProductNameTextView;
+        public TextView featuredProductSellerTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             featuredProductImageView = itemView.findViewById(R.id.featured_product_image);
             featuredProductNameTextView = itemView.findViewById(R.id.featured_product_name);
+            featuredProductSellerTextView = itemView.findViewById(R.id.featured_product_seller);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            final Product product = featuredProducts.get(getAdapterPosition());
+            DatabaseReference tokoRef = FirebaseDatabase.getInstance().getReference("store").child(product.getTokoId());
+            tokoRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    /*final Context context = itemView.getContext();
+                    Store store = snapshot.getValue(Store.class);
+                    store.setStoreId(product.getTokoId());
+                    AccountUtil.setCurrentAccount(store);
+                    Intent intent = new Intent(context, UserStoreProductActivity.class);
+                    intent.putExtra(UserStoreProductActivity.CURRENT_STORE_KEY, store);
+                    context.startActivity(intent);*/
+                    Store store = snapshot.getValue(Store.class);
+                    store.setStoreId(product.getTokoId());
+                    if(featuredProductClickHandler != null) featuredProductClickHandler.onFeaturedClickHandler(store);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 }

@@ -43,7 +43,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-public class MainUserActivity extends AppCompatActivity implements MainUserFragment.StoreClickHandler {
+public class MainUserActivity extends AppCompatActivity implements MainUserFragment.StoreClickHandler, MainUserFragment.FeaturedProductClickHandler {
 
     private static final String TAG = MainUserActivity.class.getSimpleName();
 
@@ -83,6 +83,7 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         // Put default fragment
         MainUserFragment userFragment = new MainUserFragment();
         userFragment.setStoreClickHandler(this);
+        userFragment.setFeaturedProductClickHandler(this);
 
         fragmentManager = getSupportFragmentManager();
         changeFragment(userFragment);
@@ -151,6 +152,13 @@ public class MainUserActivity extends AppCompatActivity implements MainUserFragm
         Intent intent = new Intent(MainUserActivity.this, UserStoreProductActivity.class);
         intent.putExtra(UserStoreProductActivity.CURRENT_STORE_KEY, store);
         startActivity(intent);
+    }
+
+    public void featuredProductClickHandler(Store store){
+        Intent intent = new Intent(MainUserActivity.this, UserStoreProductActivity.class);
+        intent.putExtra(UserStoreProductActivity.CURRENT_STORE_KEY, store);
+        startActivity(intent);
+        Log.i("adf", "adf" + store);
     }
 
     private void changeFragment(Fragment fragment) {

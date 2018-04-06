@@ -19,12 +19,17 @@ import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.activity.QrActivity;
 import com.example.asus.onlinecanteen.adapter.FeaturedProductAdapter;
 import com.example.asus.onlinecanteen.adapter.UserStoreAdapter;
+import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.Store;
+import com.example.asus.onlinecanteen.utils.FeaturedProductUtil;
 import com.example.asus.onlinecanteen.utils.StoreUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -32,7 +37,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainUserFragment extends Fragment implements UserStoreAdapter.StoreItemClickHandler {
+public class MainUserFragment extends Fragment implements UserStoreAdapter.StoreItemClickHandler, FeaturedProductAdapter.FeaturedProductClickHandler {
 
     private static final String TAG = MainUserFragment.class.getSimpleName();
 
@@ -44,15 +49,23 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
     private ImageButton searchBarScanQrButton;
 
     private UserStoreAdapter userStoreAdapter;
+    private FeaturedProductAdapter featuredProductAdapter;
 
     private StoreClickHandler storeClickHandler;
+    private FeaturedProductClickHandler featuredProductClickHandler;
 
     // Firebase
     private Query storesQuery;
+    private Query featuredQuery;
     private ChildEventListener storesEventListener;
+    private ChildEventListener featuredProductEventListener;
 
     public interface StoreClickHandler {
         void storeClickHandler(Store store);
+    }
+
+    public interface FeaturedProductClickHandler{
+        void featuredProductClickHandler(Store store);
     }
 
     public MainUserFragment() {
@@ -61,6 +74,10 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
 
     public void setStoreClickHandler(StoreClickHandler storeClickHandler) {
         this.storeClickHandler = storeClickHandler;
+    }
+
+    public void setFeaturedProductClickHandler(FeaturedProductClickHandler featuredProductClickHandler){
+        this.featuredProductClickHandler = featuredProductClickHandler;
     }
 
     @Override
@@ -89,9 +106,9 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
             }
         });
 
-
-        FeaturedProductAdapter featuredProductAdapter = new FeaturedProductAdapter();
-        featuredProductAdapter.setFeaturedProducts(getDummyFeaturedProducts());
+        if(featuredProductAdapter == null){
+            featuredProductAdapter = new FeaturedProductAdapter(this);
+        }
         featuredRecyclerView.setAdapter(featuredProductAdapter);
 
         if(userStoreAdapter == null) {
@@ -106,14 +123,7 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
         storesRecyclerView.setLayoutManager(storeLayoutManager);
 
         storesQuery = StoreUtil.query();
-    }
-
-    private ArrayList<String> getDummyFeaturedProducts() {
-        ArrayList<String> featuredProducts = new ArrayList<>();
-        for(int i=0; i<10; i++) {
-            featuredProducts.add("Product #" + (i + 1));
-        }
-        return featuredProducts;
+        featuredQuery = FeaturedProductUtil.query();
     }
 
     @Override
@@ -124,11 +134,19 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
     }
 
     @Override
+    public void onFeaturedClickHandler(Store store){
+        if(featuredProductClickHandler !=null){
+            featuredProductClickHandler.featuredProductClickHandler(store);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume of " + TAG);
         getActivity().setTitle(R.string.app_name);
         attachStoreDatabaseListener();
+        attachFeaturedDatabaseListener();
     }
 
     @Override
@@ -164,6 +182,44 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
             };
 
             storesQuery.addChildEventListener(storesEventListener);
+        }
+    }
+
+    private void attachFeaturedDatabaseListener() {
+        if (featuredProductEventListener == null) {
+            featuredProductEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    String productId = dataSnapshot.child("productId").getValue().toString();
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("products").child(productId);
+                    ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            Product product = snapshot.getValue(Product.class);
+                            featuredProductAdapter.addProduct(product);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+
+            featuredQuery.addChildEventListener(featuredProductEventListener);
         }
     }
 
