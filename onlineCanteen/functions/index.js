@@ -39,7 +39,7 @@ exports.sendOrderNotification = functions.database.ref('/ordernotifications/{use
     const user_id = event.params.user_id;
     const notification = event.params.notification;
 
-    console.log('Sent a notification to : ', user_id);
+    console.log('Sent order notification to : ', user_id);
 
     if(!event.data.val()){
         return console.log('A Notification has been deleted from the database : ', notification_id);
