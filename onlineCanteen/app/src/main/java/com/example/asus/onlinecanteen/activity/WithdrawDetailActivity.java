@@ -106,8 +106,6 @@ public class WithdrawDetailActivity extends AppCompatActivity {
                             walletUtil.creditAmount(withdraw.getUid(), withdraw.getAmount());
                             Toast.makeText(getApplicationContext(), "Request accepted", Toast.LENGTH_LONG).show();
                             updateReq();
-                            Intent intent = new Intent(getApplicationContext(), MainActivityAdmin.class);
-                            startActivity(intent);
                             finish();
                         }
                     }

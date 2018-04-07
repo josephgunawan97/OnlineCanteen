@@ -101,8 +101,6 @@ public class AdminStoreWithdrawal extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this,MainActivityAdmin.class);
-        startActivity(intent);
         finish();
     }
 }

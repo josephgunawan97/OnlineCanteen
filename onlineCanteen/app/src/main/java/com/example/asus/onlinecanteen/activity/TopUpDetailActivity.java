@@ -109,8 +109,6 @@ public class TopUpDetailActivity extends AppCompatActivity {
                         walletUtil.debitAmount(topUp.getUid(), topUp.getAmount());
                         Toast.makeText(getApplicationContext(), "Request accepted", Toast.LENGTH_LONG).show();
                         updateReq();
-                        Intent intent = new Intent(getApplicationContext(), MainActivityAdmin.class);
-                        startActivity(intent);
                         finish();
                     }
 
