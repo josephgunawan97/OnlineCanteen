@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,8 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
+
+import java.util.Calendar;
 
 public class UserProductListFragment extends Fragment {
 
@@ -82,15 +85,23 @@ public class UserProductListFragment extends Fragment {
 
         // Order Floating Action Button
         orderButton = view.findViewById(R.id.order_floating_action_button);
-        orderButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), UserOrderProductActivity.class);
-                intent.putExtra(UserOrderProductActivity.CURRENT_STORE_KEY, currentStore);
-                intent.putExtra(UserOrderProductActivity.PRODUCT_LIST_KEY, userProductItemAdapter.getProducts());
-                startActivity(intent);
-            }
-        });
+        CardView infoView = view.findViewById(R.id.closed_store_information);
+        if(isStoreOpen()) {
+            infoView.setVisibility(View.GONE);
+            orderButton.setEnabled(true);
+            orderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), UserOrderProductActivity.class);
+                    intent.putExtra(UserOrderProductActivity.CURRENT_STORE_KEY, currentStore);
+                    intent.putExtra(UserOrderProductActivity.PRODUCT_LIST_KEY, userProductItemAdapter.getProducts());
+                    startActivity(intent);
+                }
+            });
+        } else {
+            infoView.setVisibility(View.VISIBLE);
+            orderButton.setEnabled(false);
+        }
 
         // Set up recycler view
         productRecyclerView = view.findViewById(R.id.product_recycler_view);
@@ -102,6 +113,28 @@ public class UserProductListFragment extends Fragment {
 
         userProductItemAdapter = new UserProductItemAdapter();
         productRecyclerView.setAdapter(userProductItemAdapter);
+    }
+
+    private boolean isStoreOpen() {
+        if(currentStore == null) return false;
+        // Get current time
+        Calendar rightNow = Calendar.getInstance();
+        int nowHour = rightNow.get(Calendar.HOUR_OF_DAY);
+        int nowMinute = rightNow.get(Calendar.MINUTE);
+        int nowTime = nowHour * 60 + nowMinute;
+        Log.d(TAG, "now: " + nowTime);
+
+        // Get store open and close time
+        int openHour = Integer.valueOf(currentStore.getOpenHour().substring(0, 2));
+        int openMinute = Integer.valueOf(currentStore.getOpenHour().substring(3));
+        int openTime = openHour * 60 + openMinute;
+        int closeHour = Integer.valueOf(currentStore.getCloseHour().substring(0, 2));
+        int closeMinute = Integer.valueOf(currentStore.getCloseHour().substring(3));
+        int closeTime = closeHour * 60 + closeMinute;
+        Log.d(TAG, "open: " + currentStore.getOpenHour() + " --> " + openTime);
+        Log.d(TAG, "close: " + currentStore.getCloseHour() + " --> " + closeTime);
+
+        return openTime <= nowTime && closeTime > nowTime;
     }
 
     @Override

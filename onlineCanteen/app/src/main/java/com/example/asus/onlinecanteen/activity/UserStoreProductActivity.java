@@ -1,5 +1,6 @@
 package com.example.asus.onlinecanteen.activity;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.view.MenuItem;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.fragment.UserProductListFragment;
 import com.example.asus.onlinecanteen.model.Store;
+
+import java.util.Calendar;
 
 public class UserStoreProductActivity extends AppCompatActivity {
 
@@ -36,9 +39,6 @@ public class UserStoreProductActivity extends AppCompatActivity {
                 currentStore = bundle.getParcelable(CURRENT_STORE_KEY);
             }
         }
-
-        Log.d(TAG, "userProductListFragment: " + userProductListFragment);
-        Log.d(TAG, "currentStore: " + currentStore);
 
         if(userProductListFragment == null) {
             userProductListFragment = new UserProductListFragment();
