@@ -70,7 +70,8 @@
             android:parentActivityName=".activity.UserStoreProductActivity" />
         <activity
             android:name=".activity.UserStoreProductActivity"
-            android:parentActivityName=".activity.MainUserActivity" />
+            android:parentActivityName=".activity.MainUserActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".activity.MerchantSettingsActivity" />
         <activity android:name=".activity.AdminSalesReportsListActivity" />
         <activity

@@ -81,28 +81,6 @@ public class UserProductListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(currentStore != null) getActivity().setTitle(currentStore.getStoreName());
-
-        // Order Floating Action Button
-        orderButton = view.findViewById(R.id.order_floating_action_button);
-        CardView infoView = view.findViewById(R.id.closed_store_information);
-        if(isStoreOpen()) {
-            infoView.setVisibility(View.GONE);
-            orderButton.setEnabled(true);
-            orderButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), UserOrderProductActivity.class);
-                    intent.putExtra(UserOrderProductActivity.CURRENT_STORE_KEY, currentStore);
-                    intent.putExtra(UserOrderProductActivity.PRODUCT_LIST_KEY, userProductItemAdapter.getProducts());
-                    startActivity(intent);
-                }
-            });
-        } else {
-            infoView.setVisibility(View.VISIBLE);
-            orderButton.setEnabled(false);
-        }
-
         // Set up recycler view
         productRecyclerView = view.findViewById(R.id.product_recycler_view);
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -113,28 +91,6 @@ public class UserProductListFragment extends Fragment {
 
         userProductItemAdapter = new UserProductItemAdapter();
         productRecyclerView.setAdapter(userProductItemAdapter);
-    }
-
-    private boolean isStoreOpen() {
-        if(currentStore == null) return false;
-        // Get current time
-        Calendar rightNow = Calendar.getInstance();
-        int nowHour = rightNow.get(Calendar.HOUR_OF_DAY);
-        int nowMinute = rightNow.get(Calendar.MINUTE);
-        int nowTime = nowHour * 60 + nowMinute;
-        Log.d(TAG, "now: " + nowTime);
-
-        // Get store open and close time
-        int openHour = Integer.valueOf(currentStore.getOpenHour().substring(0, 2));
-        int openMinute = Integer.valueOf(currentStore.getOpenHour().substring(3));
-        int openTime = openHour * 60 + openMinute;
-        int closeHour = Integer.valueOf(currentStore.getCloseHour().substring(0, 2));
-        int closeMinute = Integer.valueOf(currentStore.getCloseHour().substring(3));
-        int closeTime = closeHour * 60 + closeMinute;
-        Log.d(TAG, "open: " + currentStore.getOpenHour() + " --> " + openTime);
-        Log.d(TAG, "close: " + currentStore.getCloseHour() + " --> " + closeTime);
-
-        return openTime <= nowTime && closeTime > nowTime;
     }
 
     @Override
@@ -168,6 +124,10 @@ public class UserProductListFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public UserProductItemAdapter getUserProductItemAdapter() {
+        return userProductItemAdapter;
     }
 
     //----------------  FIREBASE CHILD EVENT LISTENER -----------------//
