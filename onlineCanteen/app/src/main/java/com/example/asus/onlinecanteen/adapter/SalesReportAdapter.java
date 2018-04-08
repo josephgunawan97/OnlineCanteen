@@ -3,6 +3,10 @@ package com.example.asus.onlinecanteen.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -23,11 +27,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.util.ArrayList;
@@ -36,6 +55,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.security.auth.callback.Callback;
+
+import static com.itextpdf.text.Annotation.FILE;
+import static com.itextpdf.text.Element.ALIGN_CENTER;
 
 /**
  * Created by ASUS on 3/27/2018.
@@ -51,6 +73,9 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
     HashMap<String, HashMap<String, Integer>> totalItems = new HashMap<>();
     String listItems = "";
     int totalQuantity;
+    private static Font Font18 = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.NORMAL);
+    private static Font Font16 = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.NORMAL);
+    private static Font Font12 = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
 
     public SalesReportAdapter(@NonNull List<SalesReport> salesReport) {
         this.salesReportHistory = new ArrayList<>(salesReport);
@@ -139,10 +164,10 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
                     //Get previous month
                     SimpleDateFormat format2 = new SimpleDateFormat("MM");
                     Calendar cal = Calendar.getInstance();
-                    cal.add(Calendar.MONTH, -1);
+                    cal.add(Calendar.MONTH,-1);
                     previousMonth = format2.format(cal.getTime());
 
-                    makeCSV(context, uid, monthYear, storeName.getText().toString(), storeEmail);
+                    makePDF(context, uid, monthYear, storeName.getText().toString(), storeEmail);
                 }
             });
         }
@@ -168,7 +193,7 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
         });
     }
 
-    public void makeCSV(final Context context, String sid, final String monthYear, final String storeName, final String storeEmail){
+    public void makePDF(final Context context, String sid, final String monthYear, final String storeName, final String storeEmail){
         //Get data
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("transactions");
 
@@ -202,48 +227,30 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
                     }
                 }
 
-                //Get items' description
-                Object[] keys = totalItems.keySet().toArray();
-                for(Object key : keys){
-                    String itemName = key.toString();
-                    int quantity = totalItems.get(key).get("quantity");
-                    int unitPrice = totalItems.get(key).get("unit_price");
-                    int totalPrice = quantity*unitPrice;
-                    listItems = listItems.concat(itemName).concat(",").concat(String.valueOf(quantity)).concat(",").concat("Rp ")
-                            .concat(String.valueOf(unitPrice)).concat(",").concat("Rp ").concat(String.valueOf(totalPrice)).concat("\n");
-                    totalQuantity += quantity;
-                }
-
-                //Construct the csv
-                String sitnshop =   "\"Sit 'n Shop\"";
-                String store   =   "\"Store Name : \",\"" + storeName +"\"";
-                String month = "\"Sales report for : \",\"" + monthYear +"\"";
-                String successfulTransaction = "\"Successful transactions : \",\"" + transactions.size() + " transaction(s)" +"\"";
-                String totalTypeItems = "\"Total type of items sold : \",\"" + totalItems.size() + " type of item(s)" +"\"";
-                String totalSoldItems = "\"Total items sold : \",\"" + totalQuantity + " item(s)" +"\"";
-                String soldItems = "\"Sold item(s) and quantity : \"";
-                String itemsTitles = "\"Item Name\",\"Quantity Sold\",\"Unit Price\",\"Quantity Sold x Unit Price\"";
-                String totalEarnings = "\"Total earnings : \",\"" + "Rp " + earnings +",-"+"\"";
-                String thankyou = "\"Thank you for using Sit 'n Shop!\"";
-                String combinedString = sitnshop + "\n" + store + "\n" + month + "\n" + successfulTransaction + "\n"+ totalTypeItems + "\n"+ totalSoldItems + "\n\n" + soldItems
-                        + "\n" + itemsTitles  + "\n" + listItems  + "\n" + totalEarnings + "\n\n\n" + thankyou;
-
-                //Make the csv file
+                //Make the pdf file
                 File file = null;
                 File root = Environment.getExternalStorageDirectory();
                 if (root.canWrite()) {
                     File dir = new File(root.getAbsolutePath() + "/SalesReport");
                     dir.mkdirs();
-                    file = new File(dir, "Sales Report (" + monthYear + ").csv");
+                    file = new File(dir, "Sales Report (" + monthYear + ").pdf");
                     FileOutputStream out = null;
                     try {
                         out = new FileOutputStream(file);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
+                    catch(Exception e)
+                    {
+                        return;
+                    }
                     try {
-                        out.write(combinedString.getBytes());
-                    } catch (IOException e) {
+                        Document document = new Document(PageSize.A4);
+                        PdfWriter.getInstance(document, new FileOutputStream(file));
+                        document.open();
+                        addContent(document, context, storeName, monthYear);
+                        document.close();
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     try {
@@ -253,6 +260,7 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
                     }
                     Uri u1 = null;
                     u1 = Uri.fromFile(file);
+
                     String [] to = {storeEmail};
 
                     //Bring admin to Gmail/Yahoo to send the email
@@ -263,7 +271,7 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
                             + ".\nThank you for using Sit 'n Shop!\n\n\nBest regards,\nSit 'n Shop\nsitnshop@gmail.com");
                     sendIntent.putExtra(Intent.EXTRA_EMAIL, to);
                     sendIntent.putExtra(Intent.EXTRA_STREAM, u1);
-                    sendIntent.setType("text/html");
+                    sendIntent.setType("application/pdf");
                     context.startActivity(sendIntent);
                     ((Activity)context).finish();
                 }
@@ -274,5 +282,77 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
 
             }
         });
+    }
+
+    private void addContent(Document document, Context context, String storeName, String monthYear)
+            throws DocumentException {
+
+        //Make table
+        PdfPTable table = new PdfPTable(4);
+        table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell("Item Name");
+        table.addCell("Quantity Sold");
+        table.addCell("Unit Price");
+        table.addCell("Total");
+        table.setHeaderRows(1);
+
+        //Get items' description
+        Object[] keys = totalItems.keySet().toArray();
+        for(Object key : keys){
+            String itemName = key.toString();
+            int quantity = totalItems.get(key).get("quantity");
+            int unitPrice = totalItems.get(key).get("unit_price");
+            int totalPrice = quantity*unitPrice;
+            totalQuantity += quantity;
+
+            //Add to table
+            table.addCell(itemName);
+            table.addCell(String.valueOf(quantity));
+            table.addCell("Rp " + String.valueOf(unitPrice) + ",-");
+            table.addCell("Rp " + String.valueOf(totalPrice) + ",-");
+        }
+
+        //Add logo to the top of document
+        try{
+            Drawable d = context.getResources().getDrawable(R.drawable.logo2);
+            BitmapDrawable bitDw = ((BitmapDrawable) d);
+            Bitmap bmp = bitDw.getBitmap();
+            Bitmap resized = Bitmap.createScaledBitmap(bmp,(int)(bmp.getWidth()*0.2), (int)(bmp.getHeight()*0.2), true);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            Image image = Image.getInstance(stream.toByteArray());
+            image.setAlignment(ALIGN_CENTER);
+            document.add(image);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        //Set content
+        Paragraph preface = new Paragraph();
+        addEmptyLine(preface, 2);
+        preface.add(new Paragraph(storeName + "'s Sales Report for " + monthYear, Font18));
+        addEmptyLine(preface, 1);
+        preface.add(new Paragraph("Successful transactions : " + transactions.size() + " transaction(s)", Font16));
+        preface.add(new Paragraph("Total type of items sold : " + totalItems.size() + " type of items(s)", Font16));
+        preface.add(new Paragraph("Total items sold : " + totalQuantity + " item(s)", Font16));
+        preface.add(new Paragraph("Total earnings : Rp " + earnings + ",-" , Font16));
+        addEmptyLine(preface, 1);
+        preface.add(new Paragraph("Sold item(s) and quantity :", Font16));
+        addEmptyLine(preface, 1);
+
+        //Footer document
+        Paragraph footer = new Paragraph("\n\n\nThis is a computer generated document. No signature is required.", Font12);
+        footer.setAlignment(Element.ALIGN_CENTER);
+
+        //Add to document
+        document.add(preface);
+        document.add(table);
+        document.add(footer);
+    }
+
+    private static void addEmptyLine(Paragraph paragraph, int number) {
+        for (int i = 0; i < number; i++) {
+            paragraph.add(new Paragraph(" "));
+        }
     }
 }
