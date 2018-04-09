@@ -314,14 +314,12 @@ public class SalesReportAdapter extends RecyclerView.Adapter<SalesReportAdapter.
 
         //Add logo to the top of document
         try{
-            Drawable d = context.getResources().getDrawable(R.drawable.logo2);
-            BitmapDrawable bitDw = ((BitmapDrawable) d);
-            Bitmap bmp = bitDw.getBitmap();
-            Bitmap resized = Bitmap.createScaledBitmap(bmp,(int)(bmp.getWidth()*0.2), (int)(bmp.getHeight()*0.2), true);
+            Bitmap bgImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.logo2);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            resized.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bgImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
             Image image = Image.getInstance(stream.toByteArray());
             image.setAlignment(ALIGN_CENTER);
+            image.scaleAbsolute(126,126);
             document.add(image);
         } catch(Exception e){
             e.printStackTrace();
