@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="Input value"
-                    android:inputType="number" />
+                    android:inputType="numberSigned" />
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout
@@ -174,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="Input account number"
-                    android:inputType="text" />
+                    android:inputType="numberSigned" />
             </android.support.design.widget.TextInputLayout>
 
             <Button
