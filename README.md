@@ -1,5 +1,4 @@
 # OnlineCanteen
-[![start with sit n shop](https://img.shields.io/badge/start%20with-why%3F-brightgreen.svg?style=flat)](http://www.uph.edu/)
 
 ## Description
 This Application help users to buy or order things such food, drink, or maybe tools for school purposes by online shopping and immediate delivery to short location such as building inside campus or school.
