@@ -112,6 +112,7 @@ public class MainActivityMerchant extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 store = dataSnapshot.getValue(Store.class);
+                store.setStoreId(dataSnapshot.getKey());
                 AccountUtil.setCurrentAccount(store);
                 title.setText(store.getStoreName());
                 locate.setText(store.getLocation() +" | " + store.getOpenHour() +" - "+ store.getCloseHour());

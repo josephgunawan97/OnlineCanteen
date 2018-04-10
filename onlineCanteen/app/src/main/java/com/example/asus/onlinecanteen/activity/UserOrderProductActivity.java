@@ -119,6 +119,7 @@ public class UserOrderProductActivity extends AppCompatActivity implements UserO
             ArrayList<Cart> intentCart = new ArrayList<>();
             intentCart.addAll(carts);
             intentCart.removeAll(toRemove);
+            intent.putExtra("deliveryfee", currentStore.getDeliveryfee());
             intent.putExtra("Cart", intentCart);
             intent.putExtra("Seller", currentStore.getStoreId());
             Log.d(TAG, currentStore.getStoreId());

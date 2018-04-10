@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="com.example.asus.onlinecanteen.activity.AdminStoreWithdrawal">
+    tools:context="com.example.asus.onlinecanteen.activity.ChangeDeliveryFee">
 
     <TextView
         android:id="@+id/textView"
@@ -15,10 +15,10 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
         android:layout_weight="1"
-        android:text="E-mail" />
+        android:text="Delivery Fee:" />
 
     <EditText
-        android:id="@+id/withdrawEmail"
+        android:id="@+id/deliveryFee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView"
@@ -26,31 +26,7 @@
         android:layout_marginTop="14dp"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="Enter your e-mail"
-        android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/topUpPassword"
-        android:layout_below="@+id/topUpPassword"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:ems="10"
-        android:text="Top-Up Amount" />
-
-    <EditText
-        android:id="@+id/withdrawAmount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView3"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="14dp"
-        android:layout_weight="1"
-        android:ems="10"
-        android:hint="Amount"
+        android:hint="Enter your delivery fee"
         android:inputType="numberSigned" />
 
     <Button
@@ -60,5 +36,5 @@
         android:layout_below="@+id/topUpAmount"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Withdraw" />
+        android:text="Change" />
 </LinearLayout>

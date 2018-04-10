@@ -24,10 +24,6 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.TimeZone;
-
 public class MerchantSettingsActivity extends AppCompatActivity {
 
     private Button logoutButton, editProfileBtn, deliveryFeeBtn, withdrawButton, salesReportBtn, storeQRButton;
@@ -71,7 +67,7 @@ public class MerchantSettingsActivity extends AppCompatActivity {
         });
 
         //Click listener to MerchantWithdrawal
-        withdrawButton = findViewById(R.id.withdrawButton);
+        withdrawButton = findViewById(R.id.changeButton);
         withdrawButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +86,14 @@ public class MerchantSettingsActivity extends AppCompatActivity {
             }
         });
 
+        deliveryFeeBtn = findViewById(R.id.deliveryFeeButton);
+        deliveryFeeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MerchantSettingsActivity.this, ChangeDeliveryFee.class);
+                startActivity(intent);
+            }
+        });
         firebaseAuth = FirebaseAuth.getInstance();
         merchant = firebaseAuth.getCurrentUser();
     }

@@ -41,7 +41,7 @@ public class AdminStoreWithdrawal extends AppCompatActivity {
 
         emailET = (EditText) findViewById(R.id.withdrawEmail);
         amountET = (EditText) findViewById(R.id.withdrawAmount);
-        withdrawButton = (Button) findViewById(R.id.withdrawButton);
+        withdrawButton = (Button) findViewById(R.id.changeButton);
 
 
         withdrawButton.setOnClickListener(new View.OnClickListener() {

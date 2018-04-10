@@ -19,6 +19,7 @@ public class Store implements Parcelable {
     private String img;
     private String email;
     private String bio;
+    private int deliveryfee;
 
     public Store() {}
 
@@ -52,6 +53,7 @@ public class Store implements Parcelable {
         img = in.readString();
         email = in.readString();
         bio = in.readString();
+        deliveryfee = in.readInt();
     }
 
     public static final Creator<Store> CREATOR = new Creator<Store>() {
@@ -99,6 +101,10 @@ public class Store implements Parcelable {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public void setDeliveryfee(int deliveryfee) {this.deliveryfee = deliveryfee; }
+
+    public int getDeliveryfee() {return deliveryfee; }
 
     public String getEmail() {
         return email;
@@ -148,5 +154,6 @@ public class Store implements Parcelable {
         dest.writeString(img);
         dest.writeString(email);
         dest.writeString(bio);
+        dest.writeInt(deliveryfee);
     }
 }

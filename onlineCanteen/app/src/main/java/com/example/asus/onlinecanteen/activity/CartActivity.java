@@ -70,6 +70,12 @@ public class CartActivity extends AppCompatActivity {
         for(Cart c: cart){
             total += c.getTotalPrice(c);
         }
+        int deliveryfeevalue=0;
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if(bundle != null){
+            deliveryfeevalue = bundle.getInt("deliveryfee");
+        }
 
         // Initialize ListView
         cartList = findViewById(R.id.cartList);
@@ -80,7 +86,7 @@ public class CartActivity extends AppCompatActivity {
 
         //Set views
         grandTotal.setText("TOTAL: Rp " + total);
-        deliveryFee.setText("Delivery Fee : Rp ");
+        deliveryFee.setText("Delivery Fee : Rp " + deliveryfeevalue);
 
         cartList.setAdapter(cartActivityAdapter);
 
