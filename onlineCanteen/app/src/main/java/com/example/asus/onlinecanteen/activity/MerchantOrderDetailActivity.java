@@ -25,6 +25,7 @@ import com.example.asus.onlinecanteen.fragment.MainUserFragment;
 import com.example.asus.onlinecanteen.model.Product;
 import com.example.asus.onlinecanteen.model.PurchasedItem;
 import com.example.asus.onlinecanteen.model.Transaction;
+import com.example.asus.onlinecanteen.utils.ProductsUtil;
 import com.example.asus.onlinecanteen.utils.WalletUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,6 +36,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class MerchantOrderDetailActivity extends AppCompatActivity {
@@ -98,9 +100,10 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+                    findViewById(R.id.progress_bar_layout).setVisibility(View.VISIBLE);
+
                     WalletUtil walletUtilUser = new WalletUtil();
                     walletUtilUser.creditAmount(transaction.getUid(),transaction.getTotalPrice());
-                    Toast.makeText(getApplicationContext(),"Order accepted",Toast.LENGTH_LONG).show();
 
                     Query query = reference.orderByChild("purchaseDate").equalTo(transaction.getPurchaseDate());
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -124,9 +127,9 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
                         }
                     });
 
-                    Intent intent = new Intent(MerchantOrderDetailActivity.this, MainActivityMerchant.class);
+/*                    Intent intent = new Intent(MerchantOrderDetailActivity.this, MainActivityMerchant.class);
                     startActivity(intent);
-                    finish();
+                    finish();*/
                 }
             });
 
@@ -150,8 +153,6 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
                         }
                     });
 
-                    Intent intent = new Intent(MerchantOrderDetailActivity.this, MainActivityMerchant.class);
-                    startActivity(intent);
                     finish();
                 }
             });
@@ -192,40 +193,37 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
     }
 
     private void decreaseStock(final HashMap<String, HashMap<String, Integer>> details) {
-        ArrayList<PurchasedItem> transactionItems = new ArrayList<>();
+        final ArrayList<Object> keys = new ArrayList<>(Arrays.asList(details.keySet().toArray()));
 
-        Object[] keys = details.keySet().toArray();
-
-        PurchasedItem item;
-        for(final Object key : keys) {
-
-           DatabaseReference referenceProduct = firebaseDatabase.getReference("products");
-            Query query = referenceProduct.orderByChild("tokoId").equalTo(transaction.getSid());
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    for (DataSnapshot child : snapshot.getChildren()) {
-                        Product product = child.getValue(Product.class);
-                        Log.d("TEST",details.get(key).toString());
-                        if (product.getName().equals((String)key)) {
-                            Log.d("TEST",product.getName());
-                            int currentStock = product.getStock();
-                            Log.d("TEST",product.getStock().toString());
-                            int buyquantity = details.get(key).get("quantity");
-                            Log.d("TEST",details.get(key).get("quantity").toString());
-                            child.getRef().child("stock").setValue(currentStock-buyquantity);
+        final HashMap<String, Product> products = new HashMap<>();
+        Query productQuery = ProductsUtil.query("tokoId", transaction.getSid());
+        productQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Product product = snapshot.getValue(Product.class);
+                    for(Object keyObject : keys) {
+                        String key = (String) keyObject;
+                        if(product.getName().equals(key)) {
+                            snapshot.child("stock").getRef().setValue(product.getStock() - details.get(key).get("quantity"));
+                            keys.remove(key);
                         }
                     }
-
-
                 }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
+                if(keys.size() == 0) {
+                    Toast.makeText(MerchantOrderDetailActivity.this, "Order Accepted", Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.progress_bar_layout).setVisibility(View.GONE);
+                    finish();
+                } else {
+                    Toast.makeText(MerchantOrderDetailActivity.this, "Not all stock updated", Toast.LENGTH_SHORT).show();
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

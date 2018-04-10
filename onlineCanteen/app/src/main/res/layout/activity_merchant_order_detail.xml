@@ -1,155 +1,201 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.asus.onlinecanteen.activity.MerchantOrderDetailActivity"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.asus.onlinecanteen.activity.MerchantOrderDetailActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary"
-        android:paddingStart="16dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date : "
-            android:textColor="@color/white"/>
+            android:orientation="horizontal"
+            android:background="@color/colorPrimary"
+            android:paddingStart="16dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" >
 
-        <TextView
-            android:id="@+id/transaction_date"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date : "
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/transaction_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:text="@string/history_transaction_date_default" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorPrimary"
+            android:paddingStart="16dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Purchased by : "
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/user_name_default" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorPrimary"
+            android:paddingStart="16dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location : "
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/user_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:text="@string/user_location" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:text="@string/history_transaction_date_default" />
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingStart="16dp"
+            android:paddingTop="5dp">
 
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/scan_qr"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:padding="5dp"
+                android:src="@drawable/ic_qrcode_black_24dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary"
-        android:paddingStart="16dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status: "
+                android:layout_gravity="center"
+                android:textColor="@color/white" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Purchased by : "
-            android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/order_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:layout_gravity="center"
+                android:text="@string/order_status"
+                android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="@string/user_name_default" />
+        </LinearLayout>
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary"
-        android:paddingStart="16dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Location : "
-            android:textColor="@color/white"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/transaction_detail_items"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/user_location"
-            android:layout_width="wrap_content"
+            android:id="@+id/transaction_detail_amount"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:text="@string/user_location" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp"
-        android:paddingStart="16dp"
-        android:paddingTop="5dp">
-
-        <ImageButton
-            android:id="@+id/scan_qr"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_weight="0"
             android:padding="5dp"
-            android:src="@drawable/ic_qrcode_black_24dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status: "
-            android:layout_gravity="center"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/order_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:gravity="center"
             android:background="@color/colorPrimary"
-            android:layout_gravity="center"
-            android:text="@string/order_status"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:text="@string/history_payment_amount_default" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorPrimary"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/acceptOrder"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:text="Accept" />
+
+            <Button
+                android:id="@+id/declineOrder"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:text="Decline" />
+        </LinearLayout>
 
     </LinearLayout>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/transaction_detail_items"
+    <RelativeLayout android:id="@+id/progress_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:visibility="gone"
+        android:background="@color/black_overlay" >
 
-    <TextView
-        android:id="@+id/transaction_detail_amount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:gravity="center"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/white"
-        android:text="@string/history_payment_amount_default" />
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            app:cardBackgroundColor="@color/white"
+            app:contentPadding="8dp"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="4dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/colorPrimary"
-        android:gravity="center">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center" >
 
-        <Button
-            android:id="@+id/acceptOrder"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="Accept" />
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminate="true" />
 
-        <Button
-            android:id="@+id/declineOrder"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:text="Decline" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Accepting order"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-</LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>
