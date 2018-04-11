@@ -1,5 +1,6 @@
 package com.example.asus.onlinecanteen.adapter;
 
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.asus.onlinecanteen.R;
 import com.example.asus.onlinecanteen.model.Store;
 
@@ -51,6 +53,11 @@ public class UserStoreAdapter extends RecyclerView.Adapter<UserStoreAdapter.View
         // Set information on view
         holder.storeNameTextView.setText(store.getStoreName());
         holder.storeLocationTextView.setText(store.getLocation());
+        if(store.getImg() != null) {
+            Glide.with(holder.storeImageView.getContext())
+                    .load(store.getImg())
+                    .into(holder.storeImageView);
+        }
     }
 
     @Override
