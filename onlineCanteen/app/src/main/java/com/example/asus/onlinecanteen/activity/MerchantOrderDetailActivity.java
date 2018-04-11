@@ -57,7 +57,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
     Intent intent;
     OrderDetailAdapter detailAdapter;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference reference,notificationRef;
+    DatabaseReference reference,notificationRef, decnotificationRef;
 
     private ArrayList<PurchasedItem> transactionItems;
 
@@ -72,6 +72,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         reference = firebaseDatabase.getReference("transactions");
         notificationRef = firebaseDatabase.getReference("ordernotifications");
+        decnotificationRef = firebaseDatabase.getReference("orderdeclinenotifications");
 
         intent = getIntent();
         pos = intent.getIntExtra("Position", 0);
@@ -143,7 +144,13 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             for (DataSnapshot child : snapshot.getChildren()) {
+                                Transaction newtrans = child.getValue(Transaction.class);
                                 child.getRef().child("deliveryStatus").setValue(4);
+
+                                HashMap<String,String> notificationData = new HashMap<>();
+                                notificationData.put("from", newtrans.getSid());
+                                notificationData.put("type", "order declined");
+                                decnotificationRef.child(newtrans.getUid()).push().setValue(notificationData);
                             }
                         }
 
