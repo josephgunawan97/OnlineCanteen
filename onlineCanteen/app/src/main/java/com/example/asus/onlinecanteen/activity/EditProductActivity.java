@@ -160,6 +160,7 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
                                     .load(product.getImageUrl())
                                     .into(imageView);
                         }
+                        else imageView.setImageResource(R.drawable.logo3);
                     }
                 }
             }
@@ -248,37 +249,50 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
-                    Product product = nodeDataSnapshot.getValue(Product.class);
-                    Log.i(TAG,"TEXT2 test "+ nodeDataSnapshot.getValue().toString() );
-                    String key = nodeDataSnapshot.getKey();
-                    String path = "/" + dataSnapshot.getKey() + "/" + key;
-                    HashMap<String, Object> result = new HashMap<>();
-                    //result.put("imageUrl", );
-                    result.put("name", productName.getText().toString());
-                    // HashMap<Integer, Object> result2 = new HashMap<>();
-                    result.put("price", Integer.parseInt(productPrice.getText().toString()));
-                    result.put("stock", Integer.parseInt(productQty.getText().toString()));
-                    result.put("imageUrl", profPicUrl);
 
-                    StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(product.getImageUrl());
-                    photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            // File deleted successfully
-                            Log.d(TAG, "onSuccess: deleted file");
+                    for(DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
+
+                        //DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+
+                        Product product = productSnapshot.getValue(Product.class);
+                        if (merchant.getUid().equals(product.getTokoId()) && product.getName().equals(choose.toString())) {
+                            Log.i(TAG,"TEXT2 test "+ productSnapshot.getValue().toString() );
+                                //Log.i(TAG, "TEXT2 test " + nodeDataSnapshot.getValue().toString());
+                                //String key = nodeDataSnapshot.getKey();
+                                //String path = "/" + dataSnapshot.getKey() + "/" + key;
+                                HashMap<String, Object> result = new HashMap<>();
+                                //result.put("imageUrl", );
+                                result.put("name", productName.getText().toString());
+                                // HashMap<Integer, Object> result2 = new HashMap<>();
+                                result.put("price", Integer.parseInt(productPrice.getText().toString()));
+                                result.put("stock", Integer.parseInt(productQty.getText().toString()));
+                                result.put("imageUrl", profPicUrl);
+
+                                if(product.getImageUrl()!=null)
+                                {
+                                    StorageReference photoRef = FirebaseStorage.getInstance().getReferenceFromUrl(product.getImageUrl());
+
+                                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+
+                                        // File deleted successfully
+                                        Log.d(TAG, "onSuccess: deleted file");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception exception) {
+                                        // Uh-oh, an error occurred!
+                                        Log.d(TAG, "onFailure: did not delete file");
+                                    }
+                                });
+                                }
+                                //if(!product.getImageUrl().equals())
+
+                                reference.child("products").child(productSnapshot.getKey()).updateChildren(result);
+
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Uh-oh, an error occurred!
-                            Log.d(TAG, "onFailure: did not delete file");
-                        }
-                    });
-
-                    //if(!product.getImageUrl().equals())
-
-                    reference.child(path).updateChildren(result);
+                }
                 }
 
                 @Override
@@ -306,23 +320,29 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
-                    Product product = nodeDataSnapshot.getValue(Product.class);
-                    Log.i(TAG,"TEXT2 test "+ nodeDataSnapshot.getValue().toString() );
-                    String key = nodeDataSnapshot.getKey();
-                    String path = "/" + dataSnapshot.getKey() + "/" + key;
-                    HashMap<String, Object> result = new HashMap<>();
-                    //result.put("imageUrl", );
-                    result.put("name", productName.getText().toString());
-                    // HashMap<Integer, Object> result2 = new HashMap<>();
-                    result.put("price", Integer.parseInt(productPrice.getText().toString()));
-                    result.put("stock", Integer.parseInt(productQty.getText().toString()));
 
-                    //if(!product.getImageUrl().equals())
+                    for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
 
-                    reference.child(path).updateChildren(result);
+                        //DataSnapshot nodeDataSnapshot = dataSnapshot.getChildren().iterator().next();
+
+                        Product product = productSnapshot.getValue(Product.class);
+                        if (merchant.getUid().equals(product.getTokoId()) && product.getName().equals(choose.toString())) {
+                            Log.i(TAG,"TEXT2 test "+ productSnapshot.getValue().toString() );
+                            //String key = nodeDataSnapshot.getKey();
+                            //String path = "/" + dataSnapshot.getKey() + "/" + key;
+                            HashMap<String, Object> result = new HashMap<>();
+                            //result.put("imageUrl", );
+                            result.put("name", productName.getText().toString());
+                            // HashMap<Integer, Object> result2 = new HashMap<>();
+                            result.put("price", Integer.parseInt(productPrice.getText().toString()));
+                            result.put("stock", Integer.parseInt(productQty.getText().toString()));
+
+                            //if(!product.getImageUrl().equals())
+                            reference.child("products").child(productSnapshot.getKey()).updateChildren(result);
+
+                        }
+                    }
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     //Logger.error(TAG, ">>> Error:" + "find onCancelled:" + databaseError);
