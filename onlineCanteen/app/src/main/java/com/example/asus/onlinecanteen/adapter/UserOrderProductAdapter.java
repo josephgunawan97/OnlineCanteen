@@ -1,6 +1,7 @@
 package com.example.asus.onlinecanteen.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,10 @@ public class UserOrderProductAdapter extends RecyclerView.Adapter<UserOrderProdu
     public UserOrderProductAdapter(ArrayList<Product> products) {
         if(products != null) {
             for(Product product : products) {
-                addProduct(product);
+                if(product.getStock() > 0) addProduct(product);
+            }
+            for(Product product : products) {
+                if(product.getStock() == 0) addProduct(product);
             }
         }
     }
@@ -54,6 +58,15 @@ public class UserOrderProductAdapter extends RecyclerView.Adapter<UserOrderProdu
             Glide.with(holder.userOrderProductImageView.getContext())
                     .load(product.getImageUrl())
                     .into(holder.userOrderProductImageView);
+        }
+        if(product.getStock() <= 0) {
+            holder.userOrderProductIncreaseButton.setEnabled(false);
+            holder.userOrderProductDecreaseButton.setEnabled(false);
+            holder.userOrderProductIncreaseButton.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.gray));
+            holder.userOrderProductDecreaseButton.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.gray));
+            holder.outOfStockLayout.setVisibility(View.VISIBLE);
+        } else {
+            holder.outOfStockLayout.setVisibility(View.GONE);
         }
     }
 
@@ -90,6 +103,7 @@ public class UserOrderProductAdapter extends RecyclerView.Adapter<UserOrderProdu
         public TextView userOrderProductQuantityTextView;
         public Button userOrderProductIncreaseButton;
         public Button userOrderProductDecreaseButton;
+        public ViewGroup outOfStockLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -100,6 +114,7 @@ public class UserOrderProductAdapter extends RecyclerView.Adapter<UserOrderProdu
             userOrderProductQuantityTextView = itemView.findViewById(R.id.user_order_product_quantity_text_view);
             userOrderProductIncreaseButton = itemView.findViewById(R.id.user_order_product_inc_button);
             userOrderProductDecreaseButton = itemView.findViewById(R.id.user_order_product_dec_button);
+            outOfStockLayout = itemView.findViewById(R.id.out_of_stock_layout);
 
             userOrderProductIncreaseButton.setOnClickListener(new View.OnClickListener() {
                 @Override
