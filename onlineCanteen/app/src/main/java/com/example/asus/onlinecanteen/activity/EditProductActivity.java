@@ -155,6 +155,7 @@ public class EditProductActivity extends AppCompatActivity implements DeleteProd
                         productQty.setText(product.getStock().toString());
                         productPrice.setText(product.getPrice().toString());
 
+
                         if(product.getImageUrl() != null) {
                             Glide.with(imageView.getContext())
                                     .load(product.getImageUrl())
