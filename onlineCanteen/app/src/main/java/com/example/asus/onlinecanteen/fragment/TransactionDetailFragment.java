@@ -38,6 +38,7 @@ public class TransactionDetailFragment extends Fragment {
 
     // Transaction which is detailed
     private Transaction transaction;
+    private String transactionId;
 
     // UI Variables
     private TextView transactionDateTextView;
@@ -103,7 +104,42 @@ public class TransactionDetailFragment extends Fragment {
     }
 
     private void showQR() {
+        Log.d("Transaction", "id: " + transactionId);
+        if(transactionId == null) {
+            retrieveTransactionId();
+            return;
+        }
 
+        Bitmap bitmap;
+        // TODO Auto-generated method stub
+        if(getActivity() == null) return;
+        AlertDialog.Builder alertadd = new AlertDialog.Builder(getActivity());
+        alertadd.setTitle("QR Code");
+
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View view = factory.inflate(R.layout.qr_layout, null);
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(transactionId, BarcodeFormat.QR_CODE,300,300);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            ImageView image= (ImageView) view.findViewById(R.id.imageView);
+            image.setImageBitmap(bitmap);
+        }  catch (WriterException e) {
+            e.printStackTrace();
+        }
+
+        alertadd.setView(view);
+        alertadd.setNeutralButton("Close", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dlg, int sumthin) {
+                dlg.cancel();
+            }
+
+        });
+        alertadd.show();
+    }
+
+    private void retrieveTransactionId() {
         FirebaseDatabase.getInstance().getReference().child("transactions").orderByChild("uid").equalTo(transaction.getUid()).addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -113,37 +149,12 @@ public class TransactionDetailFragment extends Fragment {
                 {
                     if(productSnapshot.child("sid").getValue().equals(transaction.getSid()) && productSnapshot.child("purchaseDate").getValue().equals(transaction.getPurchaseDate()))
                     {
-
-                        Bitmap bitmap;
-                        // TODO Auto-generated method stub
-                        AlertDialog.Builder alertadd = new AlertDialog.Builder(
-                                getContext());
-                        alertadd.setTitle("QR Code");
-
-                        LayoutInflater factory = LayoutInflater.from(getContext());
-                        final View view = factory.inflate(R.layout.qr_layout, null);
-                        String text2Qr = productSnapshot.getKey();
-                        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                        try {
-                            BitMatrix bitMatrix = multiFormatWriter.encode(text2Qr, BarcodeFormat.QR_CODE,300,300);
-                            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                            bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                            ImageView image= (ImageView) view.findViewById(R.id.imageView);
-                            image.setImageBitmap(bitmap);
-                        }  catch (WriterException e) {
-                            e.printStackTrace();
-                        }
-
-                        alertadd.setView(view);
-                        alertadd.setNeutralButton("Close", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dlg, int sumthin) {
-
-                            }
-
-                        });
-                        alertadd.show();
+                        transactionId = productSnapshot.getKey();
+                        Log.d("Transaction retrieve", "id: " + transactionId);
+                        showQR();
+                        return;
                     }
-                    }
+                }
 
             }
 
@@ -152,9 +163,6 @@ public class TransactionDetailFragment extends Fragment {
 
             }
         });
-
-
-
     }
 
 }
