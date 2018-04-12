@@ -27,13 +27,10 @@ import java.util.regex.Pattern;
 
 public class AdminTopUpActivity extends AppCompatActivity {
 
-    EditText emailET;
     EditText amountET;
     Button topUpButton;
-
-    String email;
     int amount;
-
+    String ID = " ";
     FirebaseAuth firebaseAuth;
     DatabaseReference emailDatabase;
 
@@ -44,30 +41,25 @@ public class AdminTopUpActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        emailET = (EditText) findViewById(R.id.topUpEmail);
         amountET = (EditText) findViewById(R.id.topUpAmount);
         topUpButton = (Button) findViewById(R.id.topUpButton);
-
+        ID = getIntent().getStringExtra("ID");
 
         topUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validateForm())
                 {
-                    email = emailET.getText().toString();
-                    email = email.replaceAll(Pattern.quote("."),",");
                     amount = Integer.parseInt(amountET.getText().toString());
-
                     emailDatabase = FirebaseDatabase.getInstance().getReference();
-
-                    emailDatabase.child("emailtouid").child(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                    emailDatabase.child("wallet").child(ID).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()){
-                                WalletUtil walletUtil = new WalletUtil();
-                                String id = dataSnapshot.getValue().toString();
-
-                                walletUtil.debitAmount(id,amount);
+                                //WalletUtil walletUtil = new WalletUtil();
+                               String id = dataSnapshot.getValue().toString();
+                                emailDatabase.child("wallet").child(ID).setValue(Integer.valueOf(amountET.getText().toString())+Integer.valueOf(id));
+                                //walletUtil.debitAmount(id,amount);
                                 Intent intent = new Intent(AdminTopUpActivity.this, MainActivityAdmin.class);
                                 startActivity(intent);
                                 finish();
@@ -88,15 +80,9 @@ public class AdminTopUpActivity extends AppCompatActivity {
     }
 
     public boolean validateForm() {
-        String email = new String(emailET.getText().toString());
         String amount = new String(amountET.getText().toString());
 
         boolean valid = true;
-
-        if (TextUtils.isEmpty(email)) {
-            emailET.setError("Email is required");
-            valid = false;
-        }
 
         if (TextUtils.isEmpty(amount)) {
             amountET.setError("Amount is required");

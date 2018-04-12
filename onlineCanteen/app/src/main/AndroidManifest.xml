@@ -82,7 +82,9 @@
             android:parentActivityName=".activity.MerchantSettingsActivity" />
         <activity android:name=".activity.AdminVerifyStoreActivity"></activity>
         <activity android:name=".activity.QrTransactionActivity"></activity>
-        <activity android:name=".activity.ChangeDeliveryFee"></activity>
+    <activity android:name=".activity.ChangeDeliveryFee"></activity>
+        <activity android:name=".activity.QrTopupAdmin"></activity>
+
     </application>
 
 </manifest>

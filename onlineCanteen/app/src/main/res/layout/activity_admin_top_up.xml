@@ -11,28 +11,6 @@
     tools:context="com.example.asus.onlinecanteen.activity.AdminTopUpActivity">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="295dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
-        android:text="E-mail" />
-
-    <EditText
-        android:id="@+id/topUpEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView"
-        android:layout_below="@+id/textView"
-        android:layout_marginTop="14dp"
-        android:layout_weight="1"
-        android:ems="10"
-        android:hint="Enter your e-mail"
-        android:inputType="textPersonName" />
-
-    <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

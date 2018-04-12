@@ -69,7 +69,7 @@ public class MainActivityAdmin extends AppCompatActivity {
                 Intent intent;
                 switch (TAG[i]){
                     case "TOP_UP":
-                        intent = new Intent(MainActivityAdmin.this, AdminTopUpActivity.class);
+                        intent = new Intent(MainActivityAdmin.this, QrTopupAdmin.class);
                         startActivity(intent);
                         break;
                     case "WITHDRAW":

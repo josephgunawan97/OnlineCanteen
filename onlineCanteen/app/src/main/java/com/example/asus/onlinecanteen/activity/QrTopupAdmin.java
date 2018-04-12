@@ -12,8 +12,9 @@ import android.util.Log;
 
 import com.example.asus.onlinecanteen.model.Store;
 import com.example.asus.onlinecanteen.model.Transaction;
+import com.example.asus.onlinecanteen.model.User;
 import com.example.asus.onlinecanteen.utils.AccountUtil;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.asus.onlinecanteen.utils.WalletUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,18 +26,20 @@ import java.util.ArrayList;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
 /**
- * Created by Rickhen Hermawan on 15/03/2018.
+ * Created by Rickhen Hermawan on 12/04/2018.
  */
 
-public class QrActivity extends Activity implements ZXingScannerView.ResultHandler {
+public class QrTopupAdmin extends Activity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
     private String result, value;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
     ArrayList<Transaction> transactionHistory;
     int pos;
-    String id;
-    private Store store;
+    String idresult;
+    private WalletUtil walletUtil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,17 +88,18 @@ public class QrActivity extends Activity implements ZXingScannerView.ResultHandl
         result = rawResult.getText();
         //AlertDialog alert1 = builder.create();
         //alert1.show();
-        id = rawResult.getText();
-        DatabaseReference databaseStore = FirebaseDatabase.getInstance().getReference("store").child(id);
-        databaseStore.addListenerForSingleValueEvent(new ValueEventListener() {
+        idresult = rawResult.getText();
+
+
+
+        DatabaseReference databaseUser = FirebaseDatabase.getInstance().getReference("wallet").child(idresult);
+        databaseUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                store = dataSnapshot.getValue(Store.class);
-                Log.d("QrActivity", "Store is " + store.getStoreId());
-                store.setStoreId(id);
-                AccountUtil.setCurrentAccount(store);
-                Intent intent = new Intent(QrActivity.this, UserStoreProductActivity.class);
-                intent.putExtra(UserStoreProductActivity.CURRENT_STORE_KEY, store);
+                //walletUtil = dataSnapshot.getValue(WalletUtil.class);
+                Log.d("QrActivity", "User is " + (idresult));
+                Intent intent = new Intent(QrTopupAdmin.this, AdminTopUpActivity.class);
+                intent.putExtra("ID",idresult);
                 startActivity(intent);
             }
 
@@ -104,17 +108,5 @@ public class QrActivity extends Activity implements ZXingScannerView.ResultHandl
 
             }
         });
-//        if (value.equals("order")) {
-//            Intent i = new Intent();
-//            i.putExtra("result", result);
-//            i.putExtra("Transaction", transactionHistory);
-//            i.putExtra("Position", pos);
-//            setResult(RESULT_OK, i);
-//            finish();
-//
-//
-//            //mScannerView.resumeCameraPreview(this);
-//        }
-
     }
 }
