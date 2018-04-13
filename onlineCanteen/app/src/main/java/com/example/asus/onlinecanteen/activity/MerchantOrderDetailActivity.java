@@ -247,7 +247,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
 
     }
 
-    public void updateOrder(){
+    public void updateOrder(final Transaction transactionlocal){
         DatabaseReference productDatabase= FirebaseDatabase.getInstance().getReference();
         Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "BEFORE UPDATE TRANS "+ value);
 
@@ -263,8 +263,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
 
                 //Merchant only get money when product successfully sent
                 WalletUtil walletUtil = new WalletUtil();
-
-               // walletUtil.debitAmount(transaction.getSid(),transaction.getTotalPrice());
+                walletUtil.debitAmount(transactionlocal.getSid(),transactionlocal.getTotalPrice());
 
                 Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS1 "+ reference.child(value).getKey());
                 reference.child(value).updateChildren(result);
@@ -308,7 +307,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
                                     .show();
                         }
                         else{
-                            updateOrder();
+                            updateOrder(transaction);
                             new AlertDialog.Builder(this)
                                     .setTitle("Transaction")
                                     .setMessage("Transaction confirm success")
