@@ -248,26 +248,41 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
     }
 
     public void updateOrder(final Transaction transactionlocal){
-        DatabaseReference productDatabase= FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference productDatabase= FirebaseDatabase.getInstance().getReference();
         Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "BEFORE UPDATE TRANS "+ value);
 
         productDatabase.child("transactions").orderByChild(value).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                Transaction transaction = dataSnapshot.getValue(Transaction.class);
+                    Transaction transaction = dataSnapshot.child(value).getValue(Transaction.class);
 
-                HashMap<String, Object> result = new HashMap<>();
-                //result.put("imageUrl", );
-                result.put("deliveryStatus", 3);
+                    Log.d("TEST",""+transaction.getSid().toString());
 
-                //Merchant only get money when product successfully sent
-                WalletUtil walletUtil = new WalletUtil();
-                walletUtil.debitAmount(transactionlocal.getSid(),transactionlocal.getTotalPrice());
+                    if(transaction.getPurchaseDate()==transactionlocal.getPurchaseDate()){
 
-                Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS1 "+ reference.child(value).getKey());
-                reference.child(value).updateChildren(result);
-                //Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS "+ reference.child(value).ge);
+                    HashMap<String, Object> result = new HashMap<>();
+                    //result.put("imageUrl", );
+                    result.put("deliveryStatus", 3);
+
+                    //Merchant only get money when product successfully sent
+                    WalletUtil walletUtil = new WalletUtil();
+                    walletUtil.debitAmount(transaction.getSid(),transaction.getTotalPrice());
+
+                    Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS1 "+ reference.child(value).getKey());
+                    reference.child(value).updateChildren(result);
+
+                    String transtemp = reference.child(value).getKey();
+
+                    productDatabase.child("transactions").child(transtemp).child("deliveryStatus").setValue(3);
+
+
+                    //Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS "+ reference.child(value).ge);
+
+                }
+                else {
+                        alert();
+                }
 
             }
 
@@ -279,6 +294,22 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
 
         detailAdapter.notifyDataSetChanged();
         Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS "+ transaction.getDeliveryStatus());
+    }
+
+    private void alert() {
+        new AlertDialog.Builder(this)
+                .setTitle("ERROR")
+                .setMessage("Transaction not valid")
+                .setPositiveButton("OK", null)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        backToScreen();
+                    }
+                })
+                .show();
     }
 
     @Override
