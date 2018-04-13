@@ -263,6 +263,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
 
                 //Merchant only get money when product successfully sent
                 WalletUtil walletUtil = new WalletUtil();
+
                // walletUtil.debitAmount(transaction.getSid(),transaction.getTotalPrice());
 
                 Log.i(MerchantOrderDetailActivity.class.getSimpleName(), "UPDATE TRANS1 "+ reference.child(value).getKey());

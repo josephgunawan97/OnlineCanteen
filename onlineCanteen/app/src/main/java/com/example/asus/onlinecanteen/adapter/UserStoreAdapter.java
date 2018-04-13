@@ -35,6 +35,7 @@ public class UserStoreAdapter extends RecyclerView.Adapter<UserStoreAdapter.View
     private StoreItemClickHandler storeItemClickHandler;
 
     private ArrayList<Store> stores;
+    private ArrayList<Store> tempStores = new ArrayList<>();
 
     public UserStoreAdapter(StoreItemClickHandler storeItemClickHandler) {
         this.storeItemClickHandler = storeItemClickHandler;
@@ -60,6 +61,17 @@ public class UserStoreAdapter extends RecyclerView.Adapter<UserStoreAdapter.View
         }
     }
 
+    public void updateList(ArrayList<Store> list){
+        tempStores = stores;
+        stores = list;
+        notifyDataSetChanged();
+    }
+
+    public void initList(){
+        stores = tempStores;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         if(stores != null) return stores.size();
@@ -68,6 +80,7 @@ public class UserStoreAdapter extends RecyclerView.Adapter<UserStoreAdapter.View
 
     public void setStores(ArrayList<Store> stores) {
         this.stores = stores;
+        tempStores = stores;
         notifyDataSetChanged();
     }
 
@@ -76,12 +89,17 @@ public class UserStoreAdapter extends RecyclerView.Adapter<UserStoreAdapter.View
             this.stores = new ArrayList<>();
         }
         this.stores.add(store);
+        this.tempStores = this.stores;
         notifyDataSetChanged();
     }
 
     public void removeAllStores() {
         this.stores.clear();
         notifyDataSetChanged();
+    }
+
+    public ArrayList<Store> getStores() {
+        return this.stores;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

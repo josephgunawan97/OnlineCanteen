@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +62,8 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
     private ChildEventListener storesEventListener;
     private ChildEventListener featuredProductEventListener;
 
+    private ArrayList<Store> stores;
+
     public interface StoreClickHandler {
         void storeClickHandler(Store store);
     }
@@ -106,6 +110,9 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
             }
         });
 
+
+
+
         if(featuredProductAdapter == null){
             featuredProductAdapter = new FeaturedProductAdapter(this);
         }
@@ -116,6 +123,30 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
         }
         storesRecyclerView.setAdapter(userStoreAdapter);
 
+
+        searchBarEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().isEmpty()){
+                    userStoreAdapter.initList();
+                }
+                else{
+                    filter(s.toString());
+                }
+            }
+        });
+
+
         featuredLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         featuredRecyclerView.setLayoutManager(featuredLayoutManager);
 
@@ -125,6 +156,26 @@ public class MainUserFragment extends Fragment implements UserStoreAdapter.Store
         storesQuery = StoreUtil.query();
         featuredQuery = FeaturedProductUtil.query();
     }
+
+
+    private void filter(String s) {
+
+        userStoreAdapter.initList();
+
+        ArrayList<Store> temp = new ArrayList<>();
+        ArrayList<Store> stores = userStoreAdapter.getStores();
+        if(stores!=null){
+            for(Store d: stores){
+                if(d.getStoreName().toLowerCase().contains(s.toLowerCase())){
+                    Log.d("TEST","contains "+s);
+                    temp.add(d);
+                }
+            }
+        }
+        //update recyclerview
+        userStoreAdapter.updateList(temp);
+    }
+
 
     @Override
     public void onClickHandler(Store store) {
