@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content" android:background="@color/colorPrimaryDark">
-    
-    <ImageView android:id="@+id/user_navigation_user_picture"
-        android:layout_width="@dimen/user_navigation_header_photo_size"
-        android:layout_height="@dimen/user_navigation_header_photo_size"
+
+    <android.support.v7.widget.CardView
+        android:layout_width="@dimen/user_profile_picture_size"
+        android:layout_height="@dimen/user_profile_picture_size"
         android:layout_marginStart="@dimen/user_navigation_header_horizontal_margin"
         android:layout_marginEnd="@dimen/user_navigation_header_horizontal_margin"
         android:layout_marginTop="@dimen/user_navigation_header_top_margin"
         android:layout_gravity="center_horizontal"
-        android:background="@color/colorPrimaryLight"
-        android:scaleType="centerCrop"/>
+        app:cardBackgroundColor="@color/white"
+        app:contentPadding="2dp"
+        app:cardCornerRadius="@dimen/user_profile_picture_size_half" >
+
+        <ImageView android:id="@+id/user_navigation_user_picture"
+            android:layout_width="@dimen/user_navigation_header_photo_size"
+            android:layout_height="@dimen/user_navigation_header_photo_size"
+            android:src="@drawable/logo3"
+            android:scaleType="centerCrop"/>
+    </android.support.v7.widget.CardView>
 
     <TextView android:id="@+id/user_navigation_user_name"
         android:layout_width="wrap_content"

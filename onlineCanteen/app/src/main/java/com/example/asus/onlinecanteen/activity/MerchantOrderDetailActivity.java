@@ -204,7 +204,7 @@ public class MerchantOrderDetailActivity extends AppCompatActivity {
 
         final HashMap<String, Product> products = new HashMap<>();
         Query productQuery = ProductsUtil.query("tokoId", transaction.getSid());
-        productQuery.addValueEventListener(new ValueEventListener() {
+        productQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {

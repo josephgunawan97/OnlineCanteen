@@ -68,7 +68,7 @@ public class WithdrawDetailActivity extends AppCompatActivity {
         transactiondate.setText(withdraw.getRequestDateString(withdraw.getRequestdate()));
         transfername.setText(withdraw.getTransfername());
         bankname.setText(withdraw.getBank());
-        accountnumber.setText(Integer.toString(withdraw.getAccountnumber()));
+        accountnumber.setText(withdraw.getAccountnumber());
         amount.setText("Withdraw Amount : Rp. "+Integer.toString(withdraw.getAmount())+",-");
         if(withdraw.getRequeststatus()==1)
         {

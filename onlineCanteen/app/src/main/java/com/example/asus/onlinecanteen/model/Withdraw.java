@@ -14,13 +14,14 @@ import java.util.TimeZone;
 public class Withdraw implements Serializable {
 
     private String transfername,uid,bank;
-    private int amount, accountnumber;
+    private int amount;
+    private String accountnumber;
     private long requestdate;
     private int requeststatus;
 
     public Withdraw() {}
 
-    public Withdraw(@NonNull String transfername, String uid, String bank, int amount, int accountnumber) {
+    public Withdraw(@NonNull String transfername, String uid, String bank, int amount, String accountnumber) {
         this.transfername = transfername;
         this.uid = uid;
         this.bank = bank;
@@ -55,9 +56,9 @@ public class Withdraw implements Serializable {
         this.bank = bank;
     }
 
-    public int getAccountnumber() { return accountnumber; }
+    public String getAccountnumber() { return accountnumber; }
 
-    public void setAccountnumber(int accountnumber) {
+    public void setAccountnumber(String accountnumber) {
         this.accountnumber = accountnumber;
     }
 

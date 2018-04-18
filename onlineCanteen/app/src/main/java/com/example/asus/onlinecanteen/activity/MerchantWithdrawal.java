@@ -90,7 +90,7 @@ public class MerchantWithdrawal extends AppCompatActivity {
     }
     public void generateReport(){
         database = FirebaseDatabase.getInstance().getReference("withdrawrequest");
-        Withdraw withdraw= new Withdraw(transferName.getText().toString(),storeID,bankName.getText().toString(),Integer.parseInt(amount.getText().toString()), Integer.parseInt(accountNumber.getText().toString()));
+        Withdraw withdraw= new Withdraw(transferName.getText().toString(),storeID,bankName.getText().toString(),Integer.parseInt(amount.getText().toString()), accountNumber.getText().toString());
         database.push().setValue(withdraw);
     }
 
