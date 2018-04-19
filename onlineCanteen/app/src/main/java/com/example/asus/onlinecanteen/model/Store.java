@@ -20,6 +20,7 @@ public class Store implements Parcelable {
     private String email;
     private String bio;
     private int deliveryfee;
+    private String device_token;
 
     public Store() {}
 
@@ -32,7 +33,7 @@ public class Store implements Parcelable {
         this.img = img;
     }
 
-    public Store(String storeName, String phoneNumber, String email, String img, String openHour, String closeHour, String location, String bio) {
+    public Store(String storeName, String phoneNumber, String email, String img, String openHour, String closeHour, String location, String bio, String device_token) {
         this.storeName = storeName;
         this.phoneNumber = phoneNumber;
         this.email = email;
@@ -41,6 +42,7 @@ public class Store implements Parcelable {
         this.closeHour = closeHour;
         this.location = location;
         this.bio = bio;
+        this.device_token = device_token;
     }
 
     protected Store(Parcel in) {
@@ -54,6 +56,7 @@ public class Store implements Parcelable {
         email = in.readString();
         bio = in.readString();
         deliveryfee = in.readInt();
+        device_token = in.readString();
     }
 
     public static final Creator<Store> CREATOR = new Creator<Store>() {
@@ -104,6 +107,10 @@ public class Store implements Parcelable {
 
     public void setDeliveryfee(int deliveryfee) {this.deliveryfee = deliveryfee; }
 
+    public void setDevice_token(String device_token) {
+        this.device_token = device_token;
+    }
+
     public int getDeliveryfee() {return deliveryfee; }
 
     public String getEmail() {
@@ -138,6 +145,10 @@ public class Store implements Parcelable {
         return phoneNumber;
     }
 
+    public String getDevice_token() {
+        return device_token;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -155,5 +166,6 @@ public class Store implements Parcelable {
         dest.writeString(email);
         dest.writeString(bio);
         dest.writeInt(deliveryfee);
+        dest.writeString(device_token);
     }
 }

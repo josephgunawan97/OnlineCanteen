@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -150,7 +151,8 @@ public class AccountUtil {
 
 
     private static Task<Void> updateUserInformationOnDatabase(String name, String phoneNumber, String profilePictureUrl) {
-        return updateUserInformationOnDatabase(new User(name, phoneNumber, profilePictureUrl));
+        String device_token = FirebaseInstanceId.getInstance().getToken();
+        return updateUserInformationOnDatabase(new User(name, phoneNumber, profilePictureUrl, device_token));
     }
 
     private static Task<Void> updateUserInformationOnDatabase(User user) {
@@ -164,7 +166,8 @@ public class AccountUtil {
     private static Task<Void> updateStoreInformationOnDatabase(String name, String phoneNumber, String email,
                                                                String profilePictureUrl, String openHour,
                                                                String closeHour, String location, String bio) {
-        return updateStoreInformationOnDatabase(new Store(name, phoneNumber, email, profilePictureUrl, openHour, closeHour, location, bio));
+        String device_token = FirebaseInstanceId.getInstance().getToken();
+        return updateStoreInformationOnDatabase(new Store(name, phoneNumber, email, profilePictureUrl, openHour, closeHour, location, bio, device_token));
     }
 
     private static Task<Void> updateStoreInformationOnDatabase(Store store) {
